@@ -1,65 +1,118 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
-import { autoUpdater } from 'electron-updater'
+import menubar from 'menubar'
+// import AutoLaunch from 'auto-launch'
+
+import { app, globalShortcut, Menu, ipcMain, shell } from 'electron'
+
+// import autoUpdater from './auto-update'
+import appMenu from './menu'
+import path from 'path'
 
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+  global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
-let mainWindow
-const winURL = process.env.NODE_ENV === 'development'
-  ? `http://localhost:9080`
-  : `file://${__dirname}/index.html`
+// let autoLaunch = true
 
-function createWindow () {
-  /**
-   * Initial window options
-   */
-  mainWindow = new BrowserWindow({
-    height: 480,
-    width: 280,
-    resizable: false,
-    movable: false
-  })
-
-  mainWindow.loadURL(winURL)
-
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
-}
-
-app.on('ready', createWindow)
-
+// Quit when all windows are closed.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow()
-  }
+// Unregister all shortcuts.
+app.on('will-quit', () => {
+  globalShortcut.unregisterAll()
 })
 
-/**
- * Auto Updater
- *
- * Uncomment the following code below and install `electron-updater` to
- * support auto updating. Code Signing with a valid certificate is required.
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
- */
-
-autoUpdater.on('update-downloaded', () => {
-  autoUpdater.quitAndInstall()
+// Setup Main Weather Bar App
+const mb = menubar({
+  index: (process.env.NODE_ENV === 'development') ? 'http://localhost:9080' : `file://${__dirname}/index.html`,
+  icon: path.join(__static, '/iconTemplate.png'),
+  width: 280,
+  height: 480,
+  resizable: false,
+  showDockIcon: false,
+  preloadWindow: true,
+  alwaysOnTop: true
 })
 
-app.on('ready', () => {
-  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
+mb.on('ready', function ready () {
+  // autoUpdater()
+  Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu))
+
+  globalShortcut.register('CommandOrControl+Shift+W', () => {
+    if (mb.window.isVisible()) {
+      mb.window.hide()
+    } else {
+      mb.window.show()
+    }
+  })
+
+  ipcMain.on('no-title', (event, args) => {
+    mb.tray.setToolTip('Weather Bar')
+    mb.tray.setTitle('')
+  })
+
+  ipcMain.on('set-title', (event, args) => {
+    const temperature = Math.round(args.temperature) + '°'
+
+    mb.tray.setToolTip(args.location + ' / ' + temperature)
+    mb.tray.setTitle(temperature)
+
+    if (process.platform === 'darwin') {
+      mb.tray.setImage(path.join(__static, '/icons', args.icon + 'Template.png'))
+    } else {
+      mb.tray.setImage(path.join(__static, '/icons', args.icon + 'W.png'))
+    }
+  })
+
+  ipcMain.on('close', (event, args) => {
+    app.quit()
+  })
+
+  ipcMain.on('will-navigate', (event, args) => {
+    const url = args.url
+    shell.openExternal(url)
+  })
+})
+
+// Add Context Menu to Weather Bar App
+mb.on('after-create-window', () => {
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Reload Weather',
+      click () {
+        mb.window.send('reload-weather')
+        if (!mb.window.isVisible()) {
+          mb.showWindow()
+        }
+      }
+    }, {
+      label: 'Settings',
+      click () {
+        mb.window.send('toggle-settings')
+        if (!mb.window.isVisible()) {
+          mb.showWindow()
+        }
+      }
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Quit',
+      click () {
+        mb.app.quit()
+      }
+    }
+  ])
+
+  mb.tray.on('right-click', () => {
+    mb.tray.popUpContextMenu(contextMenu)
+  })
 })
