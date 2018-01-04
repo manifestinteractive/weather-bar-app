@@ -1,11 +1,4 @@
-<center>
-  <a href="https://weatherbarapp.com">
-    <img src="logo/color-black-text/logo.png" alt="Temps" width="200"/>
-  </a>
-  [![makes-people-smile](http://forthebadge.com/images/badges/makes-people-smile.svg)](https://weatherbarapp.com)  [![made-with-vue](http://forthebadge.com/images/badges/made-with-vue.svg)](https://simulatedgreg.gitbooks.io/electron-vue/en/)
-  <br />
-  [![screenshot](screenshot.gif)](https://weatherbarapp.com)
-</center>
+<div align="center"><p><img src="logo/color-black-text/logo.png" alt="Temps" width="200"/></p><p><img src="http://forthebadge.com/images/badges/makes-people-smile.svg" alt="makes-people-smile" /></p><p><img src="screenshot.gif" alt="Weather Bar" width="280" /></p></div>
 
 > __Weather Bar__ is an application built with [Electron](https://electronjs.org/) and [Vue.js](https://vuejs.org/) for MacOS, Windows & Linux.
 
