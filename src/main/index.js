@@ -1,13 +1,14 @@
 'use strict'
 
 import menubar from 'menubar'
+import path from 'path'
 // import AutoLaunch from 'auto-launch'
 
 import { app, globalShortcut, Menu, ipcMain, shell } from 'electron'
 
 // import autoUpdater from './auto-update'
 import appMenu from './menu'
-import path from 'path'
+import i18n from '../translations/i18n'
 
 /**
  * Set `__static` path to static files in production
@@ -55,6 +56,10 @@ mb.on('ready', function ready () {
     }
   })
 
+  mb.tray.setToolTip(i18n.get('weather.cloudy') + ' 39°')
+  mb.tray.setTitle('39°')
+  mb.tray.setImage(path.join(__static, '/weather-icons', 'wi-day-cloudy-highTemplate@2x.png'))
+
   ipcMain.on('no-title', (event, args) => {
     mb.tray.setToolTip('Weather Bar')
     mb.tray.setTitle('')
@@ -67,9 +72,9 @@ mb.on('ready', function ready () {
     mb.tray.setTitle(temperature)
 
     if (process.platform === 'darwin') {
-      mb.tray.setImage(path.join(__static, '/icons', args.icon + 'Template.png'))
+      mb.tray.setImage(path.join(__static, '/weather-icons', args.icon + 'Template.png'))
     } else {
-      mb.tray.setImage(path.join(__static, '/icons', args.icon + 'W.png'))
+      mb.tray.setImage(path.join(__static, '/weather-icons', args.icon + 'W.png'))
     }
   })
 

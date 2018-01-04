@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="title">WEATHER BAR</h1>
+    <h1 class="title">{{ $t("app.title") }}</h1>
   </div>
 </template>
 
