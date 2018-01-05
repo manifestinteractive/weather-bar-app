@@ -11,6 +11,19 @@ Requirements
 * Experience with [Vue.js 2](https://vuejs.org)
 
 
+Project Setup
+---
+
+```
+cd /path/to/projects
+git clone git@github.com:manifestinteractive/weather-bar-app.git .
+cd weather-bar-app
+npm install
+npm run dev
+```
+
+Once you have the Weather Bar running, you can manage it using our [Development Scripts](development-scripts.md).
+
 Developer Resources
 ---
 

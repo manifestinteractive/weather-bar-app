@@ -4,10 +4,9 @@ import menubar from 'menubar'
 import path from 'path'
 // import AutoLaunch from 'auto-launch'
 
-import { app, globalShortcut, Menu, ipcMain, shell } from 'electron'
+import { app, globalShortcut, ipcMain, shell, Menu } from 'electron'
 
-// import autoUpdater from './auto-update'
-import appMenu from './menu'
+import autoUpdater from './auto-update'
 import { i18n as $t } from '../translations/i18n'
 
 /**
@@ -45,8 +44,7 @@ const mb = menubar({
 })
 
 mb.on('ready', function ready () {
-  // autoUpdater()
-  Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu))
+  autoUpdater()
 
   globalShortcut.register('CommandOrControl+Shift+W', () => {
     if (mb.window.isVisible()) {
@@ -57,8 +55,13 @@ mb.on('ready', function ready () {
   })
 
   mb.tray.setToolTip($t('weather.cloudy', { temp: 39 }) + ' 39°')
-  mb.tray.setTitle('39°')
-  mb.tray.setImage(path.join(__static, '/weather-icons', 'wi-day-cloudy-highTemplate@2x.png'))
+
+  if (process.platform === 'darwin') {
+    mb.tray.setTitle('39°')
+    mb.tray.setImage(path.join(__static, '/weather-icons', 'wi-day-cloudy-highTemplate@2x.png'))
+  } else {
+    mb.tray.setImage(path.join(__static, '/weather-temps', '-150@2x.png'))
+  }
 
   ipcMain.on('no-title', (event, args) => {
     mb.tray.setToolTip('Weather Bar')

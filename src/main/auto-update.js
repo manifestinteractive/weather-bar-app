@@ -1,15 +1,16 @@
+import semver from 'semver'
 import superagent from 'superagent'
-import { dialog } from 'electron'
+import { dialog, shell } from 'electron'
+import { version as currentVersion } from '../../package.json'
 
-const autoUpdater = function() {
-  superagent.get('https://raw.githubusercontent.com/manifestinteractive/weather-bar-app/master/package.json').end(function(err, res) {
+export default function autoUpdater () {
+  superagent.get('https://raw.githubusercontent.com/manifestinteractive/weather-bar-app/master/package.json').end((err, res) => {
     if (err || !res.ok) {
       console.log(err)
     } else {
       try {
         const newVersion = JSON.parse(res.text).version
-        const oldVersion = config.version
-        if (semver.gt(newVersion, oldVersion)) {
+        if (semver.gt(newVersion, currentVersion)) {
           const confirm = dialog.showMessageBox({
             type: 'info',
             message: 'A new version ' + newVersion + ' of Weather Bar is available.',
