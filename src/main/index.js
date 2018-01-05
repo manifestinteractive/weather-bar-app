@@ -8,7 +8,7 @@ import { app, globalShortcut, Menu, ipcMain, shell } from 'electron'
 
 // import autoUpdater from './auto-update'
 import appMenu from './menu'
-import i18n from '../translations/i18n'
+import { i18n as $t } from '../translations/i18n'
 
 /**
  * Set `__static` path to static files in production
@@ -56,7 +56,7 @@ mb.on('ready', function ready () {
     }
   })
 
-  mb.tray.setToolTip(i18n.get('weather.cloudy') + ' 39°')
+  mb.tray.setToolTip($t('weather.cloudy', { temp: 39 }) + ' 39°')
   mb.tray.setTitle('39°')
   mb.tray.setImage(path.join(__static, '/weather-icons', 'wi-day-cloudy-highTemplate@2x.png'))
 

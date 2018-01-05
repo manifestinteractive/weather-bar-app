@@ -39,7 +39,21 @@ module.exports = config => {
       reporters: [
         { type: 'lcov', subdir: '.' },
         { type: 'text-summary' }
-      ]
+      ],
+      check: {
+        global: {
+          statements: 75,
+          branches: 75,
+          functions: 75,
+          lines: 75
+        }
+      },
+      watermarks: {
+        statements: [ 50, 75 ],
+        functions: [ 50, 75 ],
+        branches: [ 50, 75 ],
+        lines: [ 50, 75 ]
+      }
     },
     customLaunchers: {
       'visibleElectron': {

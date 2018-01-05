@@ -9,7 +9,7 @@ import store from './store'
 import db from './datastore'
 
 // Load shared Electron / Vue i18n languages
-import enLocale from '../translations/en.js'
+import enLocale from '../translations/en'
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios

@@ -2,7 +2,7 @@ import electron from 'electron'
 import deepmerge from 'deepmerge'
 
 // Load shared Electron / Vue i18n languages
-import enLocale from './en.js'
+import enLocale from './en'
 
 // Define Supported Languages for Electron
 const supportedLanguges = ['en']
@@ -12,22 +12,26 @@ const messages = deepmerge.all([enLocale])
 
 // Figure out which language for Electron to use
 const app = electron.app ? electron.app : electron.remote.app
-const locale = app.getLocale().substring(0, 2)
+let locale = app.getLocale().substring(0, 2)
 
 // Fallback on English if we don't support users language
 if (supportedLanguges.indexOf(locale) === -1) {
   locale = 'en'
 }
 
-// Setup Electron Translation Key Fetching
-const getKey = (key) => {
-  let translation = key.split('.').reduce((o, i) => o[i], messages[locale])
+export function i18n (keyword, template) {
+  let translation = keyword.split('.').reduce((o, i) => o[i], messages[locale])
   if (translation === undefined) {
-    translation = key
+    translation = keyword
   }
-  return translation
-}
 
-export default {
-  get: getKey
+  if (typeof template === 'object') {
+    for (let key in template) {
+      if (template.hasOwnProperty(key)) {
+        translation = translation.replace('{' + key + '}', template[key])
+      }
+    }
+  }
+
+  return translation
 }
