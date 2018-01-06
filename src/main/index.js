@@ -54,13 +54,15 @@ mb.on('ready', function ready () {
     }
   })
 
-  mb.tray.setToolTip($t('weather.cloudy', { temp: 39 }) + ' 39°')
+  const temp = 72
+
+  mb.tray.setToolTip($t('weather.cloudy', { temp: temp }))
 
   if (process.platform === 'darwin') {
-    mb.tray.setTitle('39°')
+    mb.tray.setTitle(`${temp}°`)
     mb.tray.setImage(path.join(__static, '/weather-icons', 'wi-day-cloudy-highTemplate@2x.png'))
   } else {
-    mb.tray.setImage(path.join(__static, '/weather-temps', '-150@2x.png'))
+    mb.tray.setImage(path.join(__static, '/weather-temps', `${temp}.png`))
   }
 
   ipcMain.on('no-title', (event, args) => {

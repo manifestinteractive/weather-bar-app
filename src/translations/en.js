@@ -7,7 +7,7 @@ export default {
       'cloud': 'Cloud',
       'cloudy-gusts': 'Cloudy Gusts',
       'cloudy-windy': 'Cloudy Windy',
-      'cloudy': 'Cloudy {temp}',
+      'cloudy': 'Cloudy {temp}°',
       'day-cloudy-gusts': '',
       'day-cloudy-high': '',
       'day-cloudy-windy': '',
