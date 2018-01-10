@@ -43,7 +43,7 @@ const messages = deepmerge.all([
 
 const getLocale = new Promise((resolve) => {
   db.settings.findOne({ setting: 'locale' }, (err, results) => {
-    if (!err && typeof results !== 'undefined') {
+    if (!err && typeof results !== 'undefined' && typeof results.value !== 'undefined') {
       resolve(results.value)
     } else {
       resolve('en')
