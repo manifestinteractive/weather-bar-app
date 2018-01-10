@@ -2,13 +2,33 @@ import electron from 'electron'
 import deepmerge from 'deepmerge'
 
 // Load shared Electron / Vue i18n languages
+import arLocale from './ar'
+import deLocale from './de'
 import enLocale from './en'
+import esLocale from './es'
+import frLocale from './fr'
+import jaLocale from './ja'
+import msLocale from './ms'
+import ptLocale from './pt'
+import ruLocale from './ru'
+import zhLocale from './zh'
 
 // Define Supported Languages for Electron
 const supportedLanguges = ['en']
 
 // Merge all the language files
-const messages = deepmerge.all([enLocale])
+const messages = deepmerge.all([
+  arLocale,
+  deLocale,
+  enLocale,
+  esLocale,
+  frLocale,
+  jaLocale,
+  msLocale,
+  ptLocale,
+  ruLocale,
+  zhLocale
+])
 
 // Figure out which language for Electron to use
 const app = electron.app ? electron.app : electron.remote.app

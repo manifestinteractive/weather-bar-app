@@ -2,7 +2,6 @@
 
 import menubar from 'menubar'
 import path from 'path'
-// import AutoLaunch from 'auto-launch'
 
 import { app, globalShortcut, ipcMain, shell, Menu } from 'electron'
 
@@ -40,7 +39,8 @@ const mb = menubar({
   resizable: false,
   showDockIcon: false,
   preloadWindow: true,
-  alwaysOnTop: true
+  alwaysOnTop: true,
+  backgroundColor: '#3a3f43'
 })
 
 mb.on('ready', function ready () {
@@ -56,8 +56,6 @@ mb.on('ready', function ready () {
 
   const temp = 72
 
-  mb.tray.setToolTip($t('weather.cloudy', { temp: temp }))
-
   if (process.platform === 'darwin') {
     mb.tray.setTitle(`${temp}°`)
     mb.tray.setImage(path.join(__static, '/weather-icons', 'wi-day-cloudy-highTemplate@2x.png'))
@@ -66,7 +64,7 @@ mb.on('ready', function ready () {
   }
 
   ipcMain.on('no-title', (event, args) => {
-    mb.tray.setToolTip('Weather Bar')
+    mb.tray.setToolTip($t('app.title'))
     mb.tray.setTitle('')
   })
 
