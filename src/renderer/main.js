@@ -3,7 +3,7 @@ import axios from 'axios'
 import VueI18n from 'vue-i18n'
 import deepmerge from 'deepmerge'
 
-import App from './App'
+import app from './app'
 import router from './router'
 import db from './datastore'
 
@@ -41,9 +41,10 @@ const messages = deepmerge.all([
   zhLocale
 ])
 
+// Get Users Language
 const getLocale = new Promise((resolve) => {
   db.settings.findOne({ setting: 'locale' }, (err, results) => {
-    if (!err && typeof results !== 'undefined' && typeof results.value !== 'undefined') {
+    if (!err && results && typeof results.value !== 'undefined') {
       resolve(results.value)
     } else {
       resolve('en')
@@ -51,7 +52,7 @@ const getLocale = new Promise((resolve) => {
   })
 })
 
-// Get Users Language Before Loading App
+// Get Language from Settings Before Loading App
 getLocale.then(locale => {
   const i18n = new VueI18n({
     locale: locale,
@@ -59,9 +60,9 @@ getLocale.then(locale => {
   })
 
   new Vue({
-    components: { App },
+    components: { app },
     i18n,
     router,
-    template: '<App/>'
+    template: '<app/>'
   }).$mount('#app')
 })

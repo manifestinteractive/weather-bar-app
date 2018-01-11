@@ -6,7 +6,7 @@ import path from 'path'
 import { app, globalShortcut, ipcMain, shell, Menu } from 'electron'
 
 import autoUpdater from './auto-update'
-import { i18n as $t } from '../translations/i18n'
+// import { i18n as $t } from '../translations/i18n'
 
 /**
  * Set `__static` path to static files in production
@@ -15,8 +15,6 @@ import { i18n as $t } from '../translations/i18n'
 if (process.env.NODE_ENV !== 'development') {
   global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
-
-// let autoLaunch = true
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -63,12 +61,7 @@ mb.on('ready', function ready () {
     mb.tray.setImage(path.join(__static, '/weather-temps', `${temp}.png`))
   }
 
-  ipcMain.on('no-title', (event, args) => {
-    mb.tray.setToolTip($t('app.title'))
-    mb.tray.setTitle('')
-  })
-
-  ipcMain.on('set-title', (event, args) => {
+  ipcMain.on('set-weather', (event, args) => {
     const temperature = Math.round(args.temperature) + '°'
 
     mb.tray.setToolTip(args.location + ' / ' + temperature)
@@ -122,5 +115,13 @@ mb.on('after-create-window', () => {
 
   mb.tray.on('right-click', () => {
     mb.tray.popUpContextMenu(contextMenu)
+  })
+
+  mb.tray.on('click', () => {
+    if (mb.window.isVisible()) {
+      mb.window.send('app-opened')
+    } else {
+      mb.window.send('app-closed')
+    }
   })
 })
