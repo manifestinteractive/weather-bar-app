@@ -1,24 +1,7 @@
 <template>
   <transition name="fade" mode="out-in">
     <div class="router-view home-page">
-      <label>{{ $t('app.language') }}:&nbsp;
-        <select v-model="locale" @change="change">
-          <option value="ar">العربية</option> <!-- Arabic -->
-          <option value="de">Deutsch</option> <!-- German -->
-          <option value="en">English</option> <!-- English -->
-          <option value="es">Español</option> <!-- Spanish -->
-          <option value="fr">Français</option> <!-- French -->
-          <option value="ja">日本語&nbsp;(にほんご)</option> <!-- Japanese -->
-          <option value="ms">Bahasa Melayu</option> <!-- Malay -->
-          <option value="pt">Português</option> <!-- Portuguese -->
-          <option value="ru">русский язык</option> <!-- Russian -->
-          <option value="zh">中文 (Zhōngwén)</option> <!-- Chinese -->
-        </select>
-      </label>
 
-      <div class="columns medium-3" v-for="result in results">
-        {{ result.title }}
-      </div>
     </div>
   </transition>
 </template>
@@ -27,27 +10,11 @@
   export default {
     name: 'index-page',
     data () {
-      return {
-        temperature: 60,
-        locale: this.$i18n.locale,
-        results: []
-      }
+      return {}
     },
     mounted () {
       // this.getWeather()
       // this.updateWeather() // this tests updating the menu bar icon & text
-
-      this.$electron.ipcRenderer.on('reload-weather', () => {
-        console.log('Reload Weather')
-      })
-
-      this.$electron.ipcRenderer.on('app-opened', () => {
-        console.log('App Opened')
-      })
-
-      this.$electron.ipcRenderer.on('app-closed', () => {
-        console.log('App Closed')
-      })
     },
     methods: {
       open (link) {
@@ -112,22 +79,6 @@
 
 <style lang="scss">
 .home-page {
-  padding: 60px 28px 28px 28px;
-  background-color: $muted-dark-blue;
 
-  h1 {
-    font-size: 24px;
-    font-weight: 300;
-  }
-
-  ul {
-    list-style: circle;
-    margin: 20px;
-
-    a {
-      color: #FFF;
-      text-decoration: none;
-    }
-  }
 }
 </style>

@@ -74,6 +74,34 @@ mb.on('ready', function ready () {
     }
   })
 
+  ipcMain.on('set-always-on-top', (event, args) => {
+    console.log('set-always-on-top', args)
+    mb.setOption('alwaysOnTop', args.enabled)
+  })
+
+  ipcMain.on('set-launch-at-startup', (event, args) => {
+    console.log('set-launch-at-startup', args)
+  })
+
+  ipcMain.on('set-icon-preference', (event, args) => {
+    console.log('set-icon-preference', args)
+
+    if (args.preference === 'condition') {
+      mb.tray.setTitle('')
+      mb.tray.setImage(path.join(__static, '/weather-icons', 'wi-day-cloudy-highTemplate@2x.png'))
+    } else if (args.preference === 'temperature') {
+      mb.tray.setTitle('')
+      mb.tray.setImage(path.join(__static, '/weather-temps', `${temp}.png`))
+    } else if (args.preference === 'both') {
+      if (process.platform === 'darwin') {
+        mb.tray.setTitle(`${temp}°`)
+        mb.tray.setImage(path.join(__static, '/weather-icons', 'wi-day-cloudy-highTemplate@2x.png'))
+      } else {
+        mb.tray.setImage(path.join(__static, '/weather-temps', `${temp}.png`))
+      }
+    }
+  })
+
   ipcMain.on('close', (event, args) => {
     app.quit()
   })

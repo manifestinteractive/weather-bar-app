@@ -16,6 +16,11 @@ export default new Router({
       component: require('@/components/page/splash').default
     },
     {
+      path: '/preferences',
+      name: 'preferences-page',
+      component: require('@/components/page/preferences').default
+    },
+    {
       path: '*',
       redirect: '/'
     }

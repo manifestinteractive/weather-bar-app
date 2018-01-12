@@ -17,13 +17,18 @@
 
       <ul>
         <li>
-          <router-link to="/" @click.native="hide">
-            <i class="fal fa-fw fa-home"></i> Home Page
+          <router-link to="/splash" @click.native="hide">
+            <i class="fas fa-fw fa-map-marker-alt"></i> Local Weather
           </router-link>
         </li>
         <li>
-          <router-link to="/splash" @click.native="hide">
-            <i class="fal fa-fw fa-browser"></i> Splash Page
+          <router-link to="/" @click.native="hide">
+            <i class="fas fa-fw fa-star"></i> Favorite Locations
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/preferences" @click.native="hide">
+            <i class="fas fa-fw fa-cog"></i> {{ $t('app.menu.preferences') }}
           </router-link>
         </li>
       </ul>
@@ -113,10 +118,12 @@
     position: absolute;
     top: 0;
     right: -40px;
-    background: transparent;
+    background: rgba(0,0,0,0);
     width: 0;
     height: 100%;
     z-index: 51;
+    transition: background-color 0.25s ease-in-out;
+    transition-delay: 150ms;
   }
 
   &.open {
@@ -125,6 +132,7 @@
 
     .page-overlay {
       width: 40px;
+      background: rgba(0,0,0,0.85);
     }
 
     .menu-button {
@@ -139,9 +147,11 @@
     width: 240px;
     height: 100%;
     z-index: 51;
+    background: url(../../../../static/images/menu-bg.jpg) center center;
+    background-size: cover;
 
     .header {
-      padding: 30px 0 20px 0;
+      padding: 50px 0 40px 0;
 
       .logo {
         margin: 0 auto;
@@ -159,11 +169,8 @@
     }
 
     ul {
-      border-top: 1px solid rgba(0, 0, 0, 0.15);
-
       li {
         width: 100%;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 
         a {
           border-left: 4px solid transparent;
@@ -176,25 +183,34 @@
           line-height: 40px;
           transition: all 0.25s ease-in-out;
 
-          &:hover {
-            border-left: 4px solid rgba(255, 255, 255, 0.25);
-            color: rgba(255, 255, 255, 1);
-          }
-
-          &.router-link-exact-active {
-            border-left: 4px solid #35c5f2;
-            color: rgba(255, 255, 255, 1);
-            cursor: default;
-          }
-
           i {
-            opacity: 0.5;
             display: inline-block;
             width: 50px;
             text-align: center;
             font-size: 20px;
             position: relative;
             top: 2px;
+            color: rgba(255, 255, 255, 0.25);
+            transition: color 0.25s ease-in-out;
+          }
+
+          &:hover {
+            border-left: 4px solid rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 1);
+
+            i {
+              color: rgba(255, 255, 255, 0.5);
+            }
+          }
+
+          &.router-link-exact-active {
+            border-left: 4px solid #35c5f2;
+            color: rgba(255, 255, 255, 1);
+            cursor: default;
+
+            i {
+              color: rgba(255, 255, 255, 0.75);
+            }
           }
         }
       }
@@ -210,7 +226,7 @@
     name: 'app-menu',
     data () {
       return {
-        open: true,
+        open: false,
         version: version
       }
     },

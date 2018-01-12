@@ -3,7 +3,10 @@ export default {
   en: {
     app: {
       title: 'Weather Bar',
-      language: 'Language'
+      language: 'Language',
+      menu: {
+        preferences: 'Preferences'
+      }
     },
     autoUpdate: {
       message: 'A New Version of Weather Bar is available.',
