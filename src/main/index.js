@@ -2,16 +2,17 @@
 
 import menubar from 'menubar'
 import path from 'path'
+import { machineIdSync } from 'node-machine-id'
 
 import { app, globalShortcut, ipcMain, shell, Menu } from 'electron'
 
 import autoUpdater from './auto-update'
-// import { i18n as $t } from '../translations/i18n'
+import util from './util'
 
-/**
- * Set `__static` path to static files in production
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
- */
+const machineId = machineIdSync({ original: true })
+console.log('machineId', machineId)
+
+// Set `__static` path to static files in production
 if (process.env.NODE_ENV !== 'development') {
   global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
@@ -52,14 +53,16 @@ mb.on('ready', function ready () {
     }
   })
 
-  const temp = 72
+  let temp = 72
 
-  if (process.platform === 'darwin') {
-    mb.tray.setTitle(`${temp}°`)
-    mb.tray.setImage(path.join(__static, '/weather-icons', 'wi-day-cloudy-highTemplate@2x.png'))
-  } else {
-    mb.tray.setImage(path.join(__static, '/weather-temps', `${temp}.png`))
-  }
+  util.setWeather(mb, {
+    temperature: 72,
+    condition: 'wi-day-cloudy-high'
+  }, {})
+
+  ipcMain.on('get-uuid', (event) => {
+    mb.window.send('set-uuid', machineId)
+  })
 
   ipcMain.on('set-weather', (event, args) => {
     const temperature = Math.round(args.temperature) + '°'
@@ -147,7 +150,7 @@ mb.on('after-create-window', () => {
 
   mb.tray.on('click', () => {
     if (mb.window.isVisible()) {
-      mb.window.send('app-opened')
+      mb.window.send('app-opened', machineId)
     } else {
       mb.window.send('app-closed')
     }

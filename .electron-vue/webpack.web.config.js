@@ -4,6 +4,7 @@ process.env.BABEL_ENV = 'web'
 
 const path = require('path')
 const webpack = require('webpack')
+const Dotenv = require('dotenv-webpack')
 
 const BabiliWebpackPlugin = require('babili-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -52,8 +53,8 @@ let webConfig = {
           options: {
             extractCSS: true,
             loaders: {
-              sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
-              scss: 'vue-style-loader!css-loader!sass-loader'
+              sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1&data=@import "./src/renderer/globals"',
+              scss: 'vue-style-loader!css-loader!sass-loader?data=@import "./src/renderer/globals";'
             }
           }
         }
@@ -96,7 +97,11 @@ let webConfig = {
       'process.env.IS_WEB': 'true'
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new Dotenv({
+      path: (process.env.NODE_ENV === 'development') ? path.join(__dirname, '../.env.dev') : path.join(__dirname, '../.env'),
+      safe: path.join(__dirname, '../.env.example')
+    })
   ],
   output: {
     filename: '[name].js',

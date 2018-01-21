@@ -5,7 +5,7 @@ import deepmerge from 'deepmerge'
 
 import app from './app'
 import router from './router'
-import db from './datastore'
+import store from './store'
 
 // Load shared Electron / Vue i18n languages
 import arLocale from '../translations/ar'
@@ -20,9 +20,13 @@ import ruLocale from '../translations/ru'
 import zhLocale from '../translations/zh'
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
+
+// Setup HTTP
 Vue.http = Vue.prototype.$http = axios
+Vue.http.defaults.baseURL = process.env.WEATHERBAR_API_DOMAIN
+Vue.http.defaults.headers.common['API-Key'] = process.env.WEATHERBAR_API_KEY
+
 Vue.config.productionTip = false
-Vue.prototype.$db = db
 
 // Setup International Support for Vue
 Vue.use(VueI18n)
@@ -41,28 +45,15 @@ const messages = deepmerge.all([
   zhLocale
 ])
 
-// Get Users Language
-const getLocale = new Promise((resolve) => {
-  db.settings.findOne({ setting: 'locale' }, (err, results) => {
-    if (!err && results && typeof results.value !== 'undefined') {
-      resolve(results.value)
-    } else {
-      resolve('en')
-    }
-  })
+const i18n = new VueI18n({
+  locale: 'en',
+  messages
 })
 
-// Get Language from Settings Before Loading App
-getLocale.then(locale => {
-  const i18n = new VueI18n({
-    locale: locale,
-    messages
-  })
-
-  new Vue({
-    components: { app },
-    i18n,
-    router,
-    template: '<app/>'
-  }).$mount('#app')
-})
+new Vue({
+  components: { app },
+  i18n,
+  router,
+  store,
+  template: '<app/>'
+}).$mount('#app')

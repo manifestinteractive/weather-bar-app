@@ -3,7 +3,7 @@
     <div class="router-view preferences-page">
       <page-header v-bind:title="$t('app.menu.preferences')" />
 
-      <div class="tab-set" v-if="fetched">
+      <div class="tab-set">
         <a class="tab" :class="{ active: tab === 'app' }" @click.prevent="tab = 'app'">
           App
         </a>
@@ -15,7 +15,7 @@
         </a>
       </div>
 
-      <div class="tab-panels" v-if="fetched">
+      <div class="tab-panels">
 
         <!-- APP TAB -->
         <div class="tab-panel" v-if="tab === 'app'">
@@ -24,8 +24,8 @@
 
           <!-- Language -->
           <div class="select-wrapper">
-            <label for="locale">{{ $t('app.language') }}</label>
-            <select id="locale" v-model="settings.locale" @change="changeLanguage">
+            <label for="app_language">{{ $t('app.language') }}</label>
+            <select id="app_language" v-model="settings.app_language" @change="changeLanguage">
               <option value="ar">العربية</option> <!-- Arabic -->
               <option value="de">Deutsch</option> <!-- German -->
               <option value="en">English</option> <!-- English -->
@@ -41,16 +41,20 @@
 
           <!-- Always on Top -->
           <div class="toggle-wrapper">
-            <label for="alwaysOnTop">Always on Top</label>
-            <toggle-switch id="alwaysOnTop" v-model="settings.alwaysOnTop" :enabled.sync="settings.alwaysOnTop" @togglePreference="togglePreference" />
+            <label for="app_always_on_top">Always on Top</label>
+            <toggle-switch id="app_always_on_top"
+              v-model="settings.app_always_on_top"
+              :enabled.sync="settings.app_always_on_top"
+              @togglePreference="togglePreference"
+            />
           </div>
 
           <!-- Launch at Startup -->
           <div class="toggle-wrapper">
-            <label for="launchAtStartup">Launch at Startup</label>
-            <toggle-switch id="launchAtStartup"
-              v-model="settings.launchAtStartup"
-              :enabled.sync="settings.launchAtStartup"
+            <label for="app_launch_at_startup">Launch at Startup</label>
+            <toggle-switch id="app_launch_at_startup"
+              v-model="settings.app_launch_at_startup"
+              :enabled.sync="settings.app_launch_at_startup"
               @togglePreference="togglePreference"
             />
           </div>
@@ -59,27 +63,27 @@
 
           <div class="toggle-wrapper" v-if="platform === 'darwin'">
             <label for="both">Condition &amp; Temperature</label>
-            <radio-button id="both" name="launchIcon" option="both"
-              v-model="settings.launchIcon"
-              :enabled.sync="settings.launchIcon"
+            <radio-button id="both" name="app_launch_icon" option="both"
+              v-model="settings.app_launch_icon"
+              :enabled.sync="settings.app_launch_icon"
               @selectPreference="selectPreference"
               />
           </div>
 
           <div class="toggle-wrapper">
             <label for="condition">Condition</label>
-            <radio-button id="condition" name="launchIcon" option="condition"
-              v-model="settings.launchIcon"
-              :enabled.sync="settings.launchIcon"
+            <radio-button id="condition" name="app_launch_icon" option="condition"
+              v-model="settings.app_launch_icon"
+              :enabled.sync="settings.app_launch_icon"
               @selectPreference="selectPreference"
             />
           </div>
 
           <div class="toggle-wrapper">
             <label for="temperature">Temperature</label>
-            <radio-button id="temperature" name="launchIcon" option="temperature"
-              v-model="settings.launchIcon"
-              :enabled.sync="settings.launchIcon"
+            <radio-button id="temperature" name="app_launch_icon" option="temperature"
+              v-model="settings.app_launch_icon"
+              :enabled.sync="settings.app_launch_icon"
               @selectPreference="selectPreference"
             />
           </div>
@@ -109,76 +113,31 @@
     data () {
       return {
         tab: 'app',
-        fetched: false,
         platform: process.platform,
-        settings: {
-          launchAtStartup: false,
-          alwaysOnTop: false,
-          locale: this.$i18n.locale,
-          launchIcon: (process.platform === 'darwin') ? 'both' : 'temperature'
-        }
+        settings: this.$store.getters.getSettings
       }
     },
-    mounted () {
-      this.fetchSettings()
-    },
     methods: {
-      fetchSettings () {
-        this.$db.settings.find({}, (err, settings) => {
-          if (!err) {
-            settings.forEach((item) => {
-              this.settings[item.setting] = item.value
-            })
-            this.fetched = true
-          }
-        })
-      },
       changeLanguage () {
-        this.$i18n.locale = this.settings.locale
-
-        this.$db.settings.update({ setting: 'locale' }, { setting: 'locale', value: this.settings.locale }, { upsert: true }, (err, replaced, upsert) => {
-          if (err) {
-            console.error('Unable to Save Locale', err)
-          }
+        this.$i18n.locale = this.settings.app_language
+        this.$store.dispatch('updateSetting', {
+          key: 'app_language',
+          value: this.settings.app_language
         })
       },
       togglePreference (preference) {
         if (typeof preference.id !== 'undefined' && typeof preference.enabled !== 'undefined') {
-          this.settings[preference.id] = preference.enabled
-
-          this.$db.settings.update({ setting: preference.id }, { setting: preference.id, value: preference.enabled }, { upsert: true }, (err, replaced, upsert) => {
-            if (err) {
-              console.error('Unable to Save Preference', err)
-            }
-
-            if (preference.id === 'alwaysOnTop') {
-              this.$electron.ipcRenderer.send('set-always-on-top', {
-                enabled: preference.enabled
-              })
-            }
-
-            if (preference.id === 'launchAtStartup') {
-              this.$electron.ipcRenderer.send('set-launch-at-startup', {
-                enabled: preference.enabled
-              })
-            }
+          this.$store.dispatch('updateSetting', {
+            key: preference.id,
+            value: preference.enabled
           })
         }
       },
       selectPreference (preference) {
         if (typeof preference.id !== 'undefined' && typeof preference.selected !== 'undefined') {
-          this.settings[preference.id] = preference.selected
-
-          this.$db.settings.update({ setting: preference.id }, { setting: preference.id, value: preference.selected }, { upsert: true }, (err, replaced, upsert) => {
-            if (err) {
-              console.error('Unable to Save Preference', err)
-            }
-
-            if (preference.id === 'launchIcon') {
-              this.$electron.ipcRenderer.send('set-icon-preference', {
-                preference: preference.selected
-              })
-            }
+          this.$store.dispatch('updateSetting', {
+            key: preference.id,
+            value: preference.selected
           })
         }
       }
@@ -193,7 +152,7 @@
 
 <style lang="scss">
 .preferences-page {
-  background: url(../../../../static/images/preferences-bg.jpg) center center;
+  background: url(~@/assets/images/preferences-bg.jpg) center center;
   background-size: cover;
 
   .group-header {

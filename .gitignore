@@ -10,4 +10,5 @@ npm-debug.log.*
 static/db/*.db
 thumbs.db
 .env
+.env.dev
 !.gitkeep

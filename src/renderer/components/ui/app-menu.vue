@@ -43,12 +43,12 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 240px;
+  width: calc(100% - 40px);
   height: 100%;
   background: #2c2f32;
   box-shadow: none;
   transition: all 300ms cubic-bezier(.55, 0, .1, 1);
-  transform: translate(-240px, 0);
+  transform: translate(-100%, 0);
   z-index: 50;
 
   .menu-button {
@@ -144,10 +144,10 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 240px;
+    width: 100%;
     height: 100%;
     z-index: 51;
-    background: url(../../../../static/images/menu-bg.jpg) center center;
+    background: url(~@/assets/images/menu-bg.jpg) center center;
     background-size: cover;
 
     .header {

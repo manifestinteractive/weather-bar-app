@@ -3,113 +3,18 @@
   <head>
     <meta charset="utf-8">
     <title>Weather Bar</title>
+
+    <!-- Mobile Specific Meta Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
     <% if (htmlWebpackPlugin.options.nodeModules) { %>
       <!-- Add `node_modules/` to global paths so `require` works properly in development -->
       <script>
         require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, '\\\\') %>')
       </script>
     <% } %>
-
-    <!-- Minimum CSS for App Loading -->
-    <style>
-    html, body, div, span, applet, object, iframe,
-    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-    a, abbr, acronym, address, big, cite, code,
-    del, dfn, em, img, ins, kbd, q, s, samp,
-    small, strike, strong, sub, sup, tt, var,
-    b, u, i, center,
-    dl, dt, dd, ol, ul, li,
-    fieldset, form, label, legend,
-    table, caption, tbody, tfoot, thead, tr, th, td,
-    article, aside, canvas, details, embed,
-    figure, figcaption, footer, header, hgroup,
-    menu, nav, output, ruby, section, summary,
-    time, mark, audio, video {
-    	margin: 0;
-    	padding: 0;
-    	border: 0;
-    	font-size: 100%;
-    	font: inherit;
-    	vertical-align: baseline;
-    }
-    /* HTML5 display-role reset for older browsers */
-    article, aside, details, figcaption, figure,
-    footer, header, hgroup, menu, nav, section {
-    	display: block;
-    }
-    body {
-    	line-height: 1;
-    }
-    ol, ul {
-    	list-style: none;
-    }
-    blockquote, q {
-    	quotes: none;
-    }
-    blockquote:before, blockquote:after,
-    q:before, q:after {
-    	content: '';
-    	content: none;
-    }
-    table {
-    	border-collapse: collapse;
-    	border-spacing: 0;
-    }
-    html {
-      box-sizing: border-box;
-    }
-    *, *:before, *:after {
-      box-sizing: inherit;
-    }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      padding: 0;
-      margin: 0;
-    }
-    body {
-      background: url('static/web-bg.png') top left repeat #0b2640;
-      align-items: center;
-      display: -ms-flexbox;
-      display: -ms-flexbox;
-      display: -webkit-box;
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -webkit-flex;
-      display: flex;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      -ms-flex-align: center;
-      -ms-flex-direction: column;
-      -ms-flex-pack: center;
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -webkit-box-direction: normal;
-      -webkit-box-orient: vertical;
-      -webkit-box-pack: center;
-      -webkit-flex-direction: column;
-      -webkit-justify-content: center;
-    }
-    #app {
-      min-width: 280px;
-      min-height: 480px;
-      max-width: 480px;
-      max-height: 853px;
-      width: 100%;
-      height: 100%;
-      margin: 0 auto;
-      box-shadow: 10px 10px 10px rgba(0,0,0,0.5);
-      background: #3a3f43;
-    }
-    ::selection {
-      background:transparent;
-    }
-    </style>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="static/css/fontawesome-all.css">
   </head>
   <body>
     <div id="app"></div>

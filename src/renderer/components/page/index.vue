@@ -13,21 +13,14 @@
       return {}
     },
     mounted () {
+      console.log(this.$settings)
+      // this.geoLocation()
       // this.getWeather()
       // this.updateWeather() // this tests updating the menu bar icon & text
     },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
-      },
-      change () {
-        this.$i18n.locale = this.locale
-
-        this.$db.settings.update({ setting: 'locale' }, { setting: 'locale', value: this.locale }, { upsert: true }, (err, replaced, upsert) => {
-          if (err) {
-            console.error('Unable to Update Locale', err)
-          }
-        })
       },
       updateWeather () {
         let icon = 'wi-day-cloudy-gusts'
