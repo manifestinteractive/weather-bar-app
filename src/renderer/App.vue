@@ -13,9 +13,10 @@
 <script>
   import appMenu from './components/ui/app-menu'
   import api from './services/api'
+  import util from './util'
 
-  const TIMER_CURRENT_WEATHER = 900000 // 15 Minutes
-  const TIMER_FORECAST_WEATHER = 10800000 // 3 Hours
+  const TIMER_CURRENT_WEATHER = 300000 // 5 Minutes
+  const TIMER_FORECAST_WEATHER = 3600000 // 1 Hour
 
   export default {
     name: 'weather-bar-app',
@@ -71,12 +72,37 @@
       getCurrentWeather () {
         clearTimeout(this.timers.current)
         this.timers.current = setTimeout(this.getCurrentWeather, TIMER_CURRENT_WEATHER)
-        console.log('getCurrentWeather')
+
+        const location = {
+          latitude: 27.7861841,
+          longitude: -82.6589904
+        }
+
+        api.getCurrentWeatherByGeo(location, (weather) => {
+          if (typeof weather.data !== 'undefined' && typeof weather.data.weather !== 'undefined') {
+            const temperature = util.kelvinToFahrenheit(weather.data.main.temp)
+            const measure = this.$store.state.settings.units_temperature
+            const temp = measure.charAt(0).toUpperCase()
+            const description = util.titleCase(weather.data.weather[0].description)
+            const folder = (weather.data.weather[0].icon.slice(-1) === 'd') ? 'day' : 'night'
+            const weatherSettings = {
+              app_launch_icon: this.$store.state.settings.app_launch_icon
+            }
+
+            const weatherData = {
+              temperature: temperature,
+              tooltip: `${temperature} °${temp} - ${description}`,
+              id: weather.data.weather[0].id,
+              folder: folder
+            }
+
+            this.$electron.ipcRenderer.send('set-weather', weatherData, weatherSettings)
+          }
+        })
       },
       getForecastWeather () {
         clearTimeout(this.timers.forecast)
         this.timers.forecast = setTimeout(this.getForecastWeather, TIMER_FORECAST_WEATHER)
-        console.log('getForecastWeather')
       },
       getUserSettings (uuid) {
         api.getUserSettings(uuid, (response) => {

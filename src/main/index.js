@@ -10,7 +10,6 @@ import autoUpdater from './auto-update'
 import util from './util'
 
 const machineId = machineIdSync({ original: true })
-console.log('machineId', machineId)
 
 // Set `__static` path to static files in production
 if (process.env.NODE_ENV !== 'development') {
@@ -53,28 +52,12 @@ mb.on('ready', function ready () {
     }
   })
 
-  let temp = 72
-
-  util.setWeather(mb, {
-    temperature: 72,
-    condition: 'wi-day-cloudy-high'
-  }, {})
-
   ipcMain.on('get-uuid', (event) => {
     mb.window.send('set-uuid', machineId)
   })
 
-  ipcMain.on('set-weather', (event, args) => {
-    const temperature = Math.round(args.temperature) + '°'
-
-    mb.tray.setToolTip(args.location + ' / ' + temperature)
-    mb.tray.setTitle(temperature)
-
-    if (process.platform === 'darwin') {
-      mb.tray.setImage(path.join(__static, '/weather-icons', args.icon + 'Template.png'))
-    } else {
-      mb.tray.setImage(path.join(__static, '/weather-icons', args.icon + 'W.png'))
-    }
+  ipcMain.on('set-weather', (event, weather, settings) => {
+    util.setWeather(mb, weather, settings)
   })
 
   ipcMain.on('set-always-on-top', (event, args) => {
@@ -88,21 +71,6 @@ mb.on('ready', function ready () {
 
   ipcMain.on('set-icon-preference', (event, args) => {
     console.log('set-icon-preference', args)
-
-    if (args.preference === 'condition') {
-      mb.tray.setTitle('')
-      mb.tray.setImage(path.join(__static, '/weather-icons', 'wi-day-cloudy-highTemplate@2x.png'))
-    } else if (args.preference === 'temperature') {
-      mb.tray.setTitle('')
-      mb.tray.setImage(path.join(__static, '/weather-temps', `${temp}.png`))
-    } else if (args.preference === 'both') {
-      if (process.platform === 'darwin') {
-        mb.tray.setTitle(`${temp}°`)
-        mb.tray.setImage(path.join(__static, '/weather-icons', 'wi-day-cloudy-highTemplate@2x.png'))
-      } else {
-        mb.tray.setImage(path.join(__static, '/weather-temps', `${temp}.png`))
-      }
-    }
   })
 
   ipcMain.on('close', (event, args) => {

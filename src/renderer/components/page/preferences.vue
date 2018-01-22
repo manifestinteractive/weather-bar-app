@@ -103,53 +103,6 @@
   </transition>
 </template>
 
-<script>
-  import PageHeader from '../ui/page-header'
-  import ToggleSwitch from '../ui/toggle-switch'
-  import RadioButton from '../ui/radio-button'
-
-  export default {
-    name: 'preferences-page',
-    data () {
-      return {
-        tab: 'app',
-        platform: process.platform,
-        settings: this.$store.getters.getSettings
-      }
-    },
-    methods: {
-      changeLanguage () {
-        this.$i18n.locale = this.settings.app_language
-        this.$store.dispatch('updateSetting', {
-          key: 'app_language',
-          value: this.settings.app_language
-        })
-      },
-      togglePreference (preference) {
-        if (typeof preference.id !== 'undefined' && typeof preference.enabled !== 'undefined') {
-          this.$store.dispatch('updateSetting', {
-            key: preference.id,
-            value: preference.enabled
-          })
-        }
-      },
-      selectPreference (preference) {
-        if (typeof preference.id !== 'undefined' && typeof preference.selected !== 'undefined') {
-          this.$store.dispatch('updateSetting', {
-            key: preference.id,
-            value: preference.selected
-          })
-        }
-      }
-    },
-    components: {
-      PageHeader,
-      ToggleSwitch,
-      RadioButton
-    }
-  }
-</script>
-
 <style lang="scss">
 .preferences-page {
   background: url(~@/assets/images/preferences-bg.jpg) center center;
@@ -213,3 +166,50 @@
   }
 }
 </style>
+
+<script>
+  import PageHeader from '../ui/page-header'
+  import ToggleSwitch from '../ui/toggle-switch'
+  import RadioButton from '../ui/radio-button'
+
+  export default {
+    name: 'preferences-page',
+    data () {
+      return {
+        tab: 'app',
+        platform: process.platform,
+        settings: this.$store.getters.getSettings
+      }
+    },
+    methods: {
+      changeLanguage () {
+        this.$i18n.locale = this.settings.app_language
+        this.$store.dispatch('updateSetting', {
+          key: 'app_language',
+          value: this.settings.app_language
+        })
+      },
+      togglePreference (preference) {
+        if (typeof preference.id !== 'undefined' && typeof preference.enabled !== 'undefined') {
+          this.$store.dispatch('updateSetting', {
+            key: preference.id,
+            value: preference.enabled
+          })
+        }
+      },
+      selectPreference (preference) {
+        if (typeof preference.id !== 'undefined' && typeof preference.selected !== 'undefined') {
+          this.$store.dispatch('updateSetting', {
+            key: preference.id,
+            value: preference.selected
+          })
+        }
+      }
+    },
+    components: {
+      PageHeader,
+      ToggleSwitch,
+      RadioButton
+    }
+  }
+</script>

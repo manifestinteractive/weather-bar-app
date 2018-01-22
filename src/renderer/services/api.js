@@ -30,5 +30,25 @@ export default {
         error(response)
       }
     )
+  },
+  getCurrentWeatherById (id, succes, error) {
+    Vue.http.get(`/v1/weather/current/id/${id}`).then(
+      (response) => {
+        succes(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  getCurrentWeatherByGeo (location, succes, error) {
+    Vue.http.get(`/v1/weather/current/geo/${location.latitude}/${location.longitude}`).then(
+      (response) => {
+        succes(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
   }
 }
