@@ -1,35 +1,35 @@
 import path from 'path'
 
-const setWeather = (mb, data, settings) => {
+const setWeather = (mb, data) => {
   if (process.platform === 'darwin') {
-    if (settings.app_launch_icon === 'condition') {
+    if (data.setting === 'condition') {
       mb.tray.setTitle('')
-      mb.tray.setImage(path.join(__static, `/weather-icons/${data.folder}`, `${data.id}Template.png`))
-    } else if (settings.app_launch_icon === 'temperature') {
+      mb.tray.setImage(path.join(__static, `/weather-icons/${data.folder}`, `${data.image}Template.png`))
+    } else if (data.setting === 'temperature') {
       mb.tray.setTitle('')
-      mb.tray.setImage(path.join(__static, '/weather-temps', `${data.temperature}Template.png`))
+      mb.tray.setImage(path.join(__static, '/weather-temps', `${data.title}Template.png`))
     } else {
-      mb.tray.setTitle(`${data.temperature}°`)
-      mb.tray.setImage(path.join(__static, `/weather-icons/${data.folder}`, `${data.id}Template.png`))
+      mb.tray.setTitle(`${data.title}°`)
+      mb.tray.setImage(path.join(__static, `/weather-icons/${data.folder}`, `${data.image}Template.png`))
     }
   } else if (process.platform === 'win32') {
-    if (settings.app_launch_icon === 'condition') {
-      mb.tray.setImage(path.join(__static, `/weather-icons/${data.folder}`, `${data.id}.ico`))
+    if (data.setting === 'condition') {
+      mb.tray.setImage(path.join(__static, `/weather-icons/${data.folder}`, `${data.image}.ico`))
     } else {
-      mb.tray.setImage(path.join(__static, '/weather-temps', `${data.temperature}.png`))
+      mb.tray.setImage(path.join(__static, '/weather-temps', `${data.title}.png`))
     }
   } else {
-    if (settings.app_launch_icon === 'condition') {
-      mb.tray.setImage(path.join(__static, `/weather-icons/${data.folder}`, `${data.id}.png`))
+    if (data.setting === 'condition') {
+      mb.tray.setImage(path.join(__static, `/weather-icons/${data.folder}`, `${data.image}.png`))
     } else {
-      mb.tray.setImage(path.join(__static, '/weather-temps', `${data.temperature}.png`))
+      mb.tray.setImage(path.join(__static, '/weather-temps', `${data.title}.png`))
     }
   }
 
   if (data.tooltip) {
     mb.tray.setToolTip(data.tooltip)
   } else {
-    mb.tray.setToolTip(`${data.temperature}°`)
+    mb.tray.setToolTip(`${data.title}°`)
   }
 }
 

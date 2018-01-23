@@ -80,23 +80,8 @@
 
         api.getCurrentWeatherByGeo(location, (weather) => {
           if (typeof weather.data !== 'undefined' && typeof weather.data.weather !== 'undefined') {
-            const temperature = util.kelvinToFahrenheit(weather.data.main.temp)
-            const measure = this.$store.state.settings.units_temperature
-            const temp = measure.charAt(0).toUpperCase()
-            const description = util.titleCase(weather.data.weather[0].description)
-            const folder = (weather.data.weather[0].icon.slice(-1) === 'd') ? 'day' : 'night'
-            const weatherSettings = {
-              app_launch_icon: this.$store.state.settings.app_launch_icon
-            }
-
-            const weatherData = {
-              temperature: temperature,
-              tooltip: `${temperature} °${temp} - ${description}`,
-              id: weather.data.weather[0].id,
-              folder: folder
-            }
-
-            this.$electron.ipcRenderer.send('set-weather', weatherData, weatherSettings)
+            const weatherBarData = util.prepMenubarWeather(weather.data, this.$store.state.settings)
+            this.$electron.ipcRenderer.send('set-weather', weatherBarData)
           }
         })
       },
