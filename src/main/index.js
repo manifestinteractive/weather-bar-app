@@ -33,6 +33,23 @@ app.on('will-quit', () => {
   globalShortcut.unregisterAll()
 })
 
+// Secure Application for Unknown Network Requests
+app.on('web-contents-created', (event, contents) => {
+  contents.on('will-attach-webview', (event, webPreferences, params) => {
+    // Strip away preload scripts if unused or verify their location is legitimate
+    delete webPreferences.preload
+    delete webPreferences.preloadURL
+
+    // Disable node integration
+    webPreferences.nodeIntegration = false
+
+    // Prevent Requests to Unknown Hosts
+    if (!params.src.startsWith('http://127.0.0.1:5000/v1/') || !params.src.startsWith('https://api.weatherbarapp.com/v1/')) {
+      event.preventDefault()
+    }
+  })
+})
+
 // Setup Main Weather Bar App
 const mb = menubar({
   index: (process.env.NODE_ENV === 'development') ? 'http://localhost:9080' : `file://${__dirname}/index.html`,

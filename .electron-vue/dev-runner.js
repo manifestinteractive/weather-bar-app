@@ -43,9 +43,9 @@ function startRenderer () {
     rendererConfig.entry.renderer = [path.join(__dirname, 'dev-client')].concat(rendererConfig.entry.renderer)
 
     const compiler = webpack(rendererConfig)
-    hotMiddleware = webpackHotMiddleware(compiler, { 
-      log: false, 
-      heartbeat: 2500 
+    hotMiddleware = webpackHotMiddleware(compiler, {
+      log: false,
+      heartbeat: 2500
     })
 
     compiler.plugin('compilation', compilation => {
@@ -149,18 +149,18 @@ function greeting () {
   const cols = process.stdout.columns
   let text = ''
 
-  if (cols > 104) text = 'electron-vue'
-  else if (cols > 76) text = 'electron-|vue'
+  if (cols > 104) text = 'weather-bar'
+  else if (cols > 76) text = 'weather-|bar'
   else text = false
 
   if (text) {
     say(text, {
-      colors: ['yellow'],
-      font: 'simple3d',
+      colors: ['cyan'],
+      font: 'block',
       space: false
     })
-  } else console.log(chalk.yellow.bold('\n  electron-vue'))
-  console.log(chalk.blue('  getting ready...') + '\n')
+  } else console.log(chalk.yellow.bold('\n  weather-bar'))
+  console.log(chalk.white('  getting ready to blow your mind...') + '\n')
 }
 
 function init () {
