@@ -27,6 +27,11 @@
           </router-link>
         </li>
         <li>
+          <router-link to="/select" @click.native="hide">
+            <i class="fas fa-fw fa-star"></i> Select
+          </router-link>
+        </li>
+        <li>
           <router-link to="/preferences" @click.native="hide">
             <i class="fas fa-fw fa-cog"></i> {{ $t('app.menu.preferences') }}
           </router-link>

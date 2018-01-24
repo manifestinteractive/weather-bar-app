@@ -21,6 +21,11 @@ export default new Router({
       component: require('@/components/page/preferences').default
     },
     {
+      path: '/select',
+      name: 'select-page',
+      component: require('@/components/page/select').default
+    },
+    {
       path: '*',
       redirect: '/'
     }

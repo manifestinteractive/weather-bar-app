@@ -7,7 +7,9 @@ export default {
         succes(response.data)
       },
       (response) => {
-        error(response)
+        if (typeof error === 'function') {
+          error(response)
+        }
       }
     )
   },
@@ -17,7 +19,9 @@ export default {
         succes(response.data)
       },
       (response) => {
-        error(response)
+        if (typeof error === 'function') {
+          error(response)
+        }
       }
     )
   },
@@ -27,7 +31,9 @@ export default {
         succes(response.data)
       },
       (response) => {
-        error(response)
+        if (typeof error === 'function') {
+          error(response)
+        }
       }
     )
   },
@@ -37,7 +43,9 @@ export default {
         succes(response.data)
       },
       (response) => {
-        error(response)
+        if (typeof error === 'function') {
+          error(response)
+        }
       }
     )
   },
@@ -47,7 +55,21 @@ export default {
         succes(response.data)
       },
       (response) => {
-        error(response)
+        if (typeof error === 'function') {
+          error(response)
+        }
+      }
+    )
+  },
+  updateUserSettings (data, succes, error) {
+    Vue.http.post(`/v1/settings/update/${data.uuid}/${data.key}/${data.value}`).then(
+      (response) => {
+        succes(response.data)
+      },
+      (response) => {
+        if (typeof error === 'function') {
+          error(response)
+        }
       }
     )
   }

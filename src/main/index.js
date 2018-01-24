@@ -11,10 +11,15 @@ import util from './util'
 
 const machineId = machineIdSync({ original: true })
 
+let appSettings = {}
+
 // Set `__static` path to static files in production
 if (process.env.NODE_ENV !== 'development') {
   global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
+
+// Set App Details
+app.setName('Menu Bar')
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -34,15 +39,14 @@ const mb = menubar({
   icon: path.join(__static, '/iconTemplate.png'),
   width: 280,
   height: 480,
-  resizable: false,
-  showDockIcon: false,
-  preloadWindow: true,
   alwaysOnTop: true,
-  backgroundColor: '#3a3f43'
+  preloadWindow: true
 })
 
 mb.on('ready', function ready () {
   autoUpdater()
+
+  mb.setOption('title', 'Weather Bar')
 
   globalShortcut.register('CommandOrControl+Shift+W', () => {
     if (mb.window.isVisible()) {
@@ -50,6 +54,11 @@ mb.on('ready', function ready () {
     } else {
       mb.window.show()
     }
+  })
+
+  ipcMain.on('save-settings', (event, settings) => {
+    appSettings = settings
+    console.log('SETTINGS', settings)
   })
 
   ipcMain.on('get-uuid', (event) => {
@@ -60,17 +69,17 @@ mb.on('ready', function ready () {
     util.setWeather(mb, weather, settings)
   })
 
-  ipcMain.on('set-always-on-top', (event, args) => {
-    console.log('set-always-on-top', args)
-    mb.setOption('alwaysOnTop', args.enabled)
+  ipcMain.on('set-always-on-top', (event, preference) => {
+    mb.setOption('alwaysOnTop', preference)
+    appSettings.app_always_on_top = preference
   })
 
-  ipcMain.on('set-launch-at-startup', (event, args) => {
-    console.log('set-launch-at-startup', args)
+  ipcMain.on('set-launch-at-startup', (event, preference) => {
+    console.log('set-launch-at-startup', preference)
   })
 
-  ipcMain.on('set-icon-preference', (event, args) => {
-    console.log('set-icon-preference', args)
+  ipcMain.on('set-icon-preference', (event, preference) => {
+    console.log('set-icon-preference', preference)
   })
 
   ipcMain.on('close', (event, args) => {
@@ -81,6 +90,14 @@ mb.on('ready', function ready () {
     const url = args.url
     shell.openExternal(url)
   })
+})
+
+mb.on('focus-lost', () => {
+  if (!appSettings.app_always_on_top) {
+    if (mb.window.isVisible()) {
+      mb.window.hide()
+    }
+  }
 })
 
 // Add Context Menu to Weather Bar App

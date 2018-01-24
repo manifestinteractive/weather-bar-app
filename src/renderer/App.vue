@@ -15,7 +15,7 @@
   import api from './services/api'
   import util from './util'
 
-  const TIMER_CURRENT_WEATHER = 300000 // 5 Minutes
+  const TIMER_CURRENT_WEATHER = 60000 // 1 Minute
   const TIMER_FORECAST_WEATHER = 3600000 // 1 Hour
 
   export default {
@@ -93,6 +93,7 @@
         api.getUserSettings(uuid, (response) => {
           if (response.data) {
             this.$store.dispatch('loadSettings', response.data)
+            this.$electron.ipcRenderer.send('save-settings', response.data)
           } else {
             this.initSettings(uuid)
           }
@@ -102,6 +103,7 @@
         api.initSettings(uuid, (response) => {
           if (response.data) {
             this.$store.dispatch('initSettings', response.data)
+            this.$electron.ipcRenderer.send('save-settings', response.data)
           }
         })
       }

@@ -172,6 +172,8 @@
   import ToggleSwitch from '../ui/toggle-switch'
   import RadioButton from '../ui/radio-button'
 
+  import api from '../../services/api'
+
   export default {
     name: 'preferences-page',
     data () {
@@ -191,9 +193,23 @@
       },
       togglePreference (preference) {
         if (typeof preference.id !== 'undefined' && typeof preference.enabled !== 'undefined') {
-          this.$store.dispatch('updateSetting', {
+          const data = {
+            uuid: this.settings.uuid,
             key: preference.id,
             value: preference.enabled
+          }
+
+          api.updateUserSettings(data, (response) => {
+            if (response.data) {
+              this.$store.dispatch('updateSetting', {
+                key: preference.id,
+                value: preference.enabled
+              })
+
+              if (preference.id === 'app_always_on_top') {
+                this.$electron.ipcRenderer.send('set-always-on-top', preference.enabled)
+              }
+            }
           })
         }
       },
