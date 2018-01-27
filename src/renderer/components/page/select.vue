@@ -24,8 +24,8 @@
           </ul>
         </div>
 
-        <button v-if="selectedCity" @click="letsGo">
-          <i class="fas fa-location-arrow"></i>
+        <button v-if="keyword.length > 0 && selectedCity" @click="letsGo">
+          <i class="fas fa-angle-right"></i>
           Let's Go
         </button>
 
@@ -82,6 +82,12 @@
         right: 12px;
         top: 12px;
         font-size: 12px;
+
+        &.fa-angle-right {
+          right: 12px;
+          top: 8px;
+          font-size: 18px;
+        }
       }
 
       &:disabled {
@@ -217,6 +223,11 @@
     },
     watch: {
       keyword: _.debounce(function () {
+        this.search()
+      }, 250)
+    },
+    methods: {
+      search () {
         if (this.keyword && this.keyword.length > 0) {
           if (this.selectedCity && this.keyword !== this.selectedCity.display_name_short) {
             this.selectedCity = null
@@ -233,9 +244,7 @@
           this.cities = []
           this.noResults = false
         }
-      }, 250)
-    },
-    methods: {
+      },
       selectCity (city) {
         this.keyword = city.display_name_short
         this.selectedCity = city

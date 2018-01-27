@@ -34,7 +34,7 @@
     "web": "npm run build:web && node node_modules/http-server/bin/http-server ./dist/web -o -s -p8081 -c-1 --cors"
   },
   "build": {
-    "productName": "weather-bar-app",
+    "productName": "Weather Bar",
     "appId": "org.simulatedgreg.electron-vue",
     "directories": {
       "output": "build"

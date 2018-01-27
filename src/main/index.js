@@ -4,10 +4,11 @@ import menubar from 'menubar'
 import path from 'path'
 import { machineIdSync } from 'node-machine-id'
 
-import { app, globalShortcut, ipcMain, shell, Menu } from 'electron'
+import { app, globalShortcut, ipcMain, shell, Menu, dialog } from 'electron'
 
 import autoUpdater from './auto-update'
 import util from './util'
+import { version as currentVersion } from '../../package.json'
 
 const machineId = machineIdSync({ original: true })
 
@@ -17,9 +18,6 @@ let appSettings = {}
 if (process.env.NODE_ENV !== 'development') {
   global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
-
-// Set App Details
-app.setName('Menu Bar')
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -42,9 +40,10 @@ app.on('web-contents-created', (event, contents) => {
 
     // Disable node integration
     webPreferences.nodeIntegration = false
+    webPreferences.contextIsolation = true
 
     // Prevent Requests to Unknown Hosts
-    if (!params.src.startsWith('http://127.0.0.1:5000/v1/') || !params.src.startsWith('https://api.weatherbarapp.com/v1/')) {
+    if (!params.src.startsWith('http://127.0.0.1/') || !params.src.startsWith('https://api.weatherbarapp.com/') || !params.src.startsWith('https://ip.weatherbarapp.com/')) {
       event.preventDefault()
     }
   })
@@ -57,6 +56,7 @@ const mb = menubar({
   width: 280,
   height: 480,
   alwaysOnTop: true,
+  title: 'Menu Bar',
   preloadWindow: true
 })
 
@@ -75,7 +75,6 @@ mb.on('ready', function ready () {
 
   ipcMain.on('save-settings', (event, settings) => {
     appSettings = settings
-    console.log('SETTINGS', settings)
   })
 
   ipcMain.on('get-uuid', (event) => {
@@ -121,25 +120,100 @@ mb.on('focus-lost', () => {
 mb.on('after-create-window', () => {
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: 'Reload Weather',
+      label: 'About Weather Bar',
       click () {
-        mb.window.send('reload-weather')
-        if (!mb.window.isVisible()) {
-          mb.showWindow()
-        }
+        dialog.showMessageBox(null, {
+          type: 'none',
+          icon: path.join(__static, '/logo.png'),
+          message: `Weather Bar v${currentVersion}`,
+          detail: 'Weather Bar is an Open Source Application created by Peter Schmalfeldt.',
+          buttons: ['Close', 'Website'],
+          defaultId: 0,
+          noLink: true
+        }, (selected) => {
+          if (selected === 1) {
+            shell.openExternal('https://weatherbarapp.com')
+          }
+        })
       }
-    }, {
-      label: 'Settings',
-      click () {
-        mb.window.send('toggle-settings')
-        if (!mb.window.isVisible()) {
-          mb.showWindow()
-        }
-      }
-    }, {
+    },
+    {
+      label: `Version ${currentVersion}`,
+      enabled: false
+    },
+    {
       type: 'separator'
-    }, {
-      label: 'Quit',
+    },
+    {
+      label: 'Preferences...',
+      accelerator: 'Cmd+,',
+      click () {
+        mb.window.send('go-to-preferences')
+        if (!mb.window.isVisible()) {
+          mb.showWindow()
+        }
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: 'Weather Bar Website',
+      click () {
+        shell.openExternal('https://weatherbarapp.com')
+      }
+    },
+    {
+      label: 'License Agreement',
+      click () {
+        shell.openExternal('https://github.com/manifestinteractive/weather-bar-app/blob/master/LICENSE')
+      }
+    },
+    {
+      label: 'Contact Support',
+      click () {
+        shell.openExternal('https://github.com/manifestinteractive/weather-bar-app/issues')
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: 'Local Weather',
+      accelerator: 'Cmd+L',
+      click () {
+        mb.window.send('go-to-local-weather')
+        if (!mb.window.isVisible()) {
+          mb.showWindow()
+        }
+      }
+    },
+    {
+      label: 'Saved Locations',
+      accelerator: 'Cmd+S',
+      click () {
+        mb.window.send('go-to-saved-locations')
+        if (!mb.window.isVisible()) {
+          mb.showWindow()
+        }
+      }
+    },
+    {
+      label: 'New Location',
+      accelerator: 'Cmd+N',
+      click () {
+        mb.window.send('go-to-new-location')
+        if (!mb.window.isVisible()) {
+          mb.showWindow()
+        }
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: 'Quit Weather Bar',
+      accelerator: 'Cmd+Q',
       click () {
         mb.app.quit()
       }

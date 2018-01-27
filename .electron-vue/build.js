@@ -115,16 +115,16 @@ function greeting () {
   const cols = process.stdout.columns
   let text = ''
 
-  if (cols > 85) text = 'lets-build'
-  else if (cols > 60) text = 'lets-|build'
+  if (cols > 85) text = 'weather-bar'
+  else if (cols > 60) text = 'weather-|bar'
   else text = false
 
   if (text && !isCI) {
     say(text, {
-      colors: ['yellow'],
-      font: 'simple3d',
+      colors: ['cyan'],
+      font: 'block',
       space: false
     })
-  } else console.log(chalk.yellow.bold('\n  lets-build'))
+  } else console.log(chalk.yellow.bold('\n  weather-bar'))
   console.log()
 }

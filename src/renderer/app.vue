@@ -35,17 +35,14 @@
     created () {
       this.bindElectronEvents()
       this.getUUID()
-    },
-    mounted () {
-      this.getCurrentWeather()
-      this.getForecastWeather()
+      this.getLocation()
     },
     methods: {
       bindElectronEvents () {
         if (typeof this.$electron !== 'undefined' && typeof this.$electron.ipcRenderer !== 'undefined') {
           this.$electron.ipcRenderer.removeAllListeners('reload-weather')
           this.$electron.ipcRenderer.on('reload-weather', () => {
-            console.log('Reload Weather')
+            window.location.reload()
           })
 
           this.$electron.ipcRenderer.removeAllListeners('app-opened')
@@ -62,6 +59,26 @@
           this.$electron.ipcRenderer.on('set-uuid', (evt, uuid) => {
             this.getUserSettings(uuid)
           })
+
+          this.$electron.ipcRenderer.removeAllListeners('go-to-preferences')
+          this.$electron.ipcRenderer.on('go-to-preferences', (evt) => {
+            this.$router.push({ name: 'preferences-page' })
+          })
+
+          this.$electron.ipcRenderer.removeAllListeners('go-to-local-weather')
+          this.$electron.ipcRenderer.on('go-to-local-weather', (evt) => {
+            this.$router.push({ name: 'index-page' })
+          })
+
+          this.$electron.ipcRenderer.removeAllListeners('go-to-saved-locations')
+          this.$electron.ipcRenderer.on('go-to-saved-locations', (evt) => {
+            this.$router.push({ name: 'index-page' })
+          })
+
+          this.$electron.ipcRenderer.removeAllListeners('go-to-new-location')
+          this.$electron.ipcRenderer.on('go-to-new-location', (evt) => {
+            this.$router.push({ name: 'select-page' })
+          })
         }
       },
       getUUID () {
@@ -69,14 +86,35 @@
           this.$electron.ipcRenderer.send('get-uuid')
         }
       },
+      getLocation () {
+        api.getIpAddress((response) => {
+          api.getLocationByIp(response.ip, (location) => {
+            if (typeof location.data !== 'undefined') {
+              const uuid = this.$store.state.settings.uuid
+              const loc = location.data
+
+              api.updateUserSettings({ uuid: uuid, key: 'current_city', value: loc.city })
+              api.updateUserSettings({ uuid: uuid, key: 'current_country', value: loc.country })
+              api.updateUserSettings({ uuid: uuid, key: 'current_ip_address', value: loc.ip_address })
+              api.updateUserSettings({ uuid: uuid, key: 'current_latitude', value: loc.latitude })
+              api.updateUserSettings({ uuid: uuid, key: 'current_longitude', value: loc.longitude })
+              api.updateUserSettings({ uuid: uuid, key: 'current_postalcode', value: loc.postalcode })
+              api.updateUserSettings({ uuid: uuid, key: 'current_region', value: loc.region })
+              api.updateUserSettings({ uuid: uuid, key: 'current_time_zone', value: loc.time_zone })
+
+              this.$store.dispatch('setCurrentLocation', location.data)
+
+              this.getCurrentWeather()
+              this.getForecastWeather()
+            }
+          })
+        })
+      },
       getCurrentWeather () {
         clearTimeout(this.timers.current)
         this.timers.current = setTimeout(this.getCurrentWeather, TIMER_CURRENT_WEATHER)
 
-        const location = {
-          latitude: 27.7861841,
-          longitude: -82.6589904
-        }
+        const location = this.$store.getters.getCurrentLocation
 
         api.getCurrentWeatherByGeo(location, (weather) => {
           if (typeof weather.data !== 'undefined' && typeof weather.data.weather !== 'undefined') {

@@ -4,6 +4,14 @@ const state = {
   app_launch_at_startup: true,
   app_launch_icon: 'both',
   created_date: null,
+  current_city: null,
+  current_country: null,
+  current_ip_address: null,
+  current_latitude: null,
+  current_longitude: null,
+  current_postalcode: null,
+  current_region: null,
+  current_time_zone: null,
   layout_current_temp: 'actual',
   layout_weather_map: 'standard',
   modified_date: null,
@@ -34,6 +42,18 @@ const mutations = {
     if (state.hasOwnProperty(setting.key)) {
       state[setting.key] = setting.value
     }
+  },
+  SET_CURRENT_LOCATION (state, location) {
+    if (location.hasOwnProperty('ip_address') && location.hasOwnProperty('latitude') && location.hasOwnProperty('longitude')) {
+      state.current_city = location.city
+      state.current_country = location.country
+      state.current_ip_address = location.ip_address
+      state.current_latitude = location.latitude
+      state.current_longitude = location.longitude
+      state.current_postalcode = location.postalcode
+      state.current_region = location.region
+      state.current_time_zone = location.time_zone
+    }
   }
 }
 
@@ -43,6 +63,12 @@ const getters = {
   },
   getSettings: state => {
     return state
+  },
+  getCurrentLocation: (state) => {
+    return {
+      latitude: state.current_latitude,
+      longitude: state.current_longitude
+    }
   }
 }
 
@@ -55,6 +81,9 @@ const actions = {
   },
   updateSetting ({ commit }, setting) {
     commit('UPDATE_SETTING', setting)
+  },
+  setCurrentLocation ({ commit }, location) {
+    commit('SET_CURRENT_LOCATION', location)
   }
 }
 

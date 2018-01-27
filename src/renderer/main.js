@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import axios from 'axios'
 import VueI18n from 'vue-i18n'
 import deepmerge from 'deepmerge'
 
@@ -20,11 +19,6 @@ import ruLocale from '../translations/ru'
 import zhLocale from '../translations/zh'
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
-
-// Setup HTTP
-Vue.http = Vue.prototype.$http = axios
-Vue.http.defaults.baseURL = process.env.WEATHERBAR_API_DOMAIN
-Vue.http.defaults.headers.common['API-Key'] = process.env.WEATHERBAR_API_KEY
 
 Vue.config.productionTip = false
 
