@@ -17,18 +17,18 @@
 
       <ul>
         <li>
-          <router-link to="/splash" @click.native="hide">
-            <i class="fas fa-fw fa-map-marker-alt"></i> Local Weather
-          </router-link>
-        </li>
-        <li>
           <router-link to="/" @click.native="hide">
-            <i class="fas fa-fw fa-star"></i> Favorite Locations
+            <i class="fas fa-fw fa-map-marker-alt"></i> {{ $t('app.menu.localWeather') }}
           </router-link>
         </li>
         <li>
-          <router-link to="/select" @click.native="hide">
-            <i class="fas fa-fw fa-star"></i> Select
+          <router-link to="/saved-locations" @click.native="hide">
+            <i class="fas fa-fw fa-bookmark"></i> {{ $t('app.menu.savedLocations') }}
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/new-location" @click.native="hide">
+            <i class="fas fa-fw fa-plus-square"></i> {{ $t('app.menu.newLocation') }}
           </router-link>
         </li>
         <li>
@@ -54,7 +54,7 @@
   box-shadow: none;
   transition: all 300ms cubic-bezier(.55, 0, .1, 1);
   transform: translate(-100%, 0);
-  z-index: 50;
+  z-index: 5000;
 
   .menu-button {
     position: absolute;

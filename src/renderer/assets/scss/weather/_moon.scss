@@ -1,0 +1,163 @@
+.moon-wrapper {
+  height: 100px;
+  width: 100px;
+  margin: 0 auto;
+  position: absolute;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
+  transition: all 2s ease;
+  transform: rotate(12deg);
+  z-index: 5;
+
+  .moon {
+    height: 100px;
+    width: 100px;
+    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-clip-path: circle(50px at center);
+    clip-path: circle(50px, 50px, 50px);
+    clip-path: circle(50px at center);
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background: transparent;
+    overflow: hidden;
+    z-index: 5;
+
+    &:before, &:after {
+      border-radius: 50%;
+      content: "";
+      position: absolute;
+      top: -4%;
+      left: -4%;
+      height: 108%;
+      width: 108%;
+    }
+
+    /* NEW MOON */
+    &.moon-new-moon:before {
+      opacity: 0;
+      border-radius: 50%;
+      transform: rotate(180deg);
+    }
+    &.moon-new-moon:after {
+      opacity: 1;
+      border-radius: 50%;
+      transform: rotate(180deg);
+    }
+
+    /* WAXING CRESCENT */
+    &.moon-waxing-crescent:before {
+      opacity: 1;
+      border-radius: 35% 35% 35% 35%/50% 50% 50% 50%;
+      transform: rotate(180deg);
+    }
+    &.moon-waxing-crescent:after {
+      opacity: 0;
+      border-radius: 50%;
+      transform: rotate(180deg);
+    }
+
+    /* FIRST QUARTER */
+    &.moon-first-quarter:before {
+      opacity: 1;
+      border-radius: 0;
+      transform: rotate(0);
+    }
+    &.moon-first-quarter:after {
+      opacity: 0;
+      border-radius: 50%;
+      transform: rotate(180deg);
+    }
+
+    /* WAXING GIBBOUS */
+    &.moon-waxing-gibbous:before {
+      opacity: 1;
+      border-radius: 35% 35% 35% 35%/50% 50% 50% 50%;
+      transform: rotate(0);
+    }
+    &.moon-waxing-gibbous:after {
+      opacity: 0;
+      border-radius: 50%;
+      transform: rotate(0);
+    }
+
+    /* WANING GIBBOUS */
+    &.moon-waning-gibbous:before {
+      opacity: 1;
+      border-radius: 35% 35% 35% 35%/50% 50% 50% 50%;
+      transform: rotate(180deg);
+    }
+    &.moon-waning-gibbous:after {
+      opacity: 0;
+      border-radius: 50%;
+      transform: rotate(180deg);
+    }
+
+    /* LAST QUARTER */
+    &.moon-last-quarter:before {
+      opacity: 1;
+      border-radius: 0;
+      transform: rotate(180deg);
+    }
+    &.moon-last-quarter:after {
+      opacity: 0;
+      border-radius: 50%;
+      transform: rotate(0);
+    }
+
+    /* WANING CRESCENT */
+    &.moon-waning-crescent:before {
+      opacity: 1;
+      border-radius: 35% 35% 35% 35%/50% 50% 50% 50%;
+      transform: rotate(0);
+    }
+    &.moon-waning-crescent:after {
+      opacity: 0;
+      border-radius: 50%;
+      transform: rotate(0);
+    }
+  }
+
+  .moon-glow {
+    height: 100px;
+    width: 100px;
+    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background: transparent;
+    z-index: 4;
+    transition: box-shadow 2s ease;
+
+    &.moon-new-moon {
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
+    }
+    &.moon-waxing-crescent {
+      box-shadow: 8px 0 18px rgba(255, 255, 255, 0.20);
+    }
+    &.moon-first-quarter {
+      box-shadow: 10px 0 20px rgba(255, 255, 255, 0.35);
+    }
+    &.moon-waxing-gibbous {
+      box-shadow: 15px 0 40px rgba(255, 255, 255, 0.35);
+    }
+    &.moon-full-moon {
+      box-shadow: 0 0 100px rgba(255, 255, 255, 0.75);
+    }
+    &.moon-waning-gibbous {
+      box-shadow: -15px 0 40px rgba(255, 255, 255, 0.35);
+    }
+    &.moon-last-quarter {
+      box-shadow: -10px 0 20px rgba(255, 255, 255, 0.35);
+    }
+    &.moon-waning-crescent {
+      box-shadow: -8px 0 18px rgba(255, 255, 255, 0.20);
+    }
+  }
+}

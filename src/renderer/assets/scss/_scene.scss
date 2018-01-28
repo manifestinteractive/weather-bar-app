@@ -1,0 +1,137 @@
+@import 'scene/scene-1';
+@import 'scene/scene-2';
+@import 'scene/scene-3';
+@import 'scene/scene-4';
+@import 'scene/scene-5';
+@import 'scene/scene-6';
+@import 'scene/scene-7';
+@import 'scene/scene-8';
+@import 'scene/scene-9';
+@import 'scene/scene-10';
+
+.scene {
+
+	.menu-toggle {
+		position: absolute;
+		top: 20px;
+		left: 20px;
+		z-index: 100;
+
+		span {
+			width: 18px;
+			height: 2px;
+			display: block;
+			background-color: #333;
+			margin: 3px 0;
+		}
+	}
+
+  .mountain-1 svg {
+    position: absolute;
+    bottom: 0;
+    width: 400px;
+    height: 102px;
+    z-index: 9;
+  }
+  .mountain-2 svg {
+    position: absolute;
+    bottom: 0;
+    width: 400px;
+    height: 100px;
+    z-index: 8;
+  }
+  .mountain-3 svg {
+    position: absolute;
+    bottom: 0;
+    width: 400px;
+    height: 110px;
+    z-index: 7;
+  }
+  .mountain-4 svg {
+    position: absolute;
+    bottom: 0;
+    width: 400px;
+    height: 116px;
+    z-index: 6;
+  }
+  .mountain-5 svg {
+    position: absolute;
+    bottom: 0;
+    width: 400px;
+    height: 125px;
+    z-index: 5;
+  }
+  .sky {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+  .starry-sky {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+
+    .stars {
+      &.large {
+      	height: 2px;
+      	width: 2px;
+      	background: transparent;
+      	box-shadow: $bxshadow-large;
+      	animation: blink-large 10s infinite;
+        opacity: 0.75;
+      }
+      &.medium {
+      	height: 1px;
+      	width: 1px;
+      	background: transparent;
+      	box-shadow: $bxshadow-medium;
+      	animation: blink-medium 5s infinite;
+      }
+      &.small {
+      	height: 1px;
+      	width: 1px;
+      	background: transparent;
+      	box-shadow: $bxshadow-small;
+      	animation: blink-small 2s infinite;
+        opacity: 0.75;
+      }
+    }
+  }
+  .trees svg {
+    position: absolute;
+    bottom: -10px;
+    width: 390px;
+    height: 80px;
+    z-index: 10;
+  }
+
+  path.svg-mountain-1 {
+    transition: fill 3s ease;
+    transition-delay: 0.5s;
+  }
+  path.svg-mountain-2 {
+    transition: fill 2.5s ease;
+    transition-delay: 0.4s;
+  }
+  path.svg-mountain-3 {
+    transition: fill 2s ease;
+    transition-delay: 0.3s;
+  }
+  path.svg-mountain-4 {
+    transition: fill 1.5s ease;
+    transition-delay: 0.2s;
+  }
+  path.svg-mountain-5 {
+    transition: fill 1s ease;
+    transition-delay: 0.1s;
+  }
+  path.svg-trees {
+    transition: fill 3.5s ease;
+    transition-delay: 0.6s;
+  }
+}

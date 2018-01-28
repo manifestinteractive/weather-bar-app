@@ -1,0 +1,38 @@
+.weather-data .current-conditions {
+	height: 90px;
+	margin-top: 20px;
+	transition: color 0.5s ease;
+	visibility: hidden;
+
+	.left, .right {
+		float: left;
+	}
+
+	.left {
+		width: 120px;
+		font-size: 60px;
+    text-align: center;
+	}
+
+	.right {
+		width: calc(100% - 120px);
+
+		h1 {
+			margin: 0;
+			padding: 0;
+	    font-weight: 300;
+	    line-height: 24px;
+			margin-top: 8px;
+			font-size: 22px;
+		}
+
+		h3 {
+			margin: 0;
+			padding: 0;
+			font-weight: 300;
+			line-height: 24px;
+			opacity: 0.5;
+			font-size: 14px;
+		}
+	}
+}

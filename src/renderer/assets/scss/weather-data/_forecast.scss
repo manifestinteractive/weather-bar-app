@@ -1,0 +1,47 @@
+.forecast {
+	width: 100%;
+
+	.forecast-day {
+		width: calc(100% / 3);
+		float: left;
+		text-align: center;
+		font-size: 14px;
+		color: #FFF;
+		font-weight: 300;
+
+		.date {
+			text-transform: uppercase;
+			margin-top: 16px;
+			font-size: 16px;
+
+			span {
+				opacity: 0.5;
+			}
+		}
+
+		.icon {
+			font-size: 28px;
+			height: 50px;
+			line-height: 50px;
+		}
+
+		.high-low {
+			margin-bottom: 8px;
+
+			span {
+				margin: 0 4px;
+				opacity: 0.5;
+			}
+		}
+
+		.percent-rain {
+			i.wi {
+				font-size: 36px;
+		    line-height: 0;
+		    position: relative;
+		    top: 8px;
+				margin-right: 4px;
+			}
+		}
+	}
+}

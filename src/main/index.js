@@ -226,7 +226,7 @@ mb.on('after-create-window', () => {
 
   mb.tray.on('click', () => {
     if (mb.window.isVisible()) {
-      mb.window.send('app-opened', machineId)
+      mb.window.send('app-opened')
     } else {
       mb.window.send('app-closed')
     }

@@ -1,0 +1,66 @@
+.time-mid-morning {
+  .moon-wrapper {
+    top: calc(100% + 100px);
+    z-index: 0;
+  }
+  .sky {
+    background: linear-gradient(to bottom, #9fc6d9 0%, #fff5e4 100%);
+  }
+  .starry-sky {
+    display: none;
+  }
+	.moon-wrapper {
+    display: none;
+  }
+  .sun-wrapper {
+    top: calc(50% + 10px);
+
+    .sun {
+      background: #f2ffff;
+    }
+    .sun-glow {
+      box-shadow: 0 0 100px #fcffdc
+    }
+  }
+  path.svg-trees {
+    fill: #17363a !important;
+  }
+  path.svg-mountain-1 {
+    fill: #22525f !important;
+  }
+  path.svg-mountain-2 {
+    fill: #558d9d !important;
+  }
+  path.svg-mountain-3 {
+    fill: #6fa1b7 !important;
+  }
+  path.svg-mountain-4 {
+    fill: #7aaac2 !important;
+  }
+  path.svg-mountain-5 {
+    fill: #94bed2 !important;
+  }
+
+	.weather-data {
+		color: #17363a;
+    text-shadow: none;
+	}
+
+	.cloud {
+		path {
+			fill: #f5fcff;
+		}
+	}
+
+	&.thunderstorm {
+		.weather-data {
+			color: #fff;
+	    text-shadow: 0 0 4px rgba(0, 0, 0, 0.75)
+		}
+		.menu-toggle {
+			span {
+				background-color: #FFF;
+			}
+		}
+	}
+}

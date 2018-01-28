@@ -1,0 +1,62 @@
+.clouds {
+	.cloud {
+		position: absolute;
+		left: 0;
+		z-index: 24;
+		transform: translateX(-100%);
+
+		path {
+			transition: fill 0.25s ease;
+		}
+	}
+
+	.cloud-1 {
+	  top: 50px;
+	  width: 200px;
+	  height: 100px;
+		animation: move-cloud 100s linear infinite;
+		animation-delay: -25s;
+		opacity: 0.7;
+		z-index: 25;
+	}
+
+	.cloud-2 {
+	  top: 100px;
+	  width: 300px;
+	  height: 200px;
+		animation: move-cloud 150s linear infinite;
+		animation-delay: 50s;
+		opacity: 0.7;
+		z-index: 26;
+	}
+
+	.cloud-3 {
+	  top: 0;
+	  width: 200px;
+	  height: 100px;
+		animation: move-cloud 200s linear infinite;
+		animation-delay: -100s;
+		opacity: 0.6;
+		z-index: 27;
+	}
+
+	.cloud-4 {
+	  top: 0;
+	  width: 200px;
+	  height: 100px;
+		animation: move-cloud 250s linear infinite;
+		animation-delay: 100s;
+		opacity: 0.5;
+		z-index: 28;
+	}
+
+	.cloud-5 {
+	  top: -50px;
+	  width: 400px;
+	  height: 300px;
+		animation: move-cloud 750s linear infinite;
+		animation-delay: -50s;
+		opacity: 0.4;
+		z-index: 29;
+	}
+}

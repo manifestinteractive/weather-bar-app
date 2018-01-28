@@ -16,14 +16,19 @@ export default new Router({
       component: require('@/components/page/splash').default
     },
     {
+      path: '/saved-locations',
+      name: 'saved-locations',
+      component: require('@/components/page/saved-locations').default
+    },
+    {
       path: '/preferences',
       name: 'preferences-page',
       component: require('@/components/page/preferences').default
     },
     {
-      path: '/select',
-      name: 'select-page',
-      component: require('@/components/page/select').default
+      path: '/new-location',
+      name: 'new-location',
+      component: require('@/components/page/new-location').default
     },
     {
       path: '*',

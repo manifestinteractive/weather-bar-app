@@ -1,0 +1,80 @@
+.time-evening {
+  .fog {
+    // background: url(../images/fog-night.png) center center repeat-x;
+    background-size: cover;
+  }
+	.moon-wrapper {
+    display: none;
+  }
+	.thunderstorm-wrapper {
+    background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.5));
+  }
+  .sky {
+    background: linear-gradient(to bottom, #9d7c64 0%, #ffffff 100%);
+  }
+  .snow-wrapper {
+    background-color: rgba(255, 255, 255, 0.15);
+    .snow {
+      background:
+      radial-gradient(#574843 .1%, transparent .9%) -100px 0,
+      radial-gradient(#574843 .1%, transparent .6%) 200px 50px,
+      radial-gradient(#574843 .1%, transparent .8%) 500px 500px,
+      radial-gradient(#574843 .1%, transparent .5%) 400px 700px,
+      radial-gradient(#574843 .1%, transparent .5%) 800px 600px;
+    }
+  }
+  .starry-sky {
+    opacity: 0.5;
+  }
+  .sun-wrapper {
+    top: calc(50%);
+
+    .sun {
+      background: #ffefa2;
+    }
+    .sun-glow {
+      box-shadow: 0 0 100px rgba(255, 177, 0, 0.65);
+    }
+  }
+  path.svg-mountain-1 {
+    fill: #342b28 !important;
+  }
+  path.svg-mountain-2 {
+    fill: #574843 !important;
+  }
+  path.svg-mountain-3 {
+    fill: #7f6555 !important;
+  }
+  path.svg-mountain-4 {
+    fill: #91705a !important;
+  }
+  path.svg-mountain-5 {
+    fill: #a78267 !important;
+  }
+  path.svg-trees {
+    fill: #141914 !important;
+  }
+
+	.weather-data {
+		color: #342b28;
+    text-shadow: none;
+	}
+
+	.cloud {
+		path {
+			fill: #fffefc;
+		}
+	}
+
+	&.thunderstorm {
+		.weather-data {
+			color: #fff;
+	    text-shadow: 0 0 4px rgba(0, 0, 0, 0.75)
+		}
+		.menu-toggle {
+			span {
+				background-color: #FFF;
+			}
+		}
+	}
+}

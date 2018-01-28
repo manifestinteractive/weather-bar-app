@@ -1,7 +1,7 @@
 <template>
   <transition name="fade" mode="out-in">
     <div class="router-view home-page">
-
+      <scene />
     </div>
   </transition>
 </template>
@@ -13,12 +13,17 @@
 </style>
 
 <script>
+  import Scene from '../ui/scene'
+
   export default {
     name: 'index-page',
     data () {
       return {}
     },
     mounted () {},
-    methods: {}
+    methods: {},
+    components: {
+      Scene
+    }
   }
 </script>

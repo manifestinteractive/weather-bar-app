@@ -1,0 +1,69 @@
+.weather-data .main-weather {
+	font-family: 'Helvetica', sans-serif;
+	width: 100%;
+  margin-top: 66px;
+	transition: color 0.5s ease;
+	height: 100px;
+
+	.left, .right {
+		float: left;
+		visibility: visible;
+	}
+
+	.left {
+		width: 60%;
+	}
+
+	.right {
+		width: 40%;
+	}
+
+	.current-temp {
+		font-size: 72px;
+    font-weight: 300;
+    text-align: center;
+    line-height: 56px;
+    margin-bottom: 10px;
+
+		.degree {
+			opacity: 0.33;
+		}
+	}
+
+	.feels-like-temp {
+		text-align: center;
+    text-indent: -14px;
+    opacity: 0.9;
+		letter-spacing: 0.5px;
+	}
+
+	.current-measure {
+		margin-bottom: 15px;
+		letter-spacing: 0.8px;
+    position: relative;
+
+		span.direction {
+			position: absolute;
+	    top: 19px;
+	    left: 39px;
+	    font-size: 10px;
+	    opacity: 0.5;
+		}
+
+		i.wi {
+			width: 26px;
+			text-align: center;
+			font-size: 18px;
+	    margin-right: 8px;
+			line-height: 18px;
+
+			&.wi-raindrops {
+				font-size: 34px;
+				position: relative;
+				top: 9px;
+				line-height: 0;
+				left: -2px;
+			}
+		}
+	}
+}

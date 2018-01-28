@@ -8,6 +8,7 @@
 <style lang="scss">
 @import url('~@/assets/css/app.css');
 @import url('~@/assets/css/fontawesome-all.css');
+@import url('~@/assets/css/weather-icons.css');
 </style>
 
 <script>
@@ -40,11 +41,6 @@
     methods: {
       bindElectronEvents () {
         if (typeof this.$electron !== 'undefined' && typeof this.$electron.ipcRenderer !== 'undefined') {
-          this.$electron.ipcRenderer.removeAllListeners('reload-weather')
-          this.$electron.ipcRenderer.on('reload-weather', () => {
-            window.location.reload()
-          })
-
           this.$electron.ipcRenderer.removeAllListeners('app-opened')
           this.$electron.ipcRenderer.on('app-opened', () => {
             console.log('App Opened')
@@ -52,7 +48,7 @@
 
           this.$electron.ipcRenderer.removeAllListeners('app-closed')
           this.$electron.ipcRenderer.on('app-closed', () => {
-            console.log('App Closed')
+            this.$router.push({ name: 'index-page' })
           })
 
           this.$electron.ipcRenderer.removeAllListeners('set-uuid')

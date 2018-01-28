@@ -1,0 +1,7 @@
+@function box-shadow($stars) {
+	$bxshadow: ();
+	@for $i from 1 to $stars {
+		$bxshadow: append($bxshadow, (random(2000) + 0px) (random(2000) + 0px) #fff, comma);
+	}
+	@return unquote($bxshadow);
+}

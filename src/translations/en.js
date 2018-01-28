@@ -5,7 +5,10 @@ export default {
       title: 'Weather Bar',
       language: 'Language',
       menu: {
-        preferences: 'Preferences'
+        localWeather: 'Local Weather',
+        savedLocations: 'Saved Locations',
+        preferences: 'Preferences',
+        newLocation: 'New Location'
       }
     },
     autoUpdate: {
