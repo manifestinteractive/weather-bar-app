@@ -9,6 +9,7 @@
 @import url('~@/assets/css/app.css');
 @import url('~@/assets/css/fontawesome-all.css');
 @import url('~@/assets/css/weather-icons.css');
+@import url('~@/assets/css/animate.css');
 </style>
 
 <script>
