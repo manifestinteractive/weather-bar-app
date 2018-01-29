@@ -13,7 +13,7 @@
         </div>
       </div>
 
-      <scene :overlay='true' :clouds='true' :version='random' />
+      <scene :stars='true' :clouds='true' :version='random' />
     </div>
   </transition>
 </template>
@@ -24,6 +24,10 @@
     z-index: 500;
     position: relative;
     height: 100%;
+  }
+
+  .scene {
+    position: initial;
   }
 
   .scrollable {

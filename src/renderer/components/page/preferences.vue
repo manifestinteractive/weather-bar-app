@@ -196,7 +196,7 @@
         </div>
       </div>
 
-      <scene :overlay='true' :clouds='true' :version='random' />
+      <scene :stars='true' :clouds='true' :version='random' />
     </div>
   </transition>
 </template>
@@ -206,6 +206,10 @@
   .page-content {
     z-index: 500;
     position: relative;
+  }
+
+  .scene {
+    position: initial;
   }
 
   .group-header {
