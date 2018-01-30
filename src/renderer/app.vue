@@ -116,6 +116,10 @@
         api.getCurrentWeatherByGeo(location, (weather) => {
           if (typeof weather.data !== 'undefined' && typeof weather.data.weather !== 'undefined') {
             const weatherBarData = util.prepMenubarWeather(weather.data, this.$store.state.settings)
+            const weatherData = util.parseWeather(weather.data, this.$store.state.settings)
+
+            console.log('weatherData', weatherData)
+
             this.$electron.ipcRenderer.send('set-weather', weatherBarData)
           }
         })

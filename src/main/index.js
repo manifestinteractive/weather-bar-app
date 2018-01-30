@@ -212,6 +212,16 @@ mb.on('after-create-window', () => {
       type: 'separator'
     },
     {
+      label: 'Developer Tools',
+      accelerator: 'Cmd+Alt+I',
+      click () {
+        mb.window.webContents.openDevTools()
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
       label: 'Quit Weather Bar',
       accelerator: 'Cmd+Q',
       click () {
