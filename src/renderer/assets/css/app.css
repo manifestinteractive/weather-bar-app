@@ -6,33 +6,43 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   font: inherit;
   vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
+
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
   display: block;
 }
+
 body {
   line-height: 1;
 }
+
 ol, ul {
   list-style: none;
 }
+
 blockquote, q {
   quotes: none;
 }
+
 blockquote:before, blockquote:after, q:before, q:after {
   content: '';
   content: none;
 }
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
 html {
   box-sizing: border-box;
 }
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
+
 html, body {
   width: 100%;
   height: 100%;
@@ -40,6 +50,7 @@ html, body {
   padding: 0;
   margin: 0;
 }
+
 body {
   background: url('../images/web-bg.png') top left repeat #030a13;
   align-items: center;
@@ -66,6 +77,7 @@ body {
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: #FFF;
 }
+
 #app {
   min-width: 280px;
   min-height: 480px;
@@ -74,14 +86,14 @@ body {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  box-shadow: 10px 10px 10px rgba(0,0,0,0.5);
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
   background: #132936;
   position: relative;
   overflow: hidden;
 }
 
 ::selection {
-  background:transparent;
+  background: transparent;
 }
 
 .router-view {
@@ -90,25 +102,23 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  transition: all .5s cubic-bezier(.55,0,.1,1);
+  transition: all .5s cubic-bezier(.55, 0, .1, 1);
 }
-.router-view.fade-enter-active,
-.router-view.fade-leave-active {
+
+.fade-enter-active, .fade-leave-active {
   transition: opacity .5s ease;
 }
-.router-view.fade-enter,
-.router-view.fade-leave-active {
+
+.fade-enter, .fade-leave-active {
   opacity: 0
 }
 
-.router-view.slide-left-enter,
-.router-view.slide-right-leave-active {
+.slide-left-enter, .slide-right-leave-active {
   opacity: 0;
   transform: translate(30px, 0);
 }
 
-.router-view.slide-left-leave-active,
-.router-view.slide-right-enter {
+.slide-left-leave-active, .slide-right-enter {
   opacity: 0;
   transform: translate(-30px, 0);
 }

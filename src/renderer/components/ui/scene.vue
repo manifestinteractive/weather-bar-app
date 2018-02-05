@@ -1,24 +1,25 @@
 <template>
-  <div class="scene" :class="makeClasses()">
+  <div class="scene" v-if="data" :class="makeClasses()">
     <slot name="weather-data"></slot>
 
     <div class="overlay" v-if="overlay"></div>
 
     <!-- WEATHER -->
-    <lightning v-if="lightning" />
-		<thunderstorm v-if="thunderstorm" />
-		<rain v-if="rain > 0" />
-		<snow v-if="snow" />
-		<clouds v-if="clouds" />
-		<fog v-if="fog" />
+    <lightning v-if="data.scene_lightning" />
+		<thunderstorm v-if="data.scene_thunderstorm" />
+		<rain v-if="data.scene_rain > 0" :rain="data.scene_rain" />
+		<snow v-if="data.scene_snow" />
+		<clouds v-if="data.scene_clouds" />
+		<fog v-if="data.scene_fog" />
 
     <!-- SCENERY -->
-		<moon v-if="moon" />
-		<sun v-if="sun" />
-    <stars v-if="stars" />
-    <mountains v-if="mountains" />
-		<trees v-if="trees" />
-		<sky v-if="sky" />
+		<moon v-if="data.scene_moon" :phase="data.moon_name" />
+		<sun v-if="data.scene_sun" />
+    <stars v-if="data.scene_stars" />
+
+    <mountains />
+		<trees />
+		<sky />
   </div>
 </template>
 
@@ -68,61 +69,49 @@
         type: Number,
         default: 1
       },
-      time: {
-        type: String,
-        default: 'midnight'
-      },
-      clouds: {
-        type: Boolean,
-        default: false
-      },
-      fog: {
-        type: Boolean,
-        default: false
-      },
-      lightning: {
-        type: Boolean,
-        default: false
-      },
-      moon: {
-        type: Boolean,
-        default: false
-      },
-      mountains: {
-        type: Boolean,
-        default: true
-      },
       overlay: {
         type: Boolean,
         default: false
       },
-      rain: {
-        type: Number,
-        default: 0
-      },
-      sky: {
-        type: Boolean,
-        default: true
-      },
-      snow: {
-        type: Boolean,
-        default: false
-      },
-      stars: {
-        type: Boolean,
-        default: false
-      },
-      sun: {
-        type: Boolean,
-        default: false
-      },
-      thunderstorm: {
-        type: Boolean,
-        default: false
-      },
-      trees: {
-        type: Boolean,
-        default: true
+      data: {
+        type: Object,
+        default () {
+          return {
+            city: null,
+            condition_icon: 'wi-na',
+            condition_label: 'Unknown',
+            id: null,
+            key: 'current',
+            scene_clouds: false,
+            scene_fog: false,
+            scene_lightning: false,
+            scene_moon: false,
+            scene_rain: 0,
+            scene_snow: false,
+            scene_stars: false,
+            scene_sun: false,
+            scene_thunderstorm: false,
+            scene_time: 'midnight',
+            sunrise: null,
+            sunset: null,
+            sun_next: null,
+            temp_actual: 0,
+            temp_feels_like: 0,
+            temp_max: 0,
+            temp_min: 0,
+            time_zone: null,
+            wind_direction: 'N',
+            wind_speed: 0,
+            moon_name: null,
+            moon_fraction: null,
+            moon_phase: null,
+            moon_angle: null,
+            moon_altitude: null,
+            moon_azimuth: null,
+            moon_distance: null,
+            moon_parallactic_angle: null
+          }
+        }
       }
     },
     data () {
@@ -134,10 +123,10 @@
       makeClasses () {
         let classes = []
 
-        classes.push('time-' + this.time)
+        classes.push('time-' + this.data.scene_time)
         classes.push('scene-' + this.version)
 
-        if (this.thunderstorm) {
+        if (this.data.thunderstorm) {
           classes.push('thunderstorm')
         }
 

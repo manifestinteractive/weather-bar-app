@@ -5,10 +5,12 @@ export default {
       title: 'Weather Bar',
       language: 'Language',
       menu: {
-        localWeather: 'Local Weather',
+        currentWeather: 'Current Weather',
         savedLocations: 'Saved Locations',
         preferences: 'Preferences',
-        newLocation: 'New Location'
+        newLocation: 'New Location',
+        providedBy: 'Weather Data By:',
+        versionNumber: 'Version {version}'
       }
     },
     autoUpdate: {
@@ -18,10 +20,6 @@ export default {
         yes: 'Yes',
         no: 'No'
       }
-    },
-    splash: {
-      versionNumber: 'Version {version}',
-      providedBy: 'Weather Data Provided By:'
     }
   }
 }

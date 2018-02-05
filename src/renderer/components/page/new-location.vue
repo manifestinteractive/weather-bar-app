@@ -1,6 +1,6 @@
 <template>
   <transition name="slide-left" mode="out-in">
-    <div class="router-view new-location-page">
+    <div class="router-view new-location">
       <div class="page-content">
         <page-header v-bind:title="$t('app.menu.newLocation')" />
 
@@ -35,7 +35,7 @@
             Current Location
           </button>
 
-          <div class="no-results" v-if="noResults">
+          <div class="no-results" v-if="noResults && !selectedCity">
             <i class="fas fa-exclamation-triangle"></i>
             No Matching Cities
           </div>
@@ -48,7 +48,7 @@
 </template>
 
 <style lang="scss">
-.new-location-page {
+.new-location {
   .page-content {
     z-index: 500;
     position: relative;
@@ -217,20 +217,23 @@
 
 <script>
   import _ from 'lodash'
+  import * as tzlookup from 'tz-lookup'
+  import * as md5 from 'md5'
 
   import Scene from '../ui/scene'
   import PageHeader from '../ui/page-header'
   import api from '../../services/api'
 
   export default {
-    name: 'new-location-page',
+    name: 'new-location',
     data () {
       return {
         random: (Math.floor(Math.random() * 10) + 1),
         keyword: '',
         selectedCity: null,
         noResults: false,
-        cities: []
+        cities: [],
+        settings: this.$store.getters.getSettings
       }
     },
     watch: {
@@ -260,14 +263,56 @@
       selectCity (city) {
         this.keyword = city.display_name_short
         this.selectedCity = city
-
-        // @TODO: Save Users Selected City to Database
+        this.noResults = false
       },
       getCurrentLocation () {
-        console.log('getCurrentLocation')
+        api.getIpAddress((response) => {
+          api.getLocationByIp(response.ip, (location) => {
+            if (typeof location.data !== 'undefined') {
+              const loc = location.data
+              const timeZone = tzlookup(loc.latitude, loc.longitude)
+              const data = {
+                uuid: this.settings.uuid,
+                city_name: loc.city,
+                region: loc.region,
+                country: loc.country,
+                owm_city_id: null,
+                latitude: loc.latitude,
+                longitude: loc.longitude,
+                time_zone: timeZone
+              }
+
+              this.saveLocation(data, 'current')
+            }
+          })
+        })
       },
       letsGo () {
-        this.$router.push({ path: '/' })
+        const timeZone = tzlookup(this.selectedCity.location.lat, this.selectedCity.location.lon)
+        const data = {
+          uuid: this.settings.uuid,
+          city_name: this.selectedCity.owm_city_name,
+          region: this.selectedCity.admin_level_1_short,
+          country: this.selectedCity.country_short,
+          owm_city_id: this.selectedCity.owm_city_id,
+          latitude: this.selectedCity.location.lat,
+          longitude: this.selectedCity.location.lon,
+          time_zone: timeZone
+        }
+
+        this.saveLocation(data)
+      },
+      saveLocation (data, key) {
+        data.hash_key = key || 'hash_' + md5(JSON.stringify(data))
+        api.saveLocation(data, (response) => {
+          this.$store.dispatch('saveLocation', data)
+          this.$router.push({
+            name: 'index',
+            params: {
+              key: data.hash_key
+            }
+          })
+        })
       }
     },
     components: {

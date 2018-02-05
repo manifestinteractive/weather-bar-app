@@ -1,6 +1,6 @@
 <template>
   <transition name="slide-left" mode="out-in">
-    <div class="router-view saved-locations-page">
+    <div class="router-view saved-locations">
       <div class="page-content">
         <page-header v-bind:title="$t('app.menu.savedLocations')" />
 
@@ -19,7 +19,7 @@
 </template>
 
 <style lang="scss">
-.saved-locations-page {
+.saved-locations {
   .page-content {
     z-index: 500;
     position: relative;
@@ -59,85 +59,30 @@
   import Location from '../ui/location'
   import PageHeader from '../ui/page-header'
 
-  import util from '../../util'
-
   export default {
-    name: 'saved-locations-page',
+    name: 'saved-locations',
     data () {
       return {
         random: (Math.floor(Math.random() * 10) + 1),
         current: {
-          id: 1,
-          name: 'Local Weather',
-          temp: '70',
-          icon: 'wi-night-clear',
-          time_zone: util.offsetToTimeZone('-05:00'),
-          condition: 'Clear',
-          primary: true
+          city_name: 'Current Location'
         },
-        locations: [
-          {
-            id: 2,
-            name: 'Saint Petersburg',
-            temp: '72',
-            icon: 'wi-night-alt-rain',
-            time_zone: util.offsetToTimeZone('-05:00'),
-            condition: 'Rainy',
-            primary: false
-          },
-          {
-            id: 3,
-            name: 'St. Louis',
-            temp: '59',
-            icon: 'wi-night-alt-cloudy',
-            time_zone: util.offsetToTimeZone('-06:00'),
-            condition: 'Cloudy',
-            primary: false
-          },
-          {
-            id: 4,
-            name: 'Portland',
-            temp: '45',
-            icon: 'wi-night-alt-snow-wind',
-            time_zone: util.offsetToTimeZone('-08:00'),
-            condition: 'Hail',
-            primary: false
-          },
-          {
-            id: 5,
-            name: 'Saint Petersburg',
-            temp: '72',
-            icon: 'wi-night-alt-rain',
-            time_zone: util.offsetToTimeZone('-05:00'),
-            condition: 'Clear',
-            primary: false
-          },
-          {
-            id: 6,
-            name: 'St. Louis',
-            temp: '59',
-            icon: 'wi-night-alt-cloudy',
-            time_zone: util.offsetToTimeZone('-05:00'),
-            condition: 'Clear',
-            primary: false
-          },
-          {
-            id: 7,
-            name: 'Portland',
-            temp: '45',
-            icon: 'wi-night-alt-snow-wind',
-            time_zone: util.offsetToTimeZone('-05:00'),
-            condition: 'Clear',
-            primary: false
-          }
-        ]
+        locations: this.$store.getters.getSavedLocations
       }
     },
+    mounted () {
+      console.log('locations', this.locations)
+    },
     methods: {
-      clicked (info) {
-        console.log('clicked', info)
+      clicked (data) {
+        this.$router.push({
+          name: 'index',
+          params: {
+            key: data.hash_key
+          }
+        })
       },
-      addLocation (info) {
+      addLocation () {
         this.$router.push({ name: 'new-location' })
       }
     },

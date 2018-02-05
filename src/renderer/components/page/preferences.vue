@@ -1,6 +1,6 @@
 <template>
   <transition name="fade" mode="out-in">
-    <div class="router-view preferences-page">
+    <div class="router-view preference">
       <div class="page-content">
         <page-header v-bind:title="$t('app.menu.preferences')" />
 
@@ -202,7 +202,7 @@
 </template>
 
 <style lang="scss">
-.preferences-page {
+.preference {
   .page-content {
     z-index: 500;
     position: relative;
@@ -280,7 +280,7 @@
   import api from '../../services/api'
 
   export default {
-    name: 'preferences-page',
+    name: 'preference',
     data () {
       return {
         tab: 'app',

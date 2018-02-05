@@ -6,14 +6,9 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'index-page',
+      path: '/:key?',
+      name: 'index',
       component: require('@/components/page/index').default
-    },
-    {
-      path: '/splash',
-      name: 'splash-page',
-      component: require('@/components/page/splash').default
     },
     {
       path: '/saved-locations',
@@ -22,7 +17,7 @@ export default new Router({
     },
     {
       path: '/preferences',
-      name: 'preferences-page',
+      name: 'preferences',
       component: require('@/components/page/preferences').default
     },
     {

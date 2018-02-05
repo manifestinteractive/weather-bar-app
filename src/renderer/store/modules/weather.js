@@ -1,7 +1,7 @@
 const state = {}
 
 const mutations = {
-  SET_WEATHER (state, data) {
+  SAVE_WEATHER (state, data) {
     if (data.hasOwnProperty('key')) {
       state[data.key] = data
     }
@@ -15,8 +15,8 @@ const getters = {
 }
 
 const actions = {
-  setWeather ({ commit }, data) {
-    commit('SET_WEATHER', data)
+  saveWeather ({ commit }, data) {
+    commit('SAVE_WEATHER', data)
   }
 }
 

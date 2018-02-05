@@ -1,22 +1,31 @@
 const state = {}
 
 const mutations = {
-  SET_LOCATION (state, data) {
-    if (data.hasOwnProperty('key')) {
-      state[data.key] = data
+  SAVE_LOCATION (state, data) {
+    state[data.hash_key] = data
+  },
+  UPDATE_SAVED_LOCATIONS (state, data) {
+    for (let i = 0; i < data.length; i++) {
+      state[data[i].hash_key] = data[i]
     }
   }
 }
 
 const getters = {
-  getLocation: (state) => (key) => {
+  getLocationByKey: (state) => (key) => {
     return (state.hasOwnProperty(key)) ? state[key] : null
+  },
+  getSavedLocations: state => {
+    return state
   }
 }
 
 const actions = {
-  setLocation ({ commit }, data) {
-    commit('SET_LOCATION', data)
+  updateSavedLocations ({ commit }, data) {
+    commit('UPDATE_SAVED_LOCATIONS', data)
+  },
+  saveLocation ({ commit }, data) {
+    commit('SAVE_LOCATION', data)
   }
 }
 

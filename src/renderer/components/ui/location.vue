@@ -41,20 +41,20 @@
         <i class="far fa-fw fa-star"></i>
       </a>
 
-      <div class="weather-temp" v-if="info.temp">
-        {{ info.temp }}&deg;
+      <div class="weather-temp">
+        {{ getTemp(info.temp) }}
       </div>
 
-      <div class="weather-icon" v-if="info.icon">
-        <i class="wi" :class="info.icon"></i>
+      <div class="weather-icon">
+        <i class="wi" :class="getIcon(info.icon)"></i>
       </div>
 
-      <div class="name" v-if="info.name">
-        {{ info.name }}
+      <div class="name">
+        {{ getName(info.city_name) }}
       </div>
 
-      <div class="condition" v-if="info.condition">
-        {{ info.condition }}
+      <div class="condition">
+        {{ getCondition(info.condition) }}
       </div>
 
       <div class="time" v-if="info.time_zone">
@@ -237,6 +237,19 @@
       this.timer = setInterval(this.updateTime, 1000)
     },
     methods: {
+      getTemp (temp) {
+        return (temp) ? `${temp}&deg;` : '--'
+      },
+      getCondition (condition) {
+        return condition || 'Unknown'
+      },
+      getIcon (icon) {
+        return icon || 'wi-na'
+      },
+      getName (name) {
+        const parts = (name) ? name.split(', ') : null
+        return (name) ? parts[0].replace(/\(([^)]+)\)/, '').trim() : ''
+      },
       updateTime () {
         this.currentTime = new Date()
       },

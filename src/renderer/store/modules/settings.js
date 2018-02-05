@@ -1,3 +1,5 @@
+import * as tzlookup from 'tz-lookup'
+
 const state = {
   app_always_on_top: false,
   app_language: 'en',
@@ -45,6 +47,8 @@ const mutations = {
   },
   SET_CURRENT_LOCATION (state, location) {
     if (location.hasOwnProperty('ip_address') && location.hasOwnProperty('latitude') && location.hasOwnProperty('longitude')) {
+      const timeZone = tzlookup(location.latitude, location.longitude)
+
       state.current_city = location.city
       state.current_country = location.country
       state.current_ip_address = location.ip_address
@@ -52,7 +56,7 @@ const mutations = {
       state.current_longitude = location.longitude
       state.current_postalcode = location.postalcode
       state.current_region = location.region
-      state.current_time_zone = location.time_zone
+      state.current_time_zone = timeZone
     }
   }
 }

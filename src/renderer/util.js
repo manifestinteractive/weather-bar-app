@@ -1,50 +1,9 @@
+import Feels from 'feels'
+import moment from 'moment-timezone'
+
 import { scaleQuantize } from 'd3-scale'
-import { getMoonIllumination } from 'suncalc'
-
-const offsetToTimeZone = (offset) => {
-  const zones = {
-    '-12:00': 'Etc/GMT+12',
-    '-11:00': 'Pacific/Midway',
-    '-10:00': 'Pacific/Honolulu',
-    '-09:30': 'Pacific/Marquesas',
-    '-09:00': 'America/Anchorage',
-    '-08:00': 'America/Los_Angeles',
-    '-07:00': 'America/Phoenix',
-    '-06:00': 'America/Chicago',
-    '-05:00': 'America/New_York',
-    '-04:00': 'America/Barbados',
-    '-03:30': 'America/St_Johns',
-    '-03:00': 'America/Cayenne',
-    '-02:00': 'America/Noronha',
-    '-01:00': 'America/Scoresbysund',
-    '+00:00': 'Africa/Casablanca',
-    '+01:00': 'Europe/Berlin',
-    '+02:00': 'Europe/Bucharest',
-    '+03:00': 'Europe/Moscow',
-    '+04:00': 'Europe/Saratov',
-    '+04:30': 'Asia/Kabul',
-    '+05:00': 'Asia/Tashkent',
-    '+05:30': 'Asia/Calcutta',
-    '+05:45': 'Asia/Katmandu',
-    '+06:00': 'Asia/Dhaka',
-    '+06:30': 'Asia/Rangoon',
-    '+07:00': 'Asia/Bangkok',
-    '+08:00': 'Asia/Shanghai',
-    '+08:30': 'Asia/Pyongyang',
-    '+08:45': 'Australia/Eucla',
-    '+09:00': 'Asia/Tokyo',
-    '+09:30': 'Australia/Adelaide',
-    '+10:00': 'Australia/Brisbane',
-    '+10:30': 'Australia/Lord_Howe',
-    '+11:00': 'Pacific/Bougainville',
-    '+12:00': 'Pacific/Auckland',
-    '+12:45': 'Pacific/Chatham',
-    '+13:00': 'Pacific/Enderbury',
-    '+14:00': 'Pacific/Kiritimati'
-  }
-
-  return (typeof zones[offset] !== 'undefined') ? zones[offset] : ''
-}
+import { getMoonPosition, getMoonIllumination } from 'suncalc'
+import * as tzlookup from 'tz-lookup'
 
 const celsiusToFahrenheit = (temp) => {
   return Math.round((temp * 1.8) + 32)
@@ -68,6 +27,10 @@ const kelvinToCelcius = (temp) => {
 
 const kelvinToFahrenheit = (temp) => {
   return Math.round(((temp - 273.15) * 1.8) + 32)
+}
+
+const mpsToMph = (speed) => {
+  return Math.round((speed * 3600 / 1610.3 * 1000) / 1000)
 }
 
 const titleCase = (str) => {
@@ -120,15 +83,75 @@ const getMoonPhase = () => {
   return phase
 }
 
+const getMoonPhaseScene = (latitude, longitude) => {
+  const illumination = getMoonIllumination(new Date())
+  const position = getMoonPosition(new Date())
+
+  const scale = scaleQuantize()
+    .domain([0, 1])
+    .range([
+      'moon-new-moon',
+      'moon-waxing-crescent',
+      'moon-first-quarter',
+      'moon-waxing-gibbous',
+      'moon-full-moon',
+      'moon-waning-gibbous',
+      'moon-last-quarter',
+      'moon-waning-crescent'
+    ])
+
+  return {
+    name: scale(illumination.phase),
+    fraction: illumination.fraction,
+    phase: illumination.phase,
+    angle: illumination.angle,
+    altitude: (isNaN(position.altitude)) ? 0 : position.altitude,
+    azimuth: (isNaN(position.azimuth)) ? 0 : position.azimuth,
+    distance: (isNaN(position.distance)) ? 0 : position.distance,
+    parallacticAngle: (isNaN(position.parallacticAngle)) ? 0 : position.parallacticAngle
+  }
+}
+
+const getMoonPhaseIcon = () => {
+  const moon = getMoonIllumination(new Date())
+  const scale = scaleQuantize()
+    .domain([0, 1])
+    .range([
+      'wi-moon-new',
+      'wi-moon-waxing-crescent-1',
+      'wi-moon-waxing-crescent-2',
+      'wi-moon-waxing-crescent-4',
+      'wi-moon-waxing-crescent-6',
+      'wi-moon-first-quarter',
+      'wi-moon-waxing-gibbous-1',
+      'wi-moon-waxing-gibbous-2',
+      'wi-moon-waxing-gibbous-4',
+      'wi-moon-waxing-gibbous-6',
+      'wi-moon-full',
+      'wi-moon-waning-gibbous-1',
+      'wi-moon-waning-gibbous-2',
+      'wi-moon-waning-gibbous-4',
+      'wi-moon-waning-gibbous-6',
+      'wi-moon-third-quarter',
+      'wi-moon-waning-crescent-1',
+      'wi-moon-waning-crescent-2',
+      'wi-moon-waning-crescent-4',
+      'wi-moon-waning-crescent-6',
+      'wi-moon-new'
+    ])
+
+  return scale(moon.phase)
+}
+
 const degreesToDirection = (degrees) => {
   if (degrees < 0 || degrees > 360) {
     degrees = 0
   }
 
   if (degrees >= 0 && degrees <= 11.25) {
-    return 'N'
+    return 'NORTH'
   } else if (degrees > 348.75 && degrees <= 360) {
-    return 'N'
+    return 'NORTH'
   } else if (degrees > 11.25 && degrees <= 33.75) {
     return 'NNE'
   } else if (degrees > 33.75 && degrees <= 56.25) {
@@ -136,7 +159,7 @@ const degreesToDirection = (degrees) => {
   } else if (degrees > 56.25 && degrees <= 78.75) {
     return 'ENE'
   } else if (degrees > 78.75 && degrees <= 101.25) {
-    return 'E'
+    return 'EAST'
   } else if (degrees > 101.25 && degrees <= 123.75) {
     return 'ESE'
   } else if (degrees > 123.75 && degrees <= 146.25) {
@@ -144,7 +167,7 @@ const degreesToDirection = (degrees) => {
   } else if (degrees > 146.25 && degrees <= 168.75) {
     return 'SSE'
   } else if (degrees > 168.75 && degrees <= 191.25) {
-    return 'S'
+    return 'SOUTH'
   } else if (degrees > 191.25 && degrees <= 213.75) {
     return 'SSW'
   } else if (degrees > 213.75 && degrees <= 236.25) {
@@ -152,7 +175,7 @@ const degreesToDirection = (degrees) => {
   } else if (degrees > 236.25 && degrees <= 258.75) {
     return 'WSW'
   } else if (degrees > 258.75 && degrees <= 281.25) {
-    return 'W'
+    return 'WEST'
   } else if (degrees > 281.25 && degrees <= 303.75) {
     return 'WNW'
   } else if (degrees > 303.75 && degrees <= 326.25) {
@@ -321,26 +344,100 @@ const getWeatherIcon = (code, time) => {
   }
 }
 
-const parseWeather = (data, settings) => {
-  let weather = {
-    id: null,
-    city: null,
-    temp: {
-      actual: 0,
-      feelsLike: 0
-    },
-    wind: {
-      speed: 0,
-      direction: null
-    },
-    condition: {
-      icon: null,
-      label: null
-    },
-    sun: {
-      rise: null,
-      set: null
+const getRainPercent = (code) => {
+  // heavy rain
+  if (code === 202 || code === 212 || code === 502 || code === 503 || code === 504 || code === 522 || code === 202 || code === 202) {
+    return 100
+  } else if (code >= 200 && code <= 232) {
+    return 75
+  } else if (code >= 500 && code <= 531) {
+    return 50
+  } else if (code >= 300 && code <= 321) {
+    return 25
+  }
+
+  return 0
+}
+
+const getSceneTime = (sunrise, sunset, timeZone) => {
+  const firstLight = parseInt(moment.tz(sunrise * 1000, timeZone).add(-40, 'minutes').format('x'))
+  const lastLight = parseInt(moment.tz(sunset * 1000, timeZone).add(40, 'minutes').format('x'))
+  const now = parseInt(moment.tz(timeZone).format('x'))
+
+  const scale = scaleQuantize()
+    .domain([firstLight, lastLight])
+    .range([
+      'dawn',
+      'early-morning',
+      'morning',
+      'mid-morning',
+      'noon',
+      'afternoon',
+      'evening',
+      'dusk',
+      'night'
+    ])
+
+  return (now >= lastLight || now <= firstLight) ? 'midnight' : scale(now)
+}
+
+const parseWeather = (key, data, settings) => {
+  const timeZone = tzlookup(data.coord.lat, data.coord.lon)
+  const time = (data.weather[0].icon.slice(-1) === 'd') ? 'day' : 'night'
+  const code = data.weather[0].id
+  const moon = getMoonPhaseScene(data.coord.lat, data.coord.lon)
+
+  // Convert Temperature to Feels Like
+  const feelsLikeKelvin = new Feels({
+    temp: data.main.temp,
+    humidity: data.main.humidity,
+    speed: data.wind.speed,
+    units: {
+      temp: 'k',
+      speed: 'mps'
     }
+  }).like()
+
+  const sunrise = parseInt(moment.tz(data.sys.sunrise * 1000, timeZone).add(-40, 'minutes').format('x'))
+  const sunset = parseInt(moment.tz(data.sys.sunset * 1000, timeZone).add(40, 'minutes').format('x'))
+  const now = parseInt(moment.tz(timeZone).format('x'))
+
+  const sunNext = (now > sunrise && now <= sunset) ? 'sunset' : 'sunrise'
+
+  let weather = {
+    key: key,
+    id: data.id,
+    city: data.name,
+    time_zone: timeZone,
+    temp_actual: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp) : kelvinToCelcius(data.main.temp),
+    temp_min: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp_min) : kelvinToCelcius(data.main.temp_min),
+    temp_max: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp_max) : kelvinToCelcius(data.main.temp_max),
+    temp_feels_like: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(feelsLikeKelvin) : kelvinToCelcius(feelsLikeKelvin),
+    wind_speed: (settings.units_wind_speed === 'mph') ? mpsToMph(data.wind.speed) + ' MPH' : Math.round(data.wind.speed) + ' MPS',
+    wind_direction: degreesToDirection(data.wind.deg),
+    condition_icon: (time === 'night' && (code === 800 || code === 951)) ? getMoonPhaseIcon() : getWeatherIcon(code, time),
+    condition_label: data.weather[0].main,
+    sunrise: moment.tz(data.sys.sunrise * 1000, timeZone).format('h:mm A'),
+    sunset: moment.tz(data.sys.sunset * 1000, timeZone).format('h:mm A'),
+    sun_next: sunNext,
+    scene_time: getSceneTime(data.sys.sunrise, data.sys.sunset, timeZone),
+    scene_clouds: (data.clouds.all > 0),
+    scene_fog: (code === 741),
+    scene_lightning: (code >= 200 && code <= 232),
+    scene_moon: (time === 'night'),
+    scene_rain: getRainPercent(code),
+    scene_snow: (code >= 600 && code <= 622),
+    scene_stars: (getRainPercent(code) === 0),
+    scene_sun: (time === 'day'),
+    scene_thunderstorm: (code >= 200 && code <= 232),
+    moon_name: moon.name,
+    moon_fraction: moon.fraction,
+    moon_phase: moon.phase,
+    moon_angle: moon.angle,
+    moon_altitude: moon.altitude,
+    moon_azimuth: moon.azimuth,
+    moon_distance: moon.distance,
+    moon_parallactic_angle: moon.parallacticAngle
   }
 
   return weather
@@ -355,9 +452,9 @@ export default {
   getMoonPhase,
   kelvinToCelcius,
   kelvinToFahrenheit,
-  offsetToTimeZone,
   parseWeather,
   prepMenubarWeather,
   titleCase,
-  getWeatherIcon
+  getWeatherIcon,
+  mpsToMph
 }

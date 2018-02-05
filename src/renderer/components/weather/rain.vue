@@ -1,21 +1,29 @@
 <template>
-  <div class="rain-wrapper">
-    <div class="rain front-row">
-      <div class="drop" v-for="drop in rain" :style="rainDrop('front', drop)" :key="drop">
-        <div class="stem" :style="rainDropStem"></div>
+  <transition name="fade" mode="out-in">
+    <div class="rain-wrapper">
+      <div class="rain front-row">
+        <div class="drop" v-for="drop in rain" :style="rainDrop('front', drop)" :key="drop">
+          <div class="stem" :style="rainDropStem"></div>
+        </div>
+      </div>
+      <div class="rain back-row">
+        <div class="drop" v-for="drop in rain" :style="rainDrop('back', drop)" :key="drop">
+          <div class="stem" :style="rainDropStem"></div>
+        </div>
       </div>
     </div>
-    <div class="rain back-row">
-      <div class="drop" v-for="drop in rain" :style="rainDrop('back', drop)" :key="drop">
-        <div class="stem" :style="rainDropStem"></div>
-      </div>
-    </div>
-  </div>
+  </transition>
 </template>
 
 <script>
   export default {
     name: 'rain',
+    props: {
+      rain: {
+        type: Number,
+        default: 0
+      }
+    },
     methods: {
       rainDrop (location, drop) {
         const randomHundred = Math.floor(Math.random() * 100)
