@@ -3,10 +3,10 @@
     <div class="main-weather">
       <div class="left">
 				<div class="current-temp">
-					{{ data.temp_actual }}<span class="degree">&deg;</span>
+					{{ animatedTempActual }}<span class="degree">&deg;</span>
 				</div>
 				<div class="feels-like-temp">
-					Feels Like {{ data.temp_feels_like }}<span class="degree">&deg;</span>
+					Feels Like {{ animatedTempFeelsLike }}<span class="degree">&deg;</span>
 				</div>
 			</div>
 
@@ -36,8 +36,8 @@
 			</div>
 
       <div class="right">
-        <h1>{{ data.condition_label }}</h1>
         <h3>{{ data.city }}</h3>
+        <h1>{{ data.condition_label }}</h1>
 			</div>
     </div>
 
@@ -100,36 +100,78 @@
             condition_icon: 'wi-na',
             condition_label: 'Unknown',
             id: null,
-            key: 'current',
+            key: null,
+            moon_angle: null,
+            moon_fraction: null,
+            moon_phase: null,
+            moon_position: null,
+            scene_cloud_percent: null,
             scene_clouds: false,
             scene_fog: false,
             scene_lightning: false,
             scene_moon: false,
-            scene_rain: 0,
+            scene_rain: false,
             scene_snow: false,
             scene_stars: false,
             scene_sun: false,
             scene_thunderstorm: false,
             scene_time: 'midnight',
+            scene_wind_direction: null,
+            scene_wind_speed: null,
+            sun_next: null,
+            sun_position: null,
             sunrise: null,
             sunset: null,
-            sun_next: null,
-            temp_actual: 0,
-            temp_feels_like: 0,
-            temp_max: 0,
-            temp_min: 0,
+            temp_actual: null,
+            temp_feels_like: null,
+            temp_max: null,
+            temp_min: null,
             time_zone: null,
-            wind_direction: 'N',
-            wind_speed: 0,
-            moon_name: null,
-            moon_fraction: null,
-            moon_phase: null,
-            moon_angle: null,
-            moon_altitude: null,
-            moon_azimuth: null,
-            moon_distance: null,
-            moon_parallactic_angle: null
+            wind_direction: null,
+            wind_speed: null
           }
+        }
+      }
+    },
+    data () {
+      return {
+        timers: {
+          temp_actual: null,
+          temp_feels_like: null
+        },
+        animatedTempActual: this.data.temp_actual,
+        animatedTempFeelsLike: this.data.temp_feels_like
+      }
+    },
+    watch: {
+      data: function (newValue, oldValue) {
+        this.tweenTempActual(oldValue.temp_actual, newValue.temp_actual)
+        this.tweenTempFeelsLike(oldValue.temp_feels_like, newValue.temp_feels_like)
+      }
+    },
+    methods: {
+      tweenTempActual (start, end) {
+        clearTimeout(this.timers.temp_actual)
+
+        this.animatedTempActual = start
+
+        if (start !== end) {
+          setTimeout(() => {
+            const next = (start < end) ? start + 1 : start - 1
+            this.tweenTempActual(next, end)
+          }, 10)
+        }
+      },
+      tweenTempFeelsLike (start, end) {
+        clearTimeout(this.timers.temp_feels_like)
+
+        this.animatedTempFeelsLike = start
+
+        if (start !== end) {
+          setTimeout(() => {
+            const next = (start < end) ? start + 1 : start - 1
+            this.tweenTempFeelsLike(next, end)
+          }, 10)
         }
       }
     }

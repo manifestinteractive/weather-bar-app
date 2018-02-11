@@ -11,10 +11,21 @@
 		width: 120px;
 		font-size: 60px;
     text-align: center;
+		line-height: 60px;
 	}
 
 	.right {
 		width: calc(100% - 120px);
+
+		h3 {
+			margin: 0;
+			padding: 0;
+			font-weight: 400;
+			line-height: 14px;
+			font-size: 14px;
+			letter-spacing: 0.75px;
+			opacity: 0.65;
+		}
 
 		h1 {
 			margin: 0;
@@ -24,15 +35,6 @@
 			margin-top: 8px;
 			font-size: 22px;
 			letter-spacing: 1px;
-		}
-
-		h3 {
-			margin: 0;
-			padding: 0;
-			font-weight: 400;
-			line-height: 24px;
-			font-size: 14px;
-			letter-spacing: 0.75px;
 		}
 	}
 }

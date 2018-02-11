@@ -2,7 +2,7 @@ import Feels from 'feels'
 import moment from 'moment-timezone'
 
 import { scaleQuantize } from 'd3-scale'
-import { getMoonPosition, getMoonIllumination } from 'suncalc'
+import { getTimes, getPosition, getMoonPosition, getMoonIllumination } from 'suncalc'
 import * as tzlookup from 'tz-lookup'
 
 const celsiusToFahrenheit = (temp) => {
@@ -345,7 +345,6 @@ const getWeatherIcon = (code, time) => {
 }
 
 const getRainPercent = (code) => {
-  // heavy rain
   if (code === 202 || code === 212 || code === 502 || code === 503 || code === 504 || code === 522 || code === 202 || code === 202) {
     return 100
   } else if (code >= 200 && code <= 232) {
@@ -359,26 +358,71 @@ const getRainPercent = (code) => {
   return 0
 }
 
-const getSceneTime = (sunrise, sunset, timeZone) => {
-  const firstLight = parseInt(moment.tz(sunrise * 1000, timeZone).add(-40, 'minutes').format('x'))
-  const lastLight = parseInt(moment.tz(sunset * 1000, timeZone).add(40, 'minutes').format('x'))
+const getCloudPercent = (code) => {
+  if (code === 202 || code === 212 || code === 502 || code === 503 || code === 504 || code === 522 || code === 202 || code === 202) {
+    return 100
+  } else if (code >= 200 && code <= 232) {
+    return 80
+  } else if (code >= 500 && code <= 531) {
+    return 60
+  } else if (code >= 300 && code <= 321) {
+    return 40
+  } else if (code >= 801 && code <= 804) {
+    return 20
+  }
+
+  return 0
+}
+
+const getSceneTime = (latitude, longitude, timeZone) => {
   const now = parseInt(moment.tz(timeZone).format('x'))
+  const sunTimes = getTimes(moment.tz(timeZone), latitude, longitude)
 
-  const scale = scaleQuantize()
-    .domain([firstLight, lastLight])
-    .range([
-      'dawn',
-      'early-morning',
-      'morning',
-      'mid-morning',
-      'noon',
-      'afternoon',
-      'evening',
-      'dusk',
-      'night'
-    ])
+  // Match up the calculated sun times for this timezone against CSS class names we have designs for
+  const dawn = parseInt(moment.tz(sunTimes.dawn, timeZone).format('x'))
+  const earlyMorning = parseInt(moment.tz(sunTimes.sunrise, timeZone).format('x'))
+  const morning = parseInt(moment.tz(sunTimes.sunriseEnd, timeZone).format('x'))
+  const midMorning = parseInt(moment.tz(sunTimes.goldenHourEnd, timeZone).format('x'))
+  const noon = parseInt(moment.tz(sunTimes.solarNoon, timeZone).format('x'))
+  const afternoon = parseInt(moment.tz(sunTimes.goldenHour, timeZone).format('x'))
+  const evening = parseInt(moment.tz(sunTimes.sunsetStart, timeZone).format('x'))
+  const dusk = parseInt(moment.tz(sunTimes.sunset, timeZone).format('x'))
+  const night = parseInt(moment.tz(sunTimes.dusk, timeZone).format('x'))
+  const midnight = parseInt(moment.tz(sunTimes.nightEnd, timeZone).format('x'))
 
-  return (now >= lastLight || now <= firstLight) ? 'midnight' : scale(now)
+  if (now >= dawn && now < earlyMorning) {
+    return 'dawn'
+  } else if (now >= earlyMorning && now < morning) {
+    return 'early-morning'
+  } else if (now >= morning && now < midMorning) {
+    return 'morning'
+  } else if (now >= midMorning && now < noon) {
+    return 'mid-morning'
+  } else if (now >= noon && now < afternoon) {
+    return 'noon'
+  } else if (now >= afternoon && now < evening) {
+    return 'afternoon'
+  } else if (now >= evening && now < dusk) {
+    return 'evening'
+  } else if (now >= dusk && now < night) {
+    return 'dusk'
+  } else if (now >= night && now < midnight) {
+    return 'night'
+  } else {
+    return 'midnight'
+  }
+}
+
+const getSunsPosition = (latitude, longitude, timeZone) => {
+  const position = getPosition(moment.tz(timeZone), latitude, longitude)
+
+  return (position.altitude / (Math.PI / 2))
+}
+
+const getMoonsPosition = (latitude, longitude, timeZone) => {
+  const position = getMoonPosition(moment.tz(timeZone), latitude, longitude)
+
+  return (position.altitude / (Math.PI / 2))
 }
 
 const parseWeather = (key, data, settings) => {
@@ -398,46 +442,49 @@ const parseWeather = (key, data, settings) => {
     }
   }).like()
 
-  const sunrise = parseInt(moment.tz(data.sys.sunrise * 1000, timeZone).add(-40, 'minutes').format('x'))
-  const sunset = parseInt(moment.tz(data.sys.sunset * 1000, timeZone).add(40, 'minutes').format('x'))
+  const sunrise = parseInt(moment.tz(data.sys.sunrise * 1000, timeZone).format('x'))
+  const sunset = parseInt(moment.tz(data.sys.sunset * 1000, timeZone).format('x'))
   const now = parseInt(moment.tz(timeZone).format('x'))
-
   const sunNext = (now > sunrise && now <= sunset) ? 'sunset' : 'sunrise'
+  const sunPosition = getSunsPosition(data.coord.lat, data.coord.lon, timeZone)
+  const moonPosition = getMoonsPosition(data.coord.lat, data.coord.lon, timeZone)
+  const thunderstorm = (code >= 200 && code <= 232)
 
   let weather = {
-    key: key,
-    id: data.id,
     city: data.name,
-    time_zone: timeZone,
-    temp_actual: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp) : kelvinToCelcius(data.main.temp),
-    temp_min: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp_min) : kelvinToCelcius(data.main.temp_min),
-    temp_max: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp_max) : kelvinToCelcius(data.main.temp_max),
-    temp_feels_like: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(feelsLikeKelvin) : kelvinToCelcius(feelsLikeKelvin),
-    wind_speed: (settings.units_wind_speed === 'mph') ? mpsToMph(data.wind.speed) + ' MPH' : Math.round(data.wind.speed) + ' MPS',
-    wind_direction: degreesToDirection(data.wind.deg),
     condition_icon: (time === 'night' && (code === 800 || code === 951)) ? getMoonPhaseIcon() : getWeatherIcon(code, time),
-    condition_label: data.weather[0].main,
-    sunrise: moment.tz(data.sys.sunrise * 1000, timeZone).format('h:mm A'),
-    sunset: moment.tz(data.sys.sunset * 1000, timeZone).format('h:mm A'),
-    sun_next: sunNext,
-    scene_time: getSceneTime(data.sys.sunrise, data.sys.sunset, timeZone),
-    scene_clouds: (data.clouds.all > 0),
+    condition_label: titleCase(data.weather[0].description),
+    id: data.id,
+    key: key,
+    moon_angle: moon.angle,
+    moon_fraction: moon.fraction,
+    moon_name: moon.name,
+    moon_phase: (moon.phase === 1) ? 0 : moon.phase,
+    moon_position: moonPosition,
+    scene_clouds: (getCloudPercent(code) > 0),
+    scene_cloud_percent: getCloudPercent(code),
     scene_fog: (code === 741),
     scene_lightning: (code >= 200 && code <= 232),
-    scene_moon: (time === 'night'),
+    scene_moon: (sunPosition <= 0 && moonPosition >= -0.05),
     scene_rain: getRainPercent(code),
     scene_snow: (code >= 600 && code <= 622),
-    scene_stars: (getRainPercent(code) === 0),
-    scene_sun: (time === 'day'),
-    scene_thunderstorm: (code >= 200 && code <= 232),
-    moon_name: moon.name,
-    moon_fraction: moon.fraction,
-    moon_phase: moon.phase,
-    moon_angle: moon.angle,
-    moon_altitude: moon.altitude,
-    moon_azimuth: moon.azimuth,
-    moon_distance: moon.distance,
-    moon_parallactic_angle: moon.parallacticAngle
+    scene_stars: (sunPosition <= -0.05 && !thunderstorm),
+    scene_sun: (sunPosition >= -0.05),
+    scene_thunderstorm: thunderstorm,
+    scene_time: getSceneTime(data.coord.lat, data.coord.lon, timeZone),
+    scene_wind_direction: data.wind.deg,
+    scene_wind_speed: mpsToMph(data.wind.speed),
+    sun_next: sunNext,
+    sun_position: sunPosition,
+    sunrise: moment.tz(data.sys.sunrise * 1000, timeZone).format('h:mm A'),
+    sunset: moment.tz(data.sys.sunset * 1000, timeZone).format('h:mm A'),
+    temp_actual: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp) : kelvinToCelcius(data.main.temp),
+    temp_feels_like: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(feelsLikeKelvin) : kelvinToCelcius(feelsLikeKelvin),
+    temp_max: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp_max) : kelvinToCelcius(data.main.temp_max),
+    temp_min: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp_min) : kelvinToCelcius(data.main.temp_min),
+    time_zone: timeZone,
+    wind_direction: degreesToDirection(data.wind.deg),
+    wind_speed: (settings.units_wind_speed === 'mph') ? mpsToMph(data.wind.speed) + ' MPH' : Math.round(data.wind.speed) + ' MPS'
   }
 
   return weather
@@ -456,5 +503,6 @@ export default {
   prepMenubarWeather,
   titleCase,
   getWeatherIcon,
-  mpsToMph
+  mpsToMph,
+  getSceneTime
 }

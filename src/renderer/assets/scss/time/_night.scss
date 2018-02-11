@@ -12,95 +12,6 @@ $time-night-moon-dark-color: #5a4b50;
   .thunderstorm-wrapper {
     background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.5));
   }
-  .moon-wrapper {
-    top: calc(50% - -100px);
-  }
-  .moon {
-    &:before {
-      background: $time-night-moon-dark-color;
-      box-shadow: inset -10px 0 15px 0 $time-night-moon-color;
-    }
-    &:after {
-      background: $time-night-moon-color;
-    }
-
-    /* NEW MOON */
-    &.moon-new-moon:before {
-      background: $time-night-moon-color;
-    }
-    &.moon-new-moon:after {
-      background: $time-night-moon-dark-color;
-    }
-
-    /* WAXING CRESCENT */
-    &.moon-waxing-crescent:before {
-      background: $time-night-moon-dark-color;
-      box-shadow: inset 35px 0 15px 0 $time-night-moon-color;
-    }
-    &.moon-waxing-crescent:after {
-      background: $time-night-moon-color;
-      box-shadow: inset 0px 0 15px 0 $time-night-moon-dark-color;
-    }
-
-    /* FIRST QUARTER */
-    &.moon-first-quarter:before {
-      background: $time-night-moon-color;
-      box-shadow: inset 55px 0 15px 0 $time-night-moon-dark-color;
-    }
-    &.moon-first-quarter:after {
-      background: $time-night-moon-color;
-      box-shadow: inset 0px 0 15px 0 $time-night-moon-dark-color;
-    }
-
-    /* WAXING GIBBOUS */
-    &.moon-waxing-gibbous:before {
-      background: $time-night-moon-color;
-      box-shadow: inset 35px 0 15px 0 $time-night-moon-dark-color;
-    }
-    &.moon-waxing-gibbous:after {
-      background: $time-night-moon-dark-color;
-      box-shadow: inset 0px 0 15px 0 $time-night-moon-color;
-    }
-
-    /* FULL MOON */
-    &.moon-full-moon:before {
-      background: $time-night-moon-color;
-    }
-    &.moon-full-moon:after {
-      background: $time-night-moon-color;
-      box-shadow: inset 0 0 15px 0 $time-night-moon-color;
-    }
-
-    /* WANING GIBBOUS */
-    &.moon-waning-gibbous:before {
-      background: $time-night-moon-color;
-      box-shadow: inset 35px 0 15px 0 $time-night-moon-dark-color;
-    }
-    &.moon-waning-gibbous:after {
-      background: $time-night-moon-dark-color;
-      box-shadow: inset 0px 0 15px 0 $time-night-moon-color;
-    }
-
-    /* LAST QUARTER */
-    &.moon-last-quarter:before {
-      background: $time-night-moon-color;
-      box-shadow: inset 55px 0 15px 0 $time-night-moon-dark-color;
-    }
-    &.moon-last-quarter:after {
-      background: $time-night-moon-color;
-      box-shadow: inset 0px 0 15px 0 $time-night-moon-dark-color;
-    }
-
-    /* WANING CRESCENT */
-    &.moon-waning-crescent:before {
-      background: $time-night-moon-dark-color;
-      box-shadow: inset 35px 0 15px 0 $time-night-moon-color;
-    }
-    &.moon-waning-crescent:after {
-      background: $time-night-moon-color;
-      box-shadow: inset 0px 0 15px 0 $time-night-moon-dark-color;
-    }
-  }
   .sky {
     background: linear-gradient(to bottom, #3d3942 0%, #765e5e 100%);
   }
@@ -116,7 +27,6 @@ $time-night-moon-dark-color: #5a4b50;
     }
   }
   .sun-wrapper {
-    top: calc(100% + 100px);
     z-index: 0;
   }
   path.svg-mountain-1 {

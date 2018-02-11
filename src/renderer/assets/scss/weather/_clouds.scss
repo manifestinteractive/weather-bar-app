@@ -14,8 +14,6 @@
 	  top: 50px;
 	  width: 200px;
 	  height: 100px;
-		animation: move-cloud 100s linear infinite;
-		animation-delay: -25s;
 		opacity: 0.7;
 		z-index: 25;
 	}
@@ -24,8 +22,6 @@
 	  top: 100px;
 	  width: 300px;
 	  height: 200px;
-		animation: move-cloud 150s linear infinite;
-		animation-delay: 50s;
 		opacity: 0.7;
 		z-index: 26;
 	}
@@ -34,8 +30,6 @@
 	  top: 0;
 	  width: 200px;
 	  height: 100px;
-		animation: move-cloud 200s linear infinite;
-		animation-delay: -100s;
 		opacity: 0.6;
 		z-index: 27;
 	}
@@ -44,8 +38,6 @@
 	  top: 0;
 	  width: 200px;
 	  height: 100px;
-		animation: move-cloud 250s linear infinite;
-		animation-delay: 100s;
 		opacity: 0.5;
 		z-index: 28;
 	}
@@ -54,8 +46,6 @@
 	  top: -50px;
 	  width: 400px;
 	  height: 300px;
-		animation: move-cloud 750s linear infinite;
-		animation-delay: -50s;
 		opacity: 0.4;
 		z-index: 29;
 	}

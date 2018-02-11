@@ -9,12 +9,17 @@
 		<thunderstorm v-if="data.scene_thunderstorm" />
 		<rain v-if="data.scene_rain > 0" :rain="data.scene_rain" />
 		<snow v-if="data.scene_snow" />
-		<clouds v-if="data.scene_clouds" />
+		<clouds v-if="data.scene_clouds" :percent="data.scene_cloud_percent" :speed="data.scene_wind_speed" :direction="data.scene_wind_direction" />
 		<fog v-if="data.scene_fog" />
 
     <!-- SCENERY -->
-		<moon v-if="data.scene_moon" :phase="data.moon_name" />
-		<sun v-if="data.scene_sun" />
+		<moon v-if="data.scene_moon"
+      :angle="data.moon_angle"
+      :fraction="data.moon_fraction"
+      :phase="data.moon_phase"
+      :position="data.moon_position"
+    />
+		<sun v-if="data.scene_sun" :position="data.sun_position" />
     <stars v-if="data.scene_stars" />
 
     <mountains />
@@ -81,44 +86,39 @@
             condition_icon: 'wi-na',
             condition_label: 'Unknown',
             id: null,
-            key: 'current',
+            key: null,
+            moon_angle: null,
+            moon_fraction: null,
+            moon_phase: null,
+            moon_position: null,
+            scene_cloud_percent: null,
             scene_clouds: false,
             scene_fog: false,
             scene_lightning: false,
             scene_moon: false,
-            scene_rain: 0,
+            scene_rain: false,
             scene_snow: false,
             scene_stars: false,
             scene_sun: false,
             scene_thunderstorm: false,
             scene_time: 'midnight',
+            scene_wind_direction: null,
+            scene_wind_speed: null,
+            sun_next: null,
+            sun_position: null,
             sunrise: null,
             sunset: null,
-            sun_next: null,
-            temp_actual: 0,
-            temp_feels_like: 0,
-            temp_max: 0,
-            temp_min: 0,
+            temp_actual: null,
+            temp_feels_like: null,
+            temp_max: null,
+            temp_min: null,
             time_zone: null,
-            wind_direction: 'N',
-            wind_speed: 0,
-            moon_name: null,
-            moon_fraction: null,
-            moon_phase: null,
-            moon_angle: null,
-            moon_altitude: null,
-            moon_azimuth: null,
-            moon_distance: null,
-            moon_parallactic_angle: null
+            wind_direction: null,
+            wind_speed: null
           }
         }
       }
     },
-    data () {
-      return {}
-    },
-    mounted () {},
-    beforeDestroy () {},
     methods: {
       makeClasses () {
         let classes = []

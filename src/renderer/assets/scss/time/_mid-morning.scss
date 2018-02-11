@@ -1,6 +1,5 @@
 .time-mid-morning {
   .moon-wrapper {
-    top: calc(100% + 100px);
     z-index: 0;
   }
   .sky {
@@ -13,8 +12,6 @@
     display: none;
   }
   .sun-wrapper {
-    top: calc(50% + 10px);
-
     .sun {
       background: #f2ffff;
     }
