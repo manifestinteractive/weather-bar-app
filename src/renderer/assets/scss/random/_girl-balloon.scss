@@ -1,0 +1,36 @@
+.random-wrapper {
+  .girl-balloon {
+    position: absolute;
+    bottom: -200px;
+    left: -50px;
+    width: 200px;
+    height: 200px;
+    display: block;
+    background: url('~@/assets/images/girl-balloon.png') center center no-repeat;
+    background-size: contain;
+    z-index: 90;
+    animation: girl-balloon 12s ease-out;
+    transform: translate(10px, 200px);
+    animation-iteration-count: 1;
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes girl-balloon {
+  0% {
+    bottom: -200px;
+    left: -50px;
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-10deg)
+  },
+  50% {
+    transform: rotate(10deg)
+  },
+  100% {
+    bottom: 500px;
+    left: 100px;
+    transform: rotate(-10deg);
+  }
+}

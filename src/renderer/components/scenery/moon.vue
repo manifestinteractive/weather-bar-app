@@ -1,9 +1,11 @@
 <template>
-  <div class="moon-wrapper" :style="getPosition">
-    <div class="moon" :style="getOuterStyle()">
-      <div class="inner" :style="getInnerStyle()"></div>
+  <transition name="fade" mode="out-in">
+    <div class="moon-wrapper" :style="getPosition">
+      <div class="moon" :style="getOuterStyle()">
+        <div class="inner" :style="getInnerStyle()"></div>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -53,11 +55,9 @@
         }
 
         let phase = (this.phase * 2)
-        console.log('inner phase', phase)
 
         if (phase > 1) {
           phase = 2 - phase
-          console.log('inner new phase', phase)
         }
 
         let innerColour = ''
@@ -76,11 +76,7 @@
           }
         }
 
-        // transform: rotate(12deg);
-
         const inner = calcInner(100, phase * 2)
-
-        console.log('inner', inner)
 
         return {
           position: 'absolute',

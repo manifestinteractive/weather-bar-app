@@ -1,0 +1,20 @@
+.random-wrapper {
+  .hot-air-balloon {
+    position: absolute;
+    bottom: 20px;
+    width: 100px;
+    height: 100px;
+    display: block;
+    background: url('~@/assets/images/hot-air-balloon.png') center center no-repeat;
+    background-size: contain;
+    z-index: 90;
+    animation: hot-air-balloon 10s linear;
+    transform: translate(-100px, 0);
+    animation-iteration-count: 1;
+  }
+}
+
+@keyframes hot-air-balloon {
+  from { transform: translate(-100px, 0); }
+  to { transform: translate(300px, -100px); }
+}

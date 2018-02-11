@@ -2,8 +2,6 @@
 	width: 100%;
 
 	.forecast-day {
-		width: calc(100% / 3);
-		float: left;
 		text-align: center;
 		font-size: 14px;
 		color: #FFF;
@@ -42,6 +40,24 @@
 		    top: 8px;
 				margin-right: 4px;
 			}
+		}
+	}
+}
+
+.swiper-container {
+	overflow: visible;
+}
+
+.swiper-pagination {
+	bottom: 120px !important;
+	z-index: 500;
+
+	.swiper-pagination-bullet {
+		background: rgba(255, 255, 255, 0.5) !important;
+		transition: background 0.25s;
+
+		&.swiper-pagination-bullet-active {
+			background: rgba(255, 255, 255, 0.65) !important;
 		}
 	}
 }

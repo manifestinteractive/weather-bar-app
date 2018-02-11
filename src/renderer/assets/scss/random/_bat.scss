@@ -1,0 +1,20 @@
+.random-wrapper {
+  .bat {
+    position: absolute;
+    top: 150px;
+    width: 50px;
+    height: 50px;
+    display: block;
+    background: url('~@/assets/images/bat.gif') center center no-repeat;
+    background-size: contain;
+    z-index: 90;
+    animation: flying-bat 3s linear;
+    transform: translate(-100px, 0);
+    animation-iteration-count: 1;
+  }
+}
+
+@keyframes flying-bat {
+  from { transform: translate(-100px, 0); }
+  to { transform: translate(300px, 100px); }
+}

@@ -22,6 +22,8 @@
 		<sun v-if="data.scene_sun" :position="data.sun_position" />
     <stars v-if="data.scene_stars" />
 
+    <random :time="data.scene_time" :clouds="data.scene_cloud_percent" :thunderstorm="data.scene_thunderstorm" />
+
     <mountains />
 		<trees />
 		<sky />
@@ -66,6 +68,7 @@
   import stars from '../scenery/stars'
   import sun from '../scenery/sun'
   import trees from '../scenery/trees'
+  import random from '../scenery/random'
 
   export default {
     name: 'scene',
@@ -140,6 +143,7 @@
       moon,
       mountains,
       rain,
+      random,
       sky,
       snow,
       stars,

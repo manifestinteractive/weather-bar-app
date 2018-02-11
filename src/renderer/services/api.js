@@ -72,6 +72,18 @@ export default {
       (response) => handleError(response, error)
     )
   },
+  getWeatherForecastById (id, success, error) {
+    api.get(`/v1/weather/forecast/id/${id}`).then(
+      (response) => success && success(response.data),
+      (response) => handleError(response, error)
+    )
+  },
+  getWeatherForecastByGeo (location, success, error) {
+    api.get(`/v1/weather/forecast/geo/${location.latitude}/${location.longitude}`).then(
+      (response) => success && success(response.data),
+      (response) => handleError(response, error)
+    )
+  },
   updateUserSettings (data, success, error) {
     api.post(`/v1/settings/update/${data.uuid}/${data.key}/${data.value}`).then(
       (response) => success && success(response.data),

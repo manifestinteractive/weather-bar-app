@@ -41,10 +41,9 @@
 			</div>
     </div>
 
-		<div class="weather-overview">
-
-			<div class="forecast">
-				<div class="forecast-day">
+    <swiper class="weather-overview" :options="swiperOption">
+      <swiper-slide class="forecast">
+        <div class="forecast-day">
 					<div class="date">
 						Today
 					</div>
@@ -55,8 +54,10 @@
 						{{ data.temp_max }}&deg;<span>|</span>{{ data.temp_min }}&deg;
 					</div>
 				</div>
+      </swiper-slide>
 
-				<div class="forecast-day">
+      <swiper-slide class="forecast">
+        <div class="forecast-day">
 					<div class="date">
 						Fri <span>28</span>
 					</div>
@@ -67,8 +68,10 @@
 						78&deg;<span>|</span>64&deg;
 					</div>
 				</div>
+      </swiper-slide>
 
-				<div class="forecast-day">
+      <swiper-slide class="forecast">
+        <div class="forecast-day">
 					<div class="date">
 						Sat <span>29</span>
 					</div>
@@ -79,8 +82,95 @@
 						77&deg;<span>|</span>66&deg;
 					</div>
 				</div>
-			</div>
-		</div>
+      </swiper-slide>
+
+      <swiper-slide class="forecast">
+        <div class="forecast-day">
+					<div class="date">
+						Today
+					</div>
+					<div class="icon">
+						<i class="wi" :class="data.condition_icon"></i>
+					</div>
+					<div class="high-low">
+						{{ data.temp_max }}&deg;<span>|</span>{{ data.temp_min }}&deg;
+					</div>
+				</div>
+      </swiper-slide>
+
+      <swiper-slide class="forecast">
+        <div class="forecast-day">
+					<div class="date">
+						Fri <span>28</span>
+					</div>
+					<div class="icon">
+						<i class="wi wi-day-sunny"></i>
+					</div>
+					<div class="high-low">
+						78&deg;<span>|</span>64&deg;
+					</div>
+				</div>
+      </swiper-slide>
+
+      <swiper-slide class="forecast">
+        <div class="forecast-day">
+					<div class="date">
+						Sat <span>29</span>
+					</div>
+					<div class="icon">
+						<i class="wi wi-day-storm-showers"></i>
+					</div>
+					<div class="high-low">
+						77&deg;<span>|</span>66&deg;
+					</div>
+				</div>
+      </swiper-slide>
+
+      <swiper-slide class="forecast">
+        <div class="forecast-day">
+					<div class="date">
+						Today
+					</div>
+					<div class="icon">
+						<i class="wi" :class="data.condition_icon"></i>
+					</div>
+					<div class="high-low">
+						{{ data.temp_max }}&deg;<span>|</span>{{ data.temp_min }}&deg;
+					</div>
+				</div>
+      </swiper-slide>
+
+      <swiper-slide class="forecast">
+        <div class="forecast-day">
+					<div class="date">
+						Fri <span>28</span>
+					</div>
+					<div class="icon">
+						<i class="wi wi-day-sunny"></i>
+					</div>
+					<div class="high-low">
+						78&deg;<span>|</span>64&deg;
+					</div>
+				</div>
+      </swiper-slide>
+
+      <swiper-slide class="forecast">
+        <div class="forecast-day">
+					<div class="date">
+						Sat <span>29</span>
+					</div>
+					<div class="icon">
+						<i class="wi wi-day-storm-showers"></i>
+					</div>
+					<div class="high-low">
+						77&deg;<span>|</span>66&deg;
+					</div>
+				</div>
+      </swiper-slide>
+
+      <div class="swiper-pagination" slot="pagination"></div>
+    </swiper>
+
   </div>
 </template>
 
@@ -89,6 +179,9 @@
 </style>
 
 <script>
+  import 'swiper/dist/css/swiper.css'
+  import { swiper, swiperSlide } from 'vue-awesome-swiper'
+
   export default {
     name: 'weather-data',
     props: {
@@ -135,6 +228,15 @@
     },
     data () {
       return {
+        swiperOption: {
+          slidesPerView: 3,
+          slidesPerGroup: 3,
+          spaceBetween: 30,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+          }
+        },
         timers: {
           temp_actual: null,
           temp_feels_like: null
@@ -174,6 +276,10 @@
           }, 10)
         }
       }
+    },
+    components: {
+      swiper,
+      swiperSlide
     }
   }
 </script>

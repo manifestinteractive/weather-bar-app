@@ -1,0 +1,20 @@
+.random-wrapper {
+  .tardis {
+    position: absolute;
+    top: 200px;
+    width: 100px;
+    height: 100px;
+    display: block;
+    background: url('~@/assets/images/tardis.gif') center center no-repeat;
+    background-size: contain;
+    z-index: 90;
+    animation: flying-tardis 6s linear;
+    transform: translate(-100px, 0);
+    animation-iteration-count: infinite;
+  }
+}
+
+@keyframes flying-tardis {
+  from { transform: translate(-100px, 0); }
+  to { transform: translate(300px, -200px); }
+}

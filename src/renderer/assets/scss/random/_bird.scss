@@ -1,0 +1,20 @@
+.random-wrapper {
+  .bird {
+    position: absolute;
+    top: 300px;
+    width: 50px;
+    height: 50px;
+    display: block;
+    background: url('~@/assets/images/bird.gif') center center no-repeat;
+    background-size: contain;
+    z-index: 90;
+    animation: flying-bird 3s linear;
+    transform: translate(-100px, 0);
+    animation-iteration-count: 1;
+  }
+}
+
+@keyframes flying-bird {
+  from { transform: translate(-100px, 0); }
+  to { transform: translate(300px, -100px); }
+}
