@@ -3,16 +3,16 @@
     <div class="main-weather">
       <div class="left">
 				<div class="current-temp">
-					{{ animatedTempActual }}<span class="degree">&deg;</span>
+					{{ data.temp_actual }}<span class="degree">&deg;</span>
 				</div>
 				<div class="feels-like-temp">
-					Feels Like {{ animatedTempFeelsLike }}<span class="degree">&deg;</span>
+					Feels Like {{ data.temp_feels_like }}<span class="degree">&deg;</span>
 				</div>
 			</div>
 
       <div class="right">
 				<div class="current-measure">
-					<i class="wi wi-raindrops"></i> 10%
+					<i class="wi wi-raindrops"></i> {{ data.precipitation }}
 				</div>
 
         <div class="current-measure" v-if="data.sun_next == 'sunset'">
@@ -236,44 +236,6 @@
             el: '.swiper-pagination',
             clickable: true
           }
-        },
-        timers: {
-          temp_actual: null,
-          temp_feels_like: null
-        },
-        animatedTempActual: this.data.temp_actual,
-        animatedTempFeelsLike: this.data.temp_feels_like
-      }
-    },
-    watch: {
-      data: function (newValue, oldValue) {
-        this.tweenTempActual(oldValue.temp_actual, newValue.temp_actual)
-        this.tweenTempFeelsLike(oldValue.temp_feels_like, newValue.temp_feels_like)
-      }
-    },
-    methods: {
-      tweenTempActual (start, end) {
-        clearTimeout(this.timers.temp_actual)
-
-        this.animatedTempActual = start
-
-        if (start !== end) {
-          setTimeout(() => {
-            const next = (start < end) ? start + 1 : start - 1
-            this.tweenTempActual(next, end)
-          }, 10)
-        }
-      },
-      tweenTempFeelsLike (start, end) {
-        clearTimeout(this.timers.temp_feels_like)
-
-        this.animatedTempFeelsLike = start
-
-        if (start !== end) {
-          setTimeout(() => {
-            const next = (start < end) ? start + 1 : start - 1
-            this.tweenTempFeelsLike(next, end)
-          }, 10)
         }
       }
     },

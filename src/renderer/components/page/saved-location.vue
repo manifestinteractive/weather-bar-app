@@ -15,13 +15,15 @@
   import { EventBus } from '../../event-bus'
 
   export default {
-    name: 'index',
+    name: 'saved-location',
     data () {
       return {
+        key: this.$route.params.key,
         weather: null
       }
     },
     beforeRouteUpdate (to, from, next) {
+      this.key = to.params.key
       this.fetchWeather()
       next()
     },
@@ -33,7 +35,7 @@
     },
     methods: {
       fetchWeather () {
-        this.weather = this.$store.getters.getWeather('current')
+        this.weather = this.$store.getters.getWeather(this.key)
       }
     },
     components: {

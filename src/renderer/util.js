@@ -29,6 +29,10 @@ const kelvinToFahrenheit = (temp) => {
   return Math.round(((temp - 273.15) * 1.8) + 32)
 }
 
+const mmToInches = (volume) => {
+  return +(volume / 25.4).toFixed(2)
+}
+
 const mpsToMph = (speed) => {
   return Math.round((speed * 3600 / 1610.3 * 1000) / 1000)
 }
@@ -450,6 +454,10 @@ const parseWeather = (key, data, settings) => {
   const moonPosition = getMoonsPosition(data.coord.lat, data.coord.lon, timeZone)
   const thunderstorm = (code >= 200 && code <= 232)
 
+  const rainPrecipitation = (data.rain && data.rain['3h']) ? data.rain['3h'] : 0
+  const snowPrecipitation = (data.snow && data.snow['3h']) ? data.snow['3h'] : 0
+  const precipitation = mmToInches(rainPrecipitation + snowPrecipitation) + ' IN'
+
   let weather = {
     city: data.name,
     condition_icon: (time === 'night' && (code === 800 || code === 951)) ? getMoonPhaseIcon() : getWeatherIcon(code, time),
@@ -461,6 +469,7 @@ const parseWeather = (key, data, settings) => {
     moon_name: moon.name,
     moon_phase: (moon.phase === 1) ? 0 : moon.phase,
     moon_position: moonPosition,
+    precipitation: precipitation,
     scene_clouds: (getCloudPercent(code) > 0),
     scene_cloud_percent: getCloudPercent(code),
     scene_fog: (code === 741),

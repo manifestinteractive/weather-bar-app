@@ -6,8 +6,7 @@
 
         <div class="scrollable">
           <div class="tiles">
-            <location :current='true' :info="current" @clicked="clicked" />
-            <location v-for="location in locations" :info="location" :key="location.id" @clicked="clicked" />
+            <location v-for="location in locations" v-if="locations && location.hash_key !== 'current'" :info="location" :key="location.id" @clicked="clicked" @deleted="deleted" />
             <location :add='true' @clicked="addLocation" />
           </div>
         </div>
@@ -59,27 +58,45 @@
   import Location from '../ui/location'
   import PageHeader from '../ui/page-header'
 
+  import api from '../../services/api'
+
+  import { EventBus } from '../../event-bus'
+
   export default {
     name: 'saved-locations',
     data () {
       return {
         random: (Math.floor(Math.random() * 10) + 1),
-        current: {
-          city_name: 'Current Location'
-        },
-        locations: this.$store.getters.getSavedLocations
+        locations: null
       }
     },
     mounted () {
-      console.log('locations', this.locations)
+      this.fetchData()
+
+      EventBus.$off('updateSavedLocations')
+      EventBus.$on('updateSavedLocations', this.fetchData)
     },
     methods: {
+      fetchData () {
+        this.locations = this.$store.getters.getSavedLocations || null
+      },
       clicked (data) {
         this.$router.push({
-          name: 'index',
+          name: 'saved-location',
           params: {
             key: data.hash_key
           }
+        })
+      },
+      deleted (data) {
+        const params = {
+          uuid: data.uuid,
+          hash_key: data.hash_key
+        }
+
+        api.deleteSavedLocations(params, (response) => {
+          this.$store.dispatch('deleteLocation', data)
+          this.$store.dispatch('deleteWeather', data)
         })
       },
       addLocation () {

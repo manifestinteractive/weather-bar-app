@@ -1,6 +1,6 @@
 .weather-data .current-conditions {
 	height: 90px;
-	margin-top: 20px;
+	margin-top: 50px;
 	transition: color 0.5s ease;
 
 	.left, .right {
@@ -16,6 +16,7 @@
 
 	.right {
 		width: calc(100% - 120px);
+    padding-right: 10px;
 
 		h3 {
 			margin: 0;
@@ -31,8 +32,8 @@
 			margin: 0;
 			padding: 0;
 	    font-weight: 300;
-	    line-height: 24px;
-			margin-top: 8px;
+	    line-height: 28px;
+			margin-top: 4px;
 			font-size: 22px;
 			letter-spacing: 1px;
 		}

@@ -8,6 +8,9 @@ const mutations = {
     for (let i = 0; i < data.length; i++) {
       state[data[i].hash_key] = data[i]
     }
+  },
+  DELETE_LOCATION (state, data) {
+    delete state[data.hash_key]
   }
 }
 
@@ -26,6 +29,9 @@ const actions = {
   },
   saveLocation ({ commit }, data) {
     commit('SAVE_LOCATION', data)
+  },
+  deleteLocation ({ commit }, data) {
+    commit('DELETE_LOCATION', data)
   }
 }
 

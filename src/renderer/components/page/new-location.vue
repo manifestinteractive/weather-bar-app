@@ -224,6 +224,8 @@
   import PageHeader from '../ui/page-header'
   import api from '../../services/api'
 
+  import util from '../../util'
+
   export default {
     name: 'new-location',
     data () {
@@ -282,7 +284,7 @@
                 time_zone: timeZone
               }
 
-              this.saveLocation(data, 'current')
+              this.saveLocation(data)
             }
           })
         })
@@ -302,14 +304,25 @@
 
         this.saveLocation(data)
       },
-      saveLocation (data, key) {
-        data.hash_key = key || 'hash_' + md5(JSON.stringify(data))
+      saveLocation (data) {
+        data.hash_key = 'hash_' + md5(JSON.stringify(data))
         api.saveLocation(data, (response) => {
           this.$store.dispatch('saveLocation', data)
-          this.$router.push({
-            name: 'index',
-            params: {
-              key: data.hash_key
+
+          api.getCurrentWeatherByGeo(data, (weather) => {
+            if (typeof weather.data !== 'undefined' && typeof weather.data.weather !== 'undefined') {
+              let saveWeather = util.parseWeather(data.hash_key, weather.data, this.$store.state.settings)
+
+              saveWeather.hash_key = data.hash_key
+
+              this.$store.dispatch('saveWeather', saveWeather)
+
+              this.$router.push({
+                name: 'saved-location',
+                params: {
+                  key: data.hash_key
+                }
+              })
             }
           })
         })

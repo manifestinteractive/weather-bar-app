@@ -8,9 +8,14 @@
     background: url('~@/assets/images/hot-air-balloon.png') center center no-repeat;
     background-size: contain;
     z-index: 90;
-    animation: hot-air-balloon 10s linear;
+    animation: hot-air-balloon 15s linear;
     transform: translate(-100px, 0);
     animation-iteration-count: 1;
+
+    &.night {
+      background: url('~@/assets/images/hot-air-balloon-night.png') center center no-repeat;
+      background-size: contain;
+    }
   }
 }
 

@@ -6,9 +6,14 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/:key?',
+      path: '/',
       name: 'index',
       component: require('@/components/page/index').default
+    },
+    {
+      path: '/saved-location/:key?',
+      name: 'saved-location',
+      component: require('@/components/page/saved-location').default
     },
     {
       path: '/saved-locations',

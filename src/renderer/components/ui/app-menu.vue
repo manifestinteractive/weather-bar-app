@@ -17,7 +17,7 @@
 
       <ul>
         <li>
-          <router-link :to="{ name: 'index' }" @click.native="hide">
+          <router-link :to="{ name: 'index' }" exact @click.native="hide">
             <i class="fas fa-fw fa-umbrella"></i> {{ $t('app.menu.currentWeather') }}
           </router-link>
         </li>

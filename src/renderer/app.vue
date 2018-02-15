@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <toast v-if="toastMessage" :toastMessage="toastMessage" />
-    <app-menu />
-    <router-view></router-view>
+    <app-menu v-if="appReady" />
+    <router-view v-if="appReady"></router-view>
   </div>
 </template>
 
@@ -24,13 +24,21 @@
   import { EventBus } from './event-bus'
 
   const TIMER_CURRENT_WEATHER = 60000 // 1 Minute
-  const TIMER_FORECAST_WEATHER = 3600000 // 1 Hour
+  // const TIMER_FORECAST_WEATHER = 3600000 // 1 Hour
 
   export default {
     name: 'weather-bar-app',
     data () {
       return {
+        appReady: false,
         toastMessage: null,
+        status: {
+          currentLocation: false,
+          savedLocations: false,
+          settings: false,
+          uuid: false,
+          weather: false
+        },
         timers: {
           current: null,
           forecast: null
@@ -42,70 +50,73 @@
       clearTimeout(this.timers.forecast)
     },
     created () {
-      this.bindElectronEvents()
       this.getUUID()
       this.getLocation()
-    },
-    mounted () {
-      EventBus.$off('closeToast')
-      EventBus.$on('closeToast', () => {
-        this.toastMessage = null
-      })
-
-      EventBus.$off('showToast')
-      EventBus.$on('showToast', (message) => {
-        this.toastMessage = message
-      })
+      this.bindVueEvents()
+      this.bindElectronEvents()
     },
     methods: {
+      bindVueEvents () {
+        EventBus.$off('closeToast')
+        EventBus.$on('closeToast', () => {
+          this.toastMessage = null
+        })
+
+        EventBus.$off('showToast')
+        EventBus.$on('showToast', (message) => {
+          this.toastMessage = message
+        })
+      },
       bindElectronEvents () {
         if (typeof this.$electron !== 'undefined' && typeof this.$electron.ipcRenderer !== 'undefined') {
+          // User clicked Menu Bar Icon to Open App
           this.$electron.ipcRenderer.removeAllListeners('app-opened')
           this.$electron.ipcRenderer.on('app-opened', () => {
-            this.appOpened()
+            EventBus.$emit('appOpened')
           })
 
+          // User clicked Menu Bar Icon to Close App
           this.$electron.ipcRenderer.removeAllListeners('app-closed')
           this.$electron.ipcRenderer.on('app-closed', () => {
+            EventBus.$emit('appClosed')
             this.$router.push({ name: 'index' })
           })
 
+          // Electron is giving us the users Unique User ID for their Hardware
           this.$electron.ipcRenderer.removeAllListeners('set-uuid')
           this.$electron.ipcRenderer.on('set-uuid', (evt, uuid) => {
-            this.getUserSettings(uuid)
-            this.getSavedLocations(uuid)
+            if (uuid && uuid.length !== 0) {
+              this.getUserSettings(uuid)
+              this.getSavedLocations(uuid)
+              this.updateStatus('uuid')
+            } else {
+              this.toastMessage = 'Error Initializing App. Try Restarting Weather Bar.'
+            }
           })
 
+          // User selected Preferences the Context Menu
           this.$electron.ipcRenderer.removeAllListeners('go-to-preferences')
           this.$electron.ipcRenderer.on('go-to-preferences', (evt) => {
             this.$router.push({ name: 'preferences' })
           })
 
+          // User selected Local Weather the Context Menu
           this.$electron.ipcRenderer.removeAllListeners('go-to-local-weather')
           this.$electron.ipcRenderer.on('go-to-local-weather', (evt) => {
             this.$router.push({ name: 'index' })
           })
 
+          // User selected Saved Locations the Context Menu
           this.$electron.ipcRenderer.removeAllListeners('go-to-saved-locations')
           this.$electron.ipcRenderer.on('go-to-saved-locations', (evt) => {
             this.$router.push({ name: 'saved-locations' })
           })
 
+          // User selected New Location the Context Menu
           this.$electron.ipcRenderer.removeAllListeners('go-to-new-location')
           this.$electron.ipcRenderer.on('go-to-new-location', (evt) => {
             this.$router.push({ name: 'select-page' })
           })
-        }
-      },
-      appOpened () {
-        // @TODO: Here we are going to want to tackle a few things:
-        //
-        // 1. Fetch Weather Data for Saved Locations so it's ready before the user goes to `saved-locations`
-        // 2. Probably a good idea to go ahead and check if our location has changed
-      },
-      getUUID () {
-        if (typeof this.$electron !== 'undefined' && typeof this.$electron.ipcRenderer !== 'undefined') {
-          this.$electron.ipcRenderer.send('get-uuid')
         }
       },
       getLocation () {
@@ -141,60 +152,98 @@
 
               api.saveLocation(data, (response) => {
                 this.$store.dispatch('saveLocation', data)
+                this.updateStatus('currentLocation')
               })
-
-              this.getCurrentWeather()
-              this.getForecastWeather()
             }
           })
-        })
-      },
-      getCurrentWeather () {
-        clearTimeout(this.timers.current)
-        this.timers.current = setTimeout(this.getCurrentWeather, TIMER_CURRENT_WEATHER)
-
-        const location = this.$store.getters.getCurrentLocation
-
-        api.getCurrentWeatherByGeo(location, (weather) => {
-          if (typeof weather.data !== 'undefined' && typeof weather.data.weather !== 'undefined') {
-            const weatherBarData = util.prepMenubarWeather(weather.data, this.$store.state.settings)
-            const weatherData = util.parseWeather('current', weather.data, this.$store.state.settings)
-
-            this.$store.dispatch('saveWeather', weatherData)
-            this.$electron.ipcRenderer.send('set-weather', weatherBarData)
-
-            EventBus.$emit('weatherUpdated')
-          }
-        })
-      },
-      getForecastWeather () {
-        clearTimeout(this.timers.forecast)
-        this.timers.forecast = setTimeout(this.getForecastWeather, TIMER_FORECAST_WEATHER)
-      },
-      getUserSettings (uuid) {
-        api.getUserSettings(uuid, (response) => {
-          if (response.data) {
-            this.$store.dispatch('loadSettings', response.data)
-            this.$electron.ipcRenderer.send('save-settings', response.data)
-          } else {
-            this.initSettings(uuid)
-          }
-        })
-      },
-      initSettings (uuid) {
-        api.initSettings(uuid, (response) => {
-          if (response.data) {
-            this.$store.dispatch('initSettings', response.data)
-            this.$electron.ipcRenderer.send('save-settings', response.data)
-          }
         })
       },
       getSavedLocations (uuid) {
         api.getSavedLocations(uuid, (response) => {
           if (response.data) {
             this.$store.dispatch('updateSavedLocations', response.data)
+            EventBus.$emit('updateSavedLocations', response.data)
+
+            this.updateStatus('savedLocations')
           }
         })
+      },
+      getUserSettings (uuid) {
+        api.getUserSettings(uuid, (response) => {
+          if (response.data) {
+            this.$store.dispatch('loadSettings', response.data)
+            this.$electron.ipcRenderer.send('save-settings', response.data)
+
+            this.updateStatus('settings')
+          } else {
+            this.initSettings(uuid)
+          }
+        })
+      },
+      getUUID () {
+        if (typeof this.$electron !== 'undefined' && typeof this.$electron.ipcRenderer !== 'undefined') {
+          this.$electron.ipcRenderer.send('get-uuid')
+        }
+      },
+      getWeather () {
+        const savedLocations = this.$store.getters.getSavedLocations || {}
+        const total = Object.keys(savedLocations).length
+        let current = 0
+
+        for (let key in savedLocations) {
+          if (!savedLocations.hasOwnProperty(key)) {
+            continue
+          }
+
+          current++
+
+          const location = savedLocations[key]
+
+          api.getCurrentWeatherByGeo(location, (weather) => {
+            if (typeof weather.data !== 'undefined' && typeof weather.data.weather !== 'undefined') {
+              if (location.hash_key === 'current') {
+                this.$electron.ipcRenderer.send('set-weather', util.prepMenubarWeather(weather.data, this.$store.state.settings))
+              }
+
+              let saveWeather = util.parseWeather('current', weather.data, this.$store.state.settings)
+
+              saveWeather.hash_key = location.hash_key
+
+              this.$store.dispatch('saveWeather', saveWeather)
+
+              EventBus.$emit('weatherUpdated', { hash_key: location.hash_key, weather: saveWeather })
+
+              if (current === total) {
+                this.updateStatus('weather')
+              }
+            }
+          })
+        }
+
+        clearTimeout(this.timers.current)
+        this.timers.current = setTimeout(this.getWeather, TIMER_CURRENT_WEATHER)
+      },
+      initSettings (uuid) {
+        api.initSettings(uuid, (response) => {
+          if (response.data) {
+            this.$store.dispatch('initSettings', response.data)
+            this.$electron.ipcRenderer.send('save-settings', response.data)
+
+            this.updateStatus('settings')
+          }
+        })
+      },
+      updateStatus (checked) {
+        if (!this.appReady) {
+          this.status[checked] = true
+
+          if (this.status.currentLocation && this.status.savedLocations && this.status.settings && this.status.uuid && this.status.weather) {
+            this.appReady = true
+            EventBus.$emit('appReady')
+          } else if (this.status.currentLocation && this.status.savedLocations && this.status.settings && this.status.uuid) {
+            this.getWeather()
+          }
+        }
       }
     },
     components: {

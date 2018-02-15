@@ -1,19 +1,14 @@
 <template>
-  <div class="location" @click="handleClick">
+  <div class="location" @click="handleClick" v-if="!isDeleted">
 
     <div class="overlay" v-if="showModal" @click.prevent="preventClick">
-      <a href="#" class="close-button" @click.prevent="closeModal">
+      <a class="close-button" @click.prevent="closeModal">
         <i class="far fa-times"></i>
       </a>
 
       <div class="confirm-delete" v-if="confirmDelete">
         <p>Are you sure you want to delete this location?</p>
-        <button>Delete</button>
-      </div>
-
-      <div class="confirm-primary" v-if="confirmPrimary">
-        <p>Use this city as your primary location?</p>
-        <button>OK</button>
+        <button @click.prevent="confirmedDelete">Delete</button>
       </div>
     </div>
 
@@ -27,34 +22,26 @@
       </div>
     </div>
 
-    <div v-if="info">
-      <a href="#" v-if="!current && !add" class="action delete-button" @click="deleteLocation">
+    <div v-if="info && weather">
+      <a href="#" v-if="!add" class="action delete-button" @click="deleteLocation">
         <i class="far fa-fw fa-trash default"></i>
         <i class="fas fa-fw fa-trash hover"></i>
       </a>
 
-      <a href="#" class="action primary-button" v-if="info.primary" @click.prevent="preventClick">
-        <i class="fas fa-fw fa-star"></i>
-      </a>
-
-      <a href="#" class="action primary-button" v-if="!info.primary" @click="makePrimary(info.primary, $event)">
-        <i class="far fa-fw fa-star"></i>
-      </a>
-
       <div class="weather-temp">
-        {{ getTemp(info.temp) }}
+        {{ this.weather.temp_actual }}&deg;
       </div>
 
       <div class="weather-icon">
-        <i class="wi" :class="getIcon(info.icon)"></i>
+        <i class="wi" :class="this.weather.condition_icon"></i>
       </div>
 
       <div class="name">
-        {{ getName(info.city_name) }}
+        {{ this.weather.city }}
       </div>
 
       <div class="condition">
-        {{ getCondition(info.condition) }}
+        {{ this.weather.condition_label }}
       </div>
 
       <div class="time" v-if="info.time_zone">
@@ -117,18 +104,10 @@
     padding: 10px;
   }
 
-  .primary-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    color: #FFF;
-    padding: 10px;
-  }
-
   .delete-button {
     position: absolute;
     top: 0;
-    right: 20px;
+    right: 0;
     color: #FFF;
     padding: 10px;
   }
@@ -149,7 +128,7 @@
   .time {
     text-align: right;
     line-height: 20px;
-    opacity: 0.4;
+    opacity: 0.8;
     position: absolute;
     top: 8px;
     right: 8px;
@@ -175,7 +154,7 @@
       }
 
       &:hover i.fa-trash {
-        color: #c7254e;
+        color: #FFF;
       }
 
       &:hover {
@@ -218,16 +197,17 @@
     name: 'location',
     props: {
       info: Object,
-      current: Boolean,
       add: Boolean
     },
     data () {
       return {
+        isDeleted: false,
         timer: null,
         currentTime: new Date(),
         showModal: false,
         confirmDelete: false,
-        confirmPrimary: false
+        confirmPrimary: false,
+        weather: null
       }
     },
     beforeDestroy () {
@@ -235,6 +215,7 @@
     },
     mounted () {
       this.timer = setInterval(this.updateTime, 1000)
+      this.getWeather()
     },
     methods: {
       getTemp (temp) {
@@ -249,6 +230,11 @@
       getName (name) {
         const parts = (name) ? name.split(', ') : null
         return (name) ? parts[0].replace(/\(([^)]+)\)/, '').trim() : ''
+      },
+      getWeather () {
+        if (!this.add) {
+          this.weather = this.$store.getters.getWeather(this.info.hash_key)
+        }
       },
       updateTime () {
         this.currentTime = new Date()
@@ -268,15 +254,9 @@
         this.showModal = true
         this.confirmDelete = true
       },
-      makePrimary (isPrimary, event) {
-        if (event) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
-
-        console.log('isPrimary', isPrimary)
-        this.showModal = true
-        this.confirmPrimary = true
+      confirmedDelete () {
+        this.isDeleted = true
+        this.$emit('deleted', this.info)
       },
       closeModal (event) {
         if (event) {

@@ -1,20 +1,28 @@
 const state = {}
 
 const mutations = {
+  DELETE_WEATHER (state, data) {
+    if (data.hasOwnProperty('hash_key')) {
+      delete state[data.hash_key]
+    }
+  },
   SAVE_WEATHER (state, data) {
-    if (data.hasOwnProperty('key')) {
-      state[data.key] = data
+    if (data.hasOwnProperty('hash_key')) {
+      state[data.hash_key] = data
     }
   }
 }
 
 const getters = {
-  getWeather: (state) => (key) => {
-    return (state.hasOwnProperty(key)) ? state[key] : null
+  getWeather: (state) => (hashKey) => {
+    return (state.hasOwnProperty(hashKey)) ? state[hashKey] : null
   }
 }
 
 const actions = {
+  deleteWeather ({ commit }, data) {
+    commit('DELETE_WEATHER', data)
+  },
   saveWeather ({ commit }, data) {
     commit('SAVE_WEATHER', data)
   }

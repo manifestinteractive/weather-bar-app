@@ -101,5 +101,11 @@ export default {
       (response) => success && success(response.data),
       (response) => handleError(response, error)
     )
+  },
+  deleteSavedLocations (data, success, error) {
+    api.delete(`/v1/saved_locations/uuid/${data.uuid}/${data.hash_key}`).then(
+      (response) => success && success(response.data),
+      (response) => handleError(response, error)
+    )
   }
 }
