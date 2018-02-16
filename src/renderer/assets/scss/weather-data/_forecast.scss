@@ -49,15 +49,19 @@
 }
 
 .swiper-pagination {
-	bottom: 120px !important;
+	bottom: 4px !important;
 	z-index: 500;
 
 	.swiper-pagination-bullet {
-		background: rgba(255, 255, 255, 0.5) !important;
+		background: rgba(255, 255, 255, 0.25) !important;
 		transition: background 0.25s;
+		opacity: 1;
+		width: 6px;
+    height: 6px;
 
 		&.swiper-pagination-bullet-active {
-			background: rgba(255, 255, 255, 0.65) !important;
+			background: rgba(255, 255, 255, 0.75) !important;
+			opacity: 1;
 		}
 	}
 }

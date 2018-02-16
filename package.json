@@ -1,6 +1,6 @@
 {
   "name": "weather-bar-app",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "author": "Peter Schmalfeldt <me@peterschmalfeldt.com>",
   "description": "Electron Vue.js Weather Bar App",
   "keywords": [

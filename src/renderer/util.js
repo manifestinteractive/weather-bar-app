@@ -463,7 +463,7 @@ const parseWeather = (key, data, settings) => {
     condition_icon: (time === 'night' && (code === 800 || code === 951)) ? getMoonPhaseIcon() : getWeatherIcon(code, time),
     condition_label: titleCase(data.weather[0].description),
     id: data.id,
-    key: key,
+    hash_key: key,
     moon_angle: moon.angle,
     moon_fraction: moon.fraction,
     moon_name: moon.name,
@@ -499,6 +499,45 @@ const parseWeather = (key, data, settings) => {
   return weather
 }
 
+const parseWeatherForecast = (key, data, settings) => {
+  if (!data || data.length === 0) {
+    return []
+  }
+
+  const timeZone = tzlookup(data.city.coord.lat, data.city.coord.lon)
+  const forecast = []
+
+  const todayLabel = moment.tz(timeZone).format('ddd')
+  const todayNumber = moment.tz(timeZone).format('D')
+  const firstDayLabel = moment.tz(data.list[0].dt * 1000, timeZone).format('ddd')
+  const firstDayNumber = moment.tz(data.list[0].dt * 1000, timeZone).format('D')
+
+  // Since the data is cached for an hour, it's possible that the first day might be yesterday
+  const firstDayIsToday = (firstDayLabel === todayLabel && firstDayNumber === todayNumber)
+
+  for (let i = 0; i < data.list.length; i++) {
+    const code = data.list[i].weather[0].id
+    const time = (data.list[i].weather[0].icon.slice(-1) === 'd') ? 'day' : 'night'
+
+    if ((i === 0 && !firstDayIsToday) || (i === (data.list.length - 1) && firstDayIsToday)) {
+      continue
+    }
+
+    forecast.push({
+      day_label: (i === 0 || (!firstDayIsToday && i === 1)) ? 'Today' : moment.tz(data.list[i].dt * 1000, timeZone).format('ddd'),
+      day_number: (i === 0 || (!firstDayIsToday && i === 1)) ? null : moment.tz(data.list[i].dt * 1000, timeZone).format('D'),
+      condition_icon: (time === 'night' && (code === 800 || code === 951)) ? getMoonPhaseIcon() : getWeatherIcon(code, time),
+      temp_max: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.list[i].temp.max) : kelvinToCelcius(data.list[i].temp.max),
+      temp_min: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.list[i].temp.min) : kelvinToCelcius(data.list[i].temp.min)
+    })
+  }
+
+  return {
+    hash_key: key,
+    forecast: forecast
+  }
+}
+
 export default {
   celsiusToFahrenheit,
   celsiusToKelvin,
@@ -509,6 +548,7 @@ export default {
   kelvinToCelcius,
   kelvinToFahrenheit,
   parseWeather,
+  parseWeatherForecast,
   prepMenubarWeather,
   titleCase,
   getWeatherIcon,

@@ -42,128 +42,17 @@
     </div>
 
     <swiper class="weather-overview" :options="swiperOption">
-      <swiper-slide class="forecast">
-        <div class="forecast-day">
-					<div class="date">
-						Today
-					</div>
-					<div class="icon">
-						<i class="wi" :class="data.condition_icon"></i>
-					</div>
-					<div class="high-low">
-						{{ data.temp_max }}&deg;<span>|</span>{{ data.temp_min }}&deg;
-					</div>
-				</div>
-      </swiper-slide>
 
-      <swiper-slide class="forecast">
+      <swiper-slide class="forecast" v-for="(day, index) in forecast" :key="index">
         <div class="forecast-day">
 					<div class="date">
-						Fri <span>28</span>
+						{{ day.day_label }} <span>{{ day.day_number }}</span>
 					</div>
 					<div class="icon">
-						<i class="wi wi-day-sunny"></i>
+						<i class="wi" :class="day.condition_icon"></i>
 					</div>
 					<div class="high-low">
-						78&deg;<span>|</span>64&deg;
-					</div>
-				</div>
-      </swiper-slide>
-
-      <swiper-slide class="forecast">
-        <div class="forecast-day">
-					<div class="date">
-						Sat <span>29</span>
-					</div>
-					<div class="icon">
-						<i class="wi wi-day-storm-showers"></i>
-					</div>
-					<div class="high-low">
-						77&deg;<span>|</span>66&deg;
-					</div>
-				</div>
-      </swiper-slide>
-
-      <swiper-slide class="forecast">
-        <div class="forecast-day">
-					<div class="date">
-						Today
-					</div>
-					<div class="icon">
-						<i class="wi" :class="data.condition_icon"></i>
-					</div>
-					<div class="high-low">
-						{{ data.temp_max }}&deg;<span>|</span>{{ data.temp_min }}&deg;
-					</div>
-				</div>
-      </swiper-slide>
-
-      <swiper-slide class="forecast">
-        <div class="forecast-day">
-					<div class="date">
-						Fri <span>28</span>
-					</div>
-					<div class="icon">
-						<i class="wi wi-day-sunny"></i>
-					</div>
-					<div class="high-low">
-						78&deg;<span>|</span>64&deg;
-					</div>
-				</div>
-      </swiper-slide>
-
-      <swiper-slide class="forecast">
-        <div class="forecast-day">
-					<div class="date">
-						Sat <span>29</span>
-					</div>
-					<div class="icon">
-						<i class="wi wi-day-storm-showers"></i>
-					</div>
-					<div class="high-low">
-						77&deg;<span>|</span>66&deg;
-					</div>
-				</div>
-      </swiper-slide>
-
-      <swiper-slide class="forecast">
-        <div class="forecast-day">
-					<div class="date">
-						Today
-					</div>
-					<div class="icon">
-						<i class="wi" :class="data.condition_icon"></i>
-					</div>
-					<div class="high-low">
-						{{ data.temp_max }}&deg;<span>|</span>{{ data.temp_min }}&deg;
-					</div>
-				</div>
-      </swiper-slide>
-
-      <swiper-slide class="forecast">
-        <div class="forecast-day">
-					<div class="date">
-						Fri <span>28</span>
-					</div>
-					<div class="icon">
-						<i class="wi wi-day-sunny"></i>
-					</div>
-					<div class="high-low">
-						78&deg;<span>|</span>64&deg;
-					</div>
-				</div>
-      </swiper-slide>
-
-      <swiper-slide class="forecast">
-        <div class="forecast-day">
-					<div class="date">
-						Sat <span>29</span>
-					</div>
-					<div class="icon">
-						<i class="wi wi-day-storm-showers"></i>
-					</div>
-					<div class="high-low">
-						77&deg;<span>|</span>66&deg;
+						{{ day.temp_max }}&deg;<span>|</span>{{ day.temp_min }}&deg;
 					</div>
 				</div>
       </swiper-slide>
@@ -224,6 +113,9 @@
             wind_speed: null
           }
         }
+      },
+      forecast: {
+        type: Array
       }
     },
     data () {
@@ -231,7 +123,7 @@
         swiperOption: {
           slidesPerView: 3,
           slidesPerGroup: 3,
-          spaceBetween: 30,
+          spaceBetween: 0,
           pagination: {
             el: '.swiper-pagination',
             clickable: true

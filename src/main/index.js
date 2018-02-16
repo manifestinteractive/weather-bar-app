@@ -57,7 +57,8 @@ const mb = menubar({
   height: 480,
   alwaysOnTop: true,
   title: 'Menu Bar',
-  preloadWindow: true
+  preloadWindow: true,
+  resizable: false
 })
 
 mb.on('ready', function ready () {

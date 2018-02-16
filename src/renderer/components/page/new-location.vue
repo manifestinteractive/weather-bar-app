@@ -235,6 +235,10 @@
         selectedCity: null,
         noResults: false,
         cities: [],
+        status: {
+          weather: false,
+          forecast: false
+        },
         settings: this.$store.getters.getSettings
       }
     },
@@ -313,19 +317,32 @@
             if (typeof weather.data !== 'undefined' && typeof weather.data.weather !== 'undefined') {
               let saveWeather = util.parseWeather(data.hash_key, weather.data, this.$store.state.settings)
 
-              saveWeather.hash_key = data.hash_key
-
               this.$store.dispatch('saveWeather', saveWeather)
+              this.goToNewLocation('weather', data.hash_key)
+            }
+          })
 
-              this.$router.push({
-                name: 'saved-location',
-                params: {
-                  key: data.hash_key
-                }
-              })
+          api.getWeatherForecastByGeo(data, (weather) => {
+            if (typeof weather.data !== 'undefined' && typeof weather.data.list !== 'undefined') {
+              let saveForecast = util.parseWeatherForecast(data.hash_key, weather.data, this.$store.state.settings)
+
+              this.$store.dispatch('saveForecast', saveForecast)
+              this.goToNewLocation('forecast', data.hash_key)
             }
           })
         })
+      },
+      goToNewLocation (check, hashKey) {
+        this.status[check] = true
+
+        if (this.status.weather && this.status.forecast) {
+          this.$router.push({
+            name: 'saved-location',
+            params: {
+              key: hashKey
+            }
+          })
+        }
       }
     },
     components: {

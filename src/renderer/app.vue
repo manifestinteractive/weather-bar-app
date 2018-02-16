@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <toast v-if="toastMessage" :toastMessage="toastMessage" />
+    <loading v-if="!appReady" />
     <app-menu v-if="appReady" />
-    <router-view v-if="appReady"></router-view>
+    <router-view v-if="appReady" />
   </div>
 </template>
 
@@ -17,6 +18,7 @@
   import * as tzlookup from 'tz-lookup'
 
   import appMenu from './components/ui/app-menu'
+  import loading from './components/ui/loading'
   import toast from './components/ui/toast'
   import api from './services/api'
   import util from './util'
@@ -24,7 +26,7 @@
   import { EventBus } from './event-bus'
 
   const TIMER_CURRENT_WEATHER = 60000 // 1 Minute
-  // const TIMER_FORECAST_WEATHER = 3600000 // 1 Hour
+  const TIMER_FORECAST_WEATHER = 3600000 // 1 Hour
 
   export default {
     name: 'weather-bar-app',
@@ -37,7 +39,8 @@
           savedLocations: false,
           settings: false,
           uuid: false,
-          weather: false
+          weather: false,
+          forecast: false
         },
         timers: {
           current: null,
@@ -195,8 +198,6 @@
             continue
           }
 
-          current++
-
           const location = savedLocations[key]
 
           api.getCurrentWeatherByGeo(location, (weather) => {
@@ -205,13 +206,13 @@
                 this.$electron.ipcRenderer.send('set-weather', util.prepMenubarWeather(weather.data, this.$store.state.settings))
               }
 
-              let saveWeather = util.parseWeather('current', weather.data, this.$store.state.settings)
-
-              saveWeather.hash_key = location.hash_key
+              let saveWeather = util.parseWeather(location.hash_key, weather.data, this.$store.state.settings)
 
               this.$store.dispatch('saveWeather', saveWeather)
 
               EventBus.$emit('weatherUpdated', { hash_key: location.hash_key, weather: saveWeather })
+
+              current++
 
               if (current === total) {
                 this.updateStatus('weather')
@@ -222,6 +223,38 @@
 
         clearTimeout(this.timers.current)
         this.timers.current = setTimeout(this.getWeather, TIMER_CURRENT_WEATHER)
+      },
+      getForecast () {
+        const savedLocations = this.$store.getters.getSavedLocations || {}
+        const total = Object.keys(savedLocations).length
+        let current = 0
+
+        for (let key in savedLocations) {
+          if (!savedLocations.hasOwnProperty(key)) {
+            continue
+          }
+
+          const location = savedLocations[key]
+
+          api.getWeatherForecastByGeo(location, (weather) => {
+            if (typeof weather.data !== 'undefined' && typeof weather.data.list !== 'undefined') {
+              let saveForecast = util.parseWeatherForecast(location.hash_key, weather.data, this.$store.state.settings)
+
+              this.$store.dispatch('saveForecast', saveForecast)
+
+              EventBus.$emit('weatherForecastUpdated', { hash_key: location.hash_key, weather: saveForecast })
+
+              current++
+
+              if (current === total) {
+                this.updateStatus('forecast')
+              }
+            }
+          })
+        }
+
+        clearTimeout(this.timers.forecast)
+        this.timers.forecast = setTimeout(this.getForecast, TIMER_FORECAST_WEATHER)
       },
       initSettings (uuid) {
         api.initSettings(uuid, (response) => {
@@ -237,17 +270,21 @@
         if (!this.appReady) {
           this.status[checked] = true
 
-          if (this.status.currentLocation && this.status.savedLocations && this.status.settings && this.status.uuid && this.status.weather) {
+          if (this.status.currentLocation && this.status.savedLocations && this.status.settings && this.status.uuid && this.status.weather && this.status.forecast) {
             this.appReady = true
             EventBus.$emit('appReady')
-          } else if (this.status.currentLocation && this.status.savedLocations && this.status.settings && this.status.uuid) {
+            EventBus.$emit('weatherReady')
+          } else if (this.status.currentLocation && this.status.savedLocations && this.status.settings && this.status.uuid && !this.status.weather && !this.status.forecast) {
             this.getWeather()
+          } else if (this.status.currentLocation && this.status.savedLocations && this.status.settings && this.status.uuid && this.status.weather && !this.status.forecast) {
+            this.getForecast()
           }
         }
       }
     },
     components: {
       appMenu,
+      loading,
       toast
     }
   }

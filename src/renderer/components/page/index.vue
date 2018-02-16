@@ -1,8 +1,8 @@
 <template>
   <transition name="fade" mode="out-in">
-    <div class="router-view home-page" v-if="weather">
+    <div class="router-view home-page" v-if="weather && forecast">
       <scene :data='weather'>
-        <weather-data slot="weather-data" :data='weather' />
+        <weather-data slot="weather-data" :data='weather' :forecast='forecast' />
       </scene>
     </div>
   </transition>
@@ -14,26 +14,35 @@
 
   import { EventBus } from '../../event-bus'
 
+  const TIMER_CURRENT_WEATHER = 60000
+
   export default {
     name: 'index',
     data () {
       return {
-        weather: null
+        timer: null,
+        weather: null,
+        forecast: null
       }
     },
-    beforeRouteUpdate (to, from, next) {
-      this.fetchWeather()
-      next()
-    },
-    mounted () {
-      this.fetchWeather()
-
+    created () {
       EventBus.$off('appReady')
       EventBus.$on('appReady', this.fetchWeather)
     },
+    mounted () {
+      this.fetchWeather()
+    },
+    beforeDestroy () {
+      clearTimeout(this.timer)
+    },
     methods: {
       fetchWeather () {
+        clearTimeout(this.timer)
+
         this.weather = this.$store.getters.getWeather('current')
+        this.forecast = this.$store.getters.getForecast('current')
+
+        this.timer = setTimeout(this.fetchWeather, TIMER_CURRENT_WEATHER)
       }
     },
     components: {

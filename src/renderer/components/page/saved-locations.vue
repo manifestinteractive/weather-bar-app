@@ -97,6 +97,7 @@
         api.deleteSavedLocations(params, (response) => {
           this.$store.dispatch('deleteLocation', data)
           this.$store.dispatch('deleteWeather', data)
+          this.$store.dispatch('deleteForecast', data)
         })
       },
       addLocation () {
