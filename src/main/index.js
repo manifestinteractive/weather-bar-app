@@ -52,11 +52,11 @@ app.on('web-contents-created', (event, contents) => {
 // Setup Main Weather Bar App
 const mb = menubar({
   index: (process.env.NODE_ENV === 'development') ? 'http://localhost:9080' : `file://${__dirname}/index.html`,
-  icon: path.join(__static, '/iconTemplate.png'),
+  icon: util.getAppIcon(),
   width: 280,
   height: 480,
   alwaysOnTop: true,
-  title: 'Menu Bar',
+  title: 'Weather Bar',
   preloadWindow: true,
   resizable: false
 })
@@ -242,7 +242,8 @@ mb.on('after-create-window', () => {
       mb.tray.popUpContextMenu(contextMenu)
     })
   } else {
-    mb.tray.setToolTip('Toggle Weather Bar')
+    const toolTip = (mb.window.isVisible()) ? 'Close Weather Bar' " 'Open Weather Bar'"
+    mb.tray.setToolTip(toolTip)
   }
 
   mb.tray.on('click', () => {

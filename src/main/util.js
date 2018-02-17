@@ -35,6 +35,17 @@ const setWeather = (mb, data) => {
   }
 }
 
+const getAppIcon = () => {
+  if (process.platform === 'darwin') {
+    return path.join(__static, 'iconTemplate.png')
+  } else if (process.platform === 'win32') {
+    return path.join(__static, 'icon.ico')
+  } else {
+    return mb.tray.setImage(path.join(__static, 'icon.png')
+  }
+}
+
 export default {
-  setWeather
+  setWeather,
+  getAppIcon
 }
