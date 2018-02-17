@@ -5,7 +5,7 @@
     </div>
 
     <div class="quit-app" @click.prevent="quitApp" v-if="platform === 'linux'">
-      Quit
+      <i class="fas fa-fw fa-window-close"></i>&nbsp; Quit
     </div>
 
     <div class="menu-wrapper" :class="{ open: open }">
@@ -71,13 +71,13 @@
   .quit-app {
     color: #FFF;
     position: absolute;
-    top: 20px;
+    top: 24px;
     left: 20px;
     z-index: 500;
     text-transform: uppercase;
-    font-size: 14px;
-    opacity: 0.5;
-    transition: opactiy 0.25s ease-in-out;
+    font-size: 12px;
+    opacity: 0.35;
+    transition: all 0.25s;
     cursor: pointer;
 
     &:hover {
