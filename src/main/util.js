@@ -41,7 +41,7 @@ const getAppIcon = () => {
   } else if (process.platform === 'win32') {
     return path.join(__static, 'icon.ico')
   } else {
-    return mb.tray.setImage(path.join(__static, 'icon.png')
+    return path.join(__static, 'icon.png')
   }
 }
 

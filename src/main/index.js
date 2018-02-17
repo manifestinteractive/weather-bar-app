@@ -242,7 +242,7 @@ mb.on('after-create-window', () => {
       mb.tray.popUpContextMenu(contextMenu)
     })
   } else {
-    const toolTip = (mb.window.isVisible()) ? 'Close Weather Bar' " 'Open Weather Bar'"
+    const toolTip = (mb.window.isVisible()) ? 'Close Weather Bar' : 'Open Weather Bar'
     mb.tray.setToolTip(toolTip)
   }
 
