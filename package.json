@@ -38,8 +38,8 @@
   },
   "build": {
     "productName": "Weather Bar",
+    "copyright": "Copyright © 2018 Manifest Interactive",
     "appId": "org.simulatedgreg.electron-vue",
-    "category": "public.app-category.weather",
     "directories": {
       "output": "build"
     },
@@ -67,12 +67,14 @@
       ]
     },
     "mac": {
+      "category": "public.app-category.weather",
       "icon": "build/icons/icon.icns"
     },
     "win": {
       "icon": "build/icons/icon.ico"
     },
     "linux": {
+      "category": "Utility",
       "icon": "build/icons/icon.png"
     }
   },
