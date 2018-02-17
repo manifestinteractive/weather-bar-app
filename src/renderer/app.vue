@@ -118,7 +118,7 @@
           // User selected New Location the Context Menu
           this.$electron.ipcRenderer.removeAllListeners('go-to-new-location')
           this.$electron.ipcRenderer.on('go-to-new-location', (evt) => {
-            this.$router.push({ name: 'select-page' })
+            this.$router.push({ name: 'new-location' })
           })
         }
       },
@@ -236,13 +236,13 @@
 
           const location = savedLocations[key]
 
-          api.getWeatherForecastByGeo(location, (weather) => {
-            if (typeof weather.data !== 'undefined' && typeof weather.data.list !== 'undefined') {
-              let saveForecast = util.parseWeatherForecast(location.hash_key, weather.data, this.$store.state.settings)
+          api.getWeatherForecastByGeo(location, (forecast) => {
+            if (typeof forecast.data !== 'undefined' && typeof forecast.data.list !== 'undefined') {
+              let saveForecast = util.parseWeatherForecast(location.hash_key, forecast.data, this.$store.state.settings)
 
               this.$store.dispatch('saveForecast', saveForecast)
 
-              EventBus.$emit('weatherForecastUpdated', { hash_key: location.hash_key, weather: saveForecast })
+              EventBus.$emit('weatherForecastUpdated', { hash_key: location.hash_key, forecast: saveForecast })
 
               current++
 

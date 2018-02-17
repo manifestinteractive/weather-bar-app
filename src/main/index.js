@@ -146,12 +146,14 @@ mb.on('after-create-window', () => {
       type: 'separator'
     },
     {
-      label: 'Preferences...',
-      accelerator: 'Cmd+,',
+      label: 'Toggle Weather Bar',
       click () {
-        mb.window.send('go-to-preferences')
-        if (!mb.window.isVisible()) {
-          mb.showWindow()
+        if (mb.window.isVisible()) {
+          mb.window.send('app-closed')
+          mb.window.hide()
+        } else {
+          mb.window.send('app-opened')
+          mb.window.show()
         }
       }
     },
@@ -181,7 +183,6 @@ mb.on('after-create-window', () => {
     },
     {
       label: 'Local Weather',
-      accelerator: 'Cmd+L',
       click () {
         mb.window.send('go-to-local-weather')
         if (!mb.window.isVisible()) {
@@ -191,7 +192,6 @@ mb.on('after-create-window', () => {
     },
     {
       label: 'Saved Locations',
-      accelerator: 'Cmd+S',
       click () {
         mb.window.send('go-to-saved-locations')
         if (!mb.window.isVisible()) {
@@ -201,9 +201,17 @@ mb.on('after-create-window', () => {
     },
     {
       label: 'New Location',
-      accelerator: 'Cmd+N',
       click () {
         mb.window.send('go-to-new-location')
+        if (!mb.window.isVisible()) {
+          mb.showWindow()
+        }
+      }
+    },
+    {
+      label: 'Preferences...',
+      click () {
+        mb.window.send('go-to-preferences')
         if (!mb.window.isVisible()) {
           mb.showWindow()
         }
@@ -214,7 +222,6 @@ mb.on('after-create-window', () => {
     },
     {
       label: 'Developer Tools',
-      accelerator: 'Cmd+Alt+I',
       click () {
         mb.window.webContents.openDevTools()
       }
@@ -224,22 +231,27 @@ mb.on('after-create-window', () => {
     },
     {
       label: 'Quit Weather Bar',
-      accelerator: 'Cmd+Q',
       click () {
         mb.app.quit()
       }
     }
   ])
 
-  mb.tray.on('right-click', () => {
-    mb.tray.popUpContextMenu(contextMenu)
-  })
+  if (process.platform === 'linux') {
+    mb.tray.setContextMenu(contextMenu)
+  } else {
+    mb.tray.on('right-click', () => {
+      mb.tray.popUpContextMenu(contextMenu)
+    })
+  }
 
   mb.tray.on('click', () => {
     if (mb.window.isVisible()) {
       mb.window.send('app-opened')
+      mb.window.show()
     } else {
       mb.window.send('app-closed')
+      mb.window.hide()
     }
   })
 })

@@ -500,7 +500,7 @@ const parseWeather = (key, data, settings) => {
 }
 
 const parseWeatherForecast = (key, data, settings) => {
-  if (!data || data.length === 0) {
+  if (!data || !data.list || data.list.length === 0) {
     return []
   }
 
