@@ -2,13 +2,16 @@
   "name": "weather-bar-app",
   "version": "0.6.0",
   "author": "Peter Schmalfeldt <me@peterschmalfeldt.com>",
-  "description": "Electron Vue.js Weather Bar App",
+  "description": "Weather Bar is a Weather Application that lives in your Menu Bar giving you beautiful access to real-time weather conditions and a generous 15-day forecast.",
   "keywords": [
     "Electron",
     "Vue",
     "Weather",
     "Menubar",
-    "Forecast"
+    "Forecast",
+    "MacOS",
+    "Windows",
+    "Linux"
   ],
   "license": "MIT",
   "main": "./dist/electron/main.js",

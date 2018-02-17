@@ -237,12 +237,12 @@ mb.on('after-create-window', () => {
     }
   ])
 
-  if (process.platform === 'linux') {
-    mb.tray.setContextMenu(contextMenu)
-  } else {
+  if (process.platform !== 'linux') {
     mb.tray.on('right-click', () => {
       mb.tray.popUpContextMenu(contextMenu)
     })
+  } else {
+    mb.tray.setToolTip('Toggle Weather Bar')
   }
 
   mb.tray.on('click', () => {
