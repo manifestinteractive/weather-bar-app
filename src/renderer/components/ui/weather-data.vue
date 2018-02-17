@@ -41,7 +41,7 @@
 			</div>
     </div>
 
-    <swiper class="weather-overview" :options="swiperOption">
+    <swiper class="weather-overview" :options="swiperOption" ref="forecastSwiper">
 
       <swiper-slide class="forecast" v-for="(day, index) in forecast" :key="index">
         <div class="forecast-day">
@@ -124,10 +124,31 @@
           slidesPerView: 3,
           slidesPerGroup: 3,
           spaceBetween: 0,
+          loop: false,
           pagination: {
             el: '.swiper-pagination',
             clickable: true
           }
+        }
+      }
+    },
+    beforeDestroy () {
+      window.removeEventListener('keyup', this.keyPress)
+    },
+    computed: {
+      swiper () {
+        return this.$refs.forecastSwiper.swiper
+      }
+    },
+    mounted: function () {
+      window.addEventListener('keyup', this.keyPress)
+    },
+    methods: {
+      keyPress (event) {
+        if (event.which === 37) {
+          this.swiper.slidePrev(300, false)
+        } else if (event.which === 39) {
+          this.swiper.slideNext(300, false)
         }
       }
     },

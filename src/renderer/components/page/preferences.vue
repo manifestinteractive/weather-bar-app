@@ -72,8 +72,8 @@
             </div>
 
             <div class="toggle-wrapper">
-              <label for="condition">Condition</label>
-              <radio-button id="condition" name="app_launch_icon" option="condition"
+              <label for="temperature">Temperature</label>
+              <radio-button id="temperature" name="app_launch_icon" option="temperature"
                 v-model="settings.app_launch_icon"
                 :enabled.sync="settings.app_launch_icon"
                 @selectPreference="selectPreference"
@@ -81,8 +81,8 @@
             </div>
 
             <div class="toggle-wrapper">
-              <label for="temperature">Temperature</label>
-              <radio-button id="temperature" name="app_launch_icon" option="temperature"
+              <label for="condition">Condition</label>
+              <radio-button id="condition" name="app_launch_icon" option="condition"
                 v-model="settings.app_launch_icon"
                 :enabled.sync="settings.app_launch_icon"
                 @selectPreference="selectPreference"
@@ -112,43 +112,6 @@
                 />
             </div>
 
-            <h1 class="group-header">Weather Map</h1>
-
-            <div class="toggle-wrapper">
-              <label for="standard">Standard</label>
-              <radio-button id="standard" name="layout_weather_map" option="standard"
-                v-model="settings.layout_weather_map"
-                :enabled.sync="settings.layout_weather_map"
-                @selectPreference="selectPreference"
-                />
-            </div>
-
-            <div class="toggle-wrapper">
-              <label for="satellite">Satellite</label>
-              <radio-button id="satellite" name="layout_weather_map" option="satellite"
-                v-model="settings.layout_weather_map"
-                :enabled.sync="settings.layout_weather_map"
-                @selectPreference="selectPreference"
-                />
-            </div>
-
-            <div class="toggle-wrapper">
-              <label for="hybrid">Hybrid</label>
-              <radio-button id="hybrid" name="layout_weather_map" option="hybrid"
-                v-model="settings.layout_weather_map"
-                :enabled.sync="settings.layout_weather_map"
-                @selectPreference="selectPreference"
-                />
-            </div>
-
-            <div class="toggle-wrapper">
-              <label for="black">Black</label>
-              <radio-button id="black" name="layout_weather_map" option="black"
-                v-model="settings.layout_weather_map"
-                :enabled.sync="settings.layout_weather_map"
-                @selectPreference="selectPreference"
-                />
-            </div>
           </div>
 
           <!-- UNITS TAB -->

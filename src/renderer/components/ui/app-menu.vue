@@ -4,6 +4,10 @@
       <div class="bar" :class="{ open: open }"></div>
     </div>
 
+    <div class="quit-app" @click.prevent="quitApp" v-if="platform === 'linux'">
+      Quit
+    </div>
+
     <div class="menu-wrapper" :class="{ open: open }">
       <div class="header">
         <div class="logo">
@@ -63,6 +67,23 @@
   transition: all 300ms cubic-bezier(.55, 0, .1, 1);
   transform: translate(-100%, 0);
   z-index: 5000;
+
+  .quit-app {
+    color: #FFF;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 500;
+    text-transform: uppercase;
+    font-size: 14px;
+    opacity: 0.5;
+    transition: opactiy 0.25s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 
   .menu-button {
     position: absolute;
@@ -275,11 +296,15 @@
     name: 'app-menu',
     data () {
       return {
+        platform: process.platform,
         open: false,
         version: version
       }
     },
     methods: {
+      quitApp () {
+        this.$electron.ipcRenderer.send('close')
+      },
       show () {
         this.open = true
       },
