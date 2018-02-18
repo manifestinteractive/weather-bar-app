@@ -146,21 +146,6 @@ mb.on('after-create-window', () => {
       type: 'separator'
     },
     {
-      label: 'Toggle Weather Bar',
-      click () {
-        if (mb.window.isVisible()) {
-          mb.window.send('app-closed')
-          mb.window.hide()
-        } else {
-          mb.window.send('app-opened')
-          mb.window.show()
-        }
-      }
-    },
-    {
-      type: 'separator'
-    },
-    {
       label: 'Weather Bar Website',
       click () {
         shell.openExternal('https://weatherbarapp.com')

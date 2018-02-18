@@ -71,11 +71,11 @@
   .quit-app {
     color: #FFF;
     position: absolute;
-    top: 24px;
-    left: 20px;
+    top: 20px;
+    left: 18px;
     z-index: 500;
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 10px;
     opacity: 0.35;
     transition: all 0.25s;
     cursor: pointer;

@@ -68,14 +68,25 @@
     },
     "mac": {
       "category": "public.app-category.weather",
-      "icon": "build/icons/icon.icns"
+      "icon": "build/icons/icon.icns",
+      "files": [
+        "!dist/electron/static/linux",
+        "!dist/electron/static/win"
+      ]
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon.ico",
+      "files": [
+        "!dist/electron/static/linux",
+        "!dist/electron/static/mac"
+      ]
     },
     "linux": {
-      "category": "Utility",
-      "icon": "build/icons/icon.png"
+      "icon": "build/icons/icon.png",
+      "files": [
+        "!dist/electron/static/mac",
+        "!dist/electron/static/win"
+      ]
     }
   },
   "dependencies": {

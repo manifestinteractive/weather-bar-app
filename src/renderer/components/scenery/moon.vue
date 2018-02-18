@@ -86,7 +86,8 @@
           width: inner.diameter + 'px',
           left: inner.offset + 'px',
           top: ((100 - inner.diameter) / 2) + 'px',
-          opacity: '0.9'
+          opacity: '0.9',
+          filter: 'blur(5px)'
         }
       },
       getOuterStyle () {
@@ -110,7 +111,8 @@
           width: '100px',
           backgroundColor: outerColour,
           borderRadius: '50%',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          boxShadow: '0 0 50px rgba(255,255,255,0.25)'
         }
       }
     }
