@@ -1,9 +1,6 @@
-$time-early-morning-moon-dark-color: #75574d;
-$time-early-morning-moon-color: #ced9e2;
-
 .time-early-morning {
   .fog {
-    // background: url(../images/fog-night.png) center center repeat-x;
+    background: url('~@/assets/images/fog-night.png') center center repeat-x;
     background-size: cover;
   }
   .thunderstorm-wrapper {
@@ -14,13 +11,9 @@ $time-early-morning-moon-color: #ced9e2;
   }
   .snow-wrapper {
     background-color: rgba(255, 255, 255, 0.15);
-    .snow {
-      background:
-      radial-gradient($time-early-morning-moon-dark-color .1%, transparent .9%) -100px 0,
-      radial-gradient($time-early-morning-moon-dark-color .1%, transparent .6%) 200px 50px,
-      radial-gradient($time-early-morning-moon-dark-color .1%, transparent .8%) 500px 500px,
-      radial-gradient($time-early-morning-moon-dark-color .1%, transparent .5%) 400px 700px,
-      radial-gradient($time-early-morning-moon-dark-color .1%, transparent .5%) 800px 600px;
+
+    .snowflake {
+      color: #75574d;
     }
   }
   .sun-wrapper {
@@ -50,11 +43,6 @@ $time-early-morning-moon-color: #ced9e2;
   .weather-data {
 		color: #FFF;
     text-shadow: 0 0 4px rgba(0, 0, 0, 0.75)
-	}
-  .menu-toggle {
-		span {
-			background-color: #FFF;
-		}
 	}
   .cloud {
 		path {

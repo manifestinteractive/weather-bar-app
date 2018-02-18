@@ -9,12 +9,14 @@
     background-size: contain;
     z-index: 90;
     animation: flying-bird 3s linear;
-    transform: translate(-100px, 0);
+    transform: translate3d(-100px, 0, 0);
     animation-iteration-count: 1;
+  	backface-visibility: hidden;
+		will-change: transform;
   }
 }
 
 @keyframes flying-bird {
-  from { transform: translate(-100px, 0); }
-  to { transform: translate(300px, -100px); }
+  from { transform: translate3d(-100px, 0, 0); }
+  to { transform: translate3d(300px, -100px, 0); }
 }

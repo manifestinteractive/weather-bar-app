@@ -1,8 +1,8 @@
 <template>
-  <div id="app">
+  <div id="app" :class="classNames">
     <toast v-if="toastMessage" :toastMessage="toastMessage" />
     <loading v-if="!appReady" />
-    <app-menu v-if="appReady" />
+    <app-menu v-if="appReady" :class="classNames" />
     <router-view v-if="appReady" />
   </div>
 </template>
@@ -33,6 +33,7 @@
     data () {
       return {
         appReady: false,
+        classNames: '',
         toastMessage: null,
         status: {
           currentLocation: false,
@@ -68,6 +69,11 @@
         EventBus.$off('showToast')
         EventBus.$on('showToast', (message) => {
           this.toastMessage = message
+        })
+
+        EventBus.$off('setClassNames')
+        EventBus.$on('setClassNames', (classNames) => {
+          this.classNames = classNames
         })
       },
       bindElectronEvents () {

@@ -55,6 +55,8 @@
 </style>
 
 <script>
+  import { EventBus } from '../../event-bus'
+
   import clouds from '../weather/clouds'
   import fog from '../weather/fog'
   import lightning from '../weather/lightning'
@@ -133,7 +135,11 @@
           classes.push('thunderstorm')
         }
 
-        return classes.join(' ')
+        const classNames = classes.join(' ')
+
+        EventBus.$emit('setClassNames', classNames)
+
+        return classNames
       }
     },
     components: {

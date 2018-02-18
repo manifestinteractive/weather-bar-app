@@ -68,6 +68,57 @@
   transform: translate(-100%, 0);
   z-index: 5000;
 
+  &.time-afternoon {
+    .menu-button {
+      .bar, .bar:after, .bar:before {
+        background: #1f3934;
+      }
+    }
+  }
+  &.time-dusk {
+    .menu-button {
+      .bar, .bar:after, .bar:before {
+        background: #3c231e;
+      }
+    }
+  }
+  &.time-evening {
+    .menu-button {
+      .bar, .bar:after, .bar:before {
+        background: #342b28;
+      }
+    }
+  }
+  &.time-mid-morning {
+    .menu-button {
+      .bar, .bar:after, .bar:before {
+        background: #17363a;
+      }
+    }
+  }
+  &.time-morning {
+    .menu-button {
+      .bar, .bar:after, .bar:before {
+        background: #0b1819;
+      }
+    }
+  }
+  &.time-noon {
+    .menu-button {
+      .bar, .bar:after, .bar:before {
+        background: #2a5855;
+      }
+    }
+  }
+
+  &.thunderstorm {
+    .menu-button {
+      .bar, .bar:after, .bar:before {
+        background: #FFF !important;
+      }
+    }
+	}
+
   .quit-app {
     color: #FFF;
     position: absolute;
@@ -134,12 +185,14 @@
         top: 0;
         transform: rotate(45deg);
         transition: top 300ms cubic-bezier(0.23, 1, 0.32, 1), transform 300ms 300ms cubic-bezier(0.23, 1, 0.32, 1);
+        background: #FFF !important;
       }
 
       &.open:before {
         bottom: 0;
         transform: rotate(-45deg);
         transition: bottom 300ms cubic-bezier(0.23, 1, 0.32, 1), transform 300ms 300ms cubic-bezier(0.23, 1, 0.32, 1);
+        background: #FFF !important;
       }
     }
 

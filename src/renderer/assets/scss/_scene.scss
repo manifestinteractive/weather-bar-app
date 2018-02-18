@@ -10,7 +10,6 @@
 @import 'scene/scene-10';
 
 .scene {
-
 	.menu-toggle {
 		position: absolute;
 		top: 20px;
@@ -78,28 +77,33 @@
     z-index: 2;
 
     .stars {
+			will-change: opacity;
+
       &.large {
       	height: 2px;
       	width: 2px;
       	background: transparent;
       	box-shadow: $bxshadow-large;
-      	animation: blink-large 10s infinite;
+      	animation: stars 21s infinite;
         opacity: 0.75;
+		    transform: translateZ(0);
       }
       &.medium {
       	height: 1px;
       	width: 1px;
       	background: transparent;
       	box-shadow: $bxshadow-medium;
-      	animation: blink-medium 5s infinite;
+      	animation: stars 13s infinite;
+		    transform: translateZ(0);
       }
       &.small {
       	height: 1px;
       	width: 1px;
       	background: transparent;
       	box-shadow: $bxshadow-small;
-      	animation: blink-small 2s infinite;
+      	animation: stars 10s infinite;
         opacity: 0.75;
+		    transform: translateZ(0);
       }
     }
   }

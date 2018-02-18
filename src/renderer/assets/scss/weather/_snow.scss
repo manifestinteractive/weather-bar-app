@@ -6,32 +6,5 @@
   background-color: rgba(255, 255, 255, 0.35);
   width: 100%;
   height: 100%;
-
-  .snow {
-    background:
-    radial-gradient(white .1%, transparent .9%) -100px 0,
-    radial-gradient(white .1%, transparent .6%) 200px 50px,
-    radial-gradient(white .1%, transparent .8%) 500px 500px,
-    radial-gradient(white .1%, transparent .5%) 400px 700px,
-    radial-gradient(white .1%, transparent .5%) 800px 600px;
-
-    background-size: 100% 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    &.snow {
-      &1 {
-        animation: snow 10s -9s linear infinite;
-      }
-      &2 {
-         animation: snow 10s -3s linear infinite;
-      }
-      &3 {
-         animation: snow 10s -6s linear infinite;
-      }
-    }
-  }
+  transform: translate3d(0, 0, 0);
 }

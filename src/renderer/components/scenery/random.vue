@@ -30,6 +30,7 @@
     },
     data () {
       return {
+        runs: 0,
         timer: null,
         random: 4
       }
@@ -63,11 +64,12 @@
         return (this.random === 4 && this.isNight())
       },
       showTardis () {
-        return (this.random === 5 && this.time === 'midnight')
+        return (this.random === 5 && this.runs > 10)
       },
       randomBackground () {
         // Set animation to have have a 1-in-10 change of firing, otherwise we'd have an animation every time this is called
         this.random = Math.floor(Math.random() * 50) + 1
+        this.runs++
 
         clearTimeout(this.timer)
         this.timer = setTimeout(this.randomBackground, (Math.floor(Math.random() * 300000) + 300000))

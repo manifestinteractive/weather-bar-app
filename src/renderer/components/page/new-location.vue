@@ -10,14 +10,14 @@
 
         <div class="form">
           <div class="search">
-            <input type="search" v-model="keyword" tabindex="1" placeholder="Search Cities">
+            <input type="search" v-model="keyword" placeholder="Search Cities">
             <i class="fal fa-search" v-if="keyword === ''"></i>
           </div>
 
-          <div class="autocomplete" v-if="cities.length > 0 && !selectedCity">
+          <div class="autocomplete" v-if="cities.length > 0 && !selectedCity" ref="autocomplete">
             <ul>
-              <li v-for="(city, index) in cities">
-                <a @click="selectCity(city)" :tabindex="index + 2">
+              <li v-for="(city, index) in cities" :key="index">
+                <a @click="selectCity(city)" :class="{ 'selected': selectedNav === index }">
                   <i class="fas fa-map-marker"></i>
                   {{ city.display_name_short }}
                 </a>
@@ -42,7 +42,7 @@
         </div>
       </div>
 
-      <scene :stars='true' :clouds='true' :version='random' />
+      <scene :data="{ scene_stars: true, scene_time: 'midnight', scene_clouds: true, scene_cloud_percent: 60, scene_wind_speed: 2 }" :version='random' />
     </div>
   </transition>
 </template>
@@ -155,7 +155,7 @@
               padding-right: 4px;
             }
 
-            &:hover {
+            &:hover, &.selected {
               background-color: #173342;
               color: #FFFFFF;
             }
@@ -232,6 +232,7 @@
       return {
         random: (Math.floor(Math.random() * 10) + 1),
         keyword: '',
+        selectedNav: -1,
         selectedCity: null,
         noResults: false,
         cities: [],
@@ -247,30 +248,13 @@
         this.search()
       }, 250)
     },
+    beforeDestroy () {
+      window.removeEventListener('keyup', this.keyPress)
+    },
+    mounted: function () {
+      window.addEventListener('keyup', this.keyPress)
+    },
     methods: {
-      search () {
-        if (this.keyword && this.keyword.length > 0) {
-          if (this.selectedCity && this.keyword !== this.selectedCity.display_name_short) {
-            this.selectedCity = null
-          }
-
-          api.searchCities(this.keyword, (response) => {
-            if (response.data) {
-              this.cities = _.sortBy(response.data, 'display_name_short')
-            }
-
-            this.noResults = (response.data.length === 0)
-          })
-        } else {
-          this.cities = []
-          this.noResults = false
-        }
-      },
-      selectCity (city) {
-        this.keyword = city.display_name_short
-        this.selectedCity = city
-        this.noResults = false
-      },
       getCurrentLocation () {
         api.getIpAddress((response) => {
           api.getLocationByIp(response.ip, (location) => {
@@ -292,6 +276,36 @@
             }
           })
         })
+      },
+      goToNewLocation (check, hashKey) {
+        this.status[check] = true
+
+        if (this.status.weather && this.status.forecast) {
+          this.$router.push({
+            name: 'saved-location',
+            params: {
+              key: hashKey
+            }
+          })
+        }
+      },
+      keyPress (event) {
+        if (this.cities && this.cities.length > 0) {
+          // press up
+          if (event.which === 38) {
+            this.selectedNav = (this.selectedNav > 0) ? (this.selectedNav - 1) : 0
+            this.$refs.autocomplete.scrollTop = (26 * this.selectedNav)
+          }
+          // press down
+          if (event.which === 40) {
+            this.selectedNav = (this.selectedNav < (this.cities.length - 1)) ? (this.selectedNav + 1) : (this.cities.length - 1)
+            this.$refs.autocomplete.scrollTop = (26 * this.selectedNav)
+          }
+          // press enter
+          if (event.which === 13) {
+            this.selectCity(this.cities[this.selectedNav])
+          }
+        }
       },
       letsGo () {
         const timeZone = tzlookup(this.selectedCity.location.lat, this.selectedCity.location.lon)
@@ -332,17 +346,31 @@
           })
         })
       },
-      goToNewLocation (check, hashKey) {
-        this.status[check] = true
+      search () {
+        if (this.keyword && this.keyword.length > 0) {
+          if (this.selectedCity && this.keyword !== this.selectedCity.display_name_short) {
+            this.selectedCity = null
+            this.selectedNav = -1
+          }
 
-        if (this.status.weather && this.status.forecast) {
-          this.$router.push({
-            name: 'saved-location',
-            params: {
-              key: hashKey
+          api.searchCities(this.keyword, (response) => {
+            if (response.data) {
+              this.cities = _.sortBy(response.data, 'display_name_short')
             }
+
+            this.noResults = (response.data.length === 0)
           })
+        } else {
+          this.cities = []
+          this.noResults = false
+          this.selectedNav = -1
         }
+      },
+      selectCity (city) {
+        this.keyword = city.display_name_short
+        this.selectedCity = city
+        this.noResults = false
+        this.selectedNav = -1
       }
     },
     components: {

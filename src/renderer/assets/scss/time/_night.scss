@@ -1,9 +1,6 @@
-$time-night-moon-color: #e2dcea;
-$time-night-moon-dark-color: #5a4b50;
-
 .time-night {
   .fog {
-    // background: url(../images/fog-night.png) center center repeat-x;
+    background: url('~@/assets/images/fog-night.png') center center repeat-x;
     background-size: cover;
   }
   .sun-wrapper {
@@ -17,13 +14,9 @@ $time-night-moon-dark-color: #5a4b50;
   }
   .snow-wrapper {
     background-color: rgba(255, 255, 255, 0.15);
-    .snow {
-      background:
-      radial-gradient(#1d1d27 .1%, transparent .9%) -100px 0,
-      radial-gradient(#1d1d27 .1%, transparent .6%) 200px 50px,
-      radial-gradient(#1d1d27 .1%, transparent .8%) 500px 500px,
-      radial-gradient(#1d1d27 .1%, transparent .5%) 400px 700px,
-      radial-gradient(#1d1d27 .1%, transparent .5%) 800px 600px;
+
+    .snowflake {
+      color: #1d1d27;
     }
   }
   .sun-wrapper {
@@ -55,11 +48,6 @@ $time-night-moon-dark-color: #5a4b50;
   .cloud {
 		path {
 			fill: #343438;
-		}
-	}
-  .menu-toggle {
-		span {
-			background-color: #FFF;
 		}
 	}
 }

@@ -1,61 +1,21 @@
-@keyframes blink-large {
+@keyframes stars {
 	0% {
-		box-shadow: $bxshadow-large;
+		opacity: 0;
 	}
 	70% {
-		$colors: '#fff', 'transparent';
-		$stars: $bxshadow-large;
-		@for $i from 1 to length($stars) {
-			$star: set-nth(nth($stars, $i), 3, unquote(nth($colors, random(length($colors)))));
-			$stars: set-nth($stars, $i, $star);
-		}
-		box-shadow: $stars;
+		opacity: 1;
 	}
 	100% {
-		box-shadow: $bxshadow-large;
-	}
-}
-@keyframes blink-medium {
-	0% {
-		box-shadow: $bxshadow-medium;
-	}
-	70% {
-		$colors: '#fff', 'transparent';
-		$stars: $bxshadow-medium;
-		@for $i from 1 to length($stars) {
-			$star: set-nth(nth($stars, $i), 3, unquote(nth($colors, random(length($colors)))));
-			$stars: set-nth($stars, $i, $star);
-		}
-		box-shadow: $stars;
-	}
-	100% {
-		box-shadow: $bxshadow-medium;
-	}
-}
-@keyframes blink-small {
-	0% {
-		box-shadow: $bxshadow-small;
-	}
-	70% {
-		$colors: '#fff', 'transparent';
-		$stars: $bxshadow-small;
-		@for $i from 1 to length($stars) {
-			$star: set-nth(nth($stars, $i), 3, unquote(nth($colors, random(length($colors)))));
-			$stars: set-nth($stars, $i, $star);
-		}
-		box-shadow: $stars;
-	}
-	100% {
-		box-shadow: $bxshadow-small;
+		opacity: 0;
 	}
 }
 
 @keyframes snow {
   0% {
-    opacitiy: 0;
+    opacity: 0;
   }
   70% {
-    opacitiy: 1;
+    opacity: 1;
   }
   80% {
     opacity: 0;
@@ -68,13 +28,13 @@
 
 @keyframes drop {
   0% {
-    transform: translateY(0vh);
+    transform: translate3d(0, 0, 0);
   }
   75% {
-    transform: translateY(110vh);
+    transform: translate3d(0, 480px, 0);
   }
   100% {
-    transform: translateY(110vh);
+    transform: translate3d(0, 480px, 0);
   }
 }
 
@@ -95,7 +55,7 @@
 
 @keyframes move-fog {
   from { background-position: 0 0;}
-  to { background-position: 1600px 0; }
+  to { background-position: 600px 0; }
 }
 
 @keyframes move-clouds {
@@ -104,11 +64,11 @@
 }
 
 @keyframes move-thunderstorm {
-	from { transform: translateX(-100%); }
-  to { transform: translateX(100%); }
+	from { transform: translate3d(-100%, 0, 0); }
+  to { transform: translate3d(100%, 0, 0); }
 }
 
 @keyframes move-cloud {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(200%); }
+  from { transform: translate3d(-100%, 0, 0); }
+  to { transform: translate3d(200%, 0, 0); }
 }

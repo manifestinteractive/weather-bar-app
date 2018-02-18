@@ -6,13 +6,13 @@
 
         <div class="scrollable">
           <div class="tiles">
-            <location v-for="location in locations" v-if="locations && location.hash_key !== 'current'" :info="location" :key="location.id" @clicked="clicked" @deleted="deleted" />
+            <location v-for="location in orderedLocations" v-if="orderedLocations && location.hash_key !== 'current'" :info="location" :key="location.id" @clicked="clicked" @deleted="deleted" />
             <location :add='true' @clicked="addLocation" />
           </div>
         </div>
       </div>
 
-      <scene :stars='true' :clouds='true' :version='random' />
+      <scene :data="{ scene_stars: true, scene_time: 'midnight', scene_clouds: true, scene_cloud_percent: 60, scene_wind_speed: 2 }" :version='random' />
     </div>
   </transition>
 </template>
@@ -54,6 +54,8 @@
 </style>
 
 <script>
+  import _ from 'lodash'
+
   import Scene from '../ui/scene'
   import Location from '../ui/location'
   import PageHeader from '../ui/page-header'
@@ -75,6 +77,11 @@
 
       EventBus.$off('updateSavedLocations')
       EventBus.$on('updateSavedLocations', this.fetchData)
+    },
+    computed: {
+      orderedLocations () {
+        return _.orderBy(this.locations, 'city_name')
+      }
     },
     methods: {
       fetchData () {

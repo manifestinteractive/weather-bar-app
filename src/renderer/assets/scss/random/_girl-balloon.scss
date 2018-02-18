@@ -10,9 +10,10 @@
     background-size: contain;
     z-index: 90;
     animation: girl-balloon 12s ease-out;
-    transform: translate(10px, 200px);
     animation-iteration-count: 1;
-    transform: rotate(0deg);
+    transform: translateZ(0), rotate(0deg);
+  	backface-visibility: hidden;
+		will-change: transform;
   }
 }
 
