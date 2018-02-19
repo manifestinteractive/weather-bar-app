@@ -1,5 +1,5 @@
 <div align="center">
-<p><img src="logo/color-black-text/logo.png" alt="Temps" width="280"/></p><p><img src="http://forthebadge.com/images/badges/makes-people-smile.svg" alt="makes-people-smile" /></p><p><img src="screenshot.gif" alt="Weather Bar" width="280" /></p>
+<p><img src="logo.png" alt="Weather Bar" width="280"/></p>[![MacOS](https://img.shields.io/badge/dynamic/style-dmg-lightgrey.svg?style=for-the-badge&label=MacOS&colorA=3899d5&colorB=33c4f4)](https://github.com/manifestinteractive/weather-bar-app/releases/download/v0.7.0/macos-weather-bar-0.7.0.dmg)&nbsp; [![Windows](https://img.shields.io/badge/dynamic/style-exe-blue.svg?style=for-the-badge&label=Windows&colorA=3899d5&colorB=33c4f4)](https://github.com/manifestinteractive/weather-bar-app/releases/download/v0.7.0/win32-weather-bar-0.7.0.exe)&nbsp; [![Linux](https://img.shields.io/badge/dynamic/style-AppImage-orange.svg?style=for-the-badge&label=Linux&colorA=3899d5&colorB=33c4f4)](https://github.com/manifestinteractive/weather-bar-app/releases/download/v0.7.0/linux-weather-bar-0.7.0-x86_64.AppImage)<p><img src="screenshot.gif" alt="Weather Bar" width="280" /></p>
 </div>
 
 > __Weather Bar__ is an application built with [Electron](https://electronjs.org/) and [Vue.js](https://vuejs.org/) for MacOS, Windows & Linux.
@@ -7,8 +7,15 @@
 Weather Bar
 ---
 
-### This is a Work in Progress
+[![Download Latest Release](https://img.shields.io/badge/dynamic/style-Latest_Release-orange.svg?style=for-the-badge&label=Download&colorA=3899d5&colorB=33c4f4)](https://github.com/manifestinteractive/weather-bar-app/releases)
 
+Weather Bar is a Weather Application that lives in your Menu Bar giving you beautiful access to real-time weather conditions and a generous 15-day forecast.
+
+* Live Weather Displayed in Menu Bar
+* App Design Based on Actual Weather Conditions & Astronomy
+* View Current Conditions and 15 Day Forecasts
+* Ability to Save Custom Locations
+* Support for top 10 Spoken Languages: Arabic, Chinese, English, French, German, Japanese, Malay, Portuguese, Russian, Spanish
 
 Developer Overview
 ---
