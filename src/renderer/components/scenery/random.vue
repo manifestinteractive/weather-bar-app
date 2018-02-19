@@ -1,13 +1,11 @@
 <template>
-  <transition name="fade" mode="out-in">
-    <div class="random-wrapper">
-      <div class="bird" v-if="showBird()"></div>
-      <div class="bat" v-if="showBat()"></div>
-      <div class="hot-air-balloon" v-if="showHotAirBalloon()" :class="{ night: isNight() }"></div>
-      <div class="girl-balloon" v-if="showGirlBalloon()"></div>
-      <div class="tardis" v-if="showTardis()"></div>
-    </div>
-  </transition>
+  <div class="random-wrapper">
+    <div class="bird" v-if="showBird()"></div>
+    <div class="bat" v-if="showBat()"></div>
+    <div class="hot-air-balloon" v-if="showHotAirBalloon()" :class="{ night: isNight() }"></div>
+    <div class="girl-balloon" v-if="showGirlBalloon()"></div>
+    <div class="tardis" v-if="showTardis()"></div>
+  </div>
 </template>
 
 <style lang="scss">

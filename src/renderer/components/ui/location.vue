@@ -7,8 +7,8 @@
         </a>
 
         <div class="confirm-delete" v-if="confirmDelete">
-          <p>Are you sure you want to delete this location?</p>
-          <button @click.prevent="confirmedDelete">Delete</button>
+          <p>{{ $t('ui.confirmDelete') }}</p>
+          <button @click.prevent="confirmedDelete">{{ $t('ui.deleteButton') }}</button>
         </div>
       </div>
 
@@ -18,7 +18,7 @@
         </div>
 
         <div class="condition">
-          Add Location
+          {{ $t('ui.addLocation') }}
         </div>
       </div>
 

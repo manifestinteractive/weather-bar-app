@@ -5,7 +5,7 @@
     </div>
 
     <div class="quit-app" @click.prevent="quitApp" v-if="platform === 'linux'">
-      <i class="fas fa-fw fa-window-close"></i>&nbsp; Quit
+      <i class="fas fa-fw fa-window-close"></i>&nbsp; {{ $t('app.menu.quit') }}
     </div>
 
     <div class="menu-wrapper" :class="{ open: open }">
@@ -313,6 +313,8 @@
     position: absolute;
     bottom: 10px;
     line-height: 26px;
+    width: 100%;
+    display: block;
 
     button {
       appearance: none;
@@ -323,16 +325,16 @@
       cursor: pointer;
       opacity: 0.5;
       transition: opacity 0.25s ease;
+      display: block;
+      margin: 0 auto;
 
       path {
         fill: #FFFFFF;
       }
-    }
 
-    &:hover {
-      button {
+      &:hover {
         opacity: 1;
-
+        
         path {
           fill: #FF8C18;
         }

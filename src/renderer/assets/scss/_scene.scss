@@ -10,6 +10,8 @@
 @import 'scene/scene-10';
 
 .scene {
+	transform: translateZ(0);
+
 	.menu-toggle {
 		position: absolute;
 		top: 20px;
@@ -66,7 +68,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-		transition: all 3s ease;
+		z-index: 1;
+		transform: translateZ(0);
   }
   .starry-sky {
     position: absolute;
@@ -75,10 +78,10 @@
     width: 100vw;
     height: 100vh;
     z-index: 2;
+		background: transparent;
+		transform: translateZ(0);
 
     .stars {
-			will-change: opacity;
-
       &.large {
       	height: 2px;
       	width: 2px;

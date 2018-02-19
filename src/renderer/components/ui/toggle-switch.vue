@@ -28,7 +28,7 @@
   	text-indent: -9999px;
   	width: 36px;
   	height: 20px;
-  	background: $muted-dark-blue;
+  	background: #666666;
   	display: block;
   	border-radius: 20px;
   	position: relative;

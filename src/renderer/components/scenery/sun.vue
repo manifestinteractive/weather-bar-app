@@ -1,10 +1,8 @@
 <template>
-  <transition name="fade" mode="out-in">
-    <div class="sun-wrapper" :style="getPosition">
-      <div class="sun"></div>
-      <div class="sun-glow"></div>
-    </div>
-  </transition>
+  <div class="sun-wrapper" :style="getPosition">
+    <div class="sun"></div>
+    <div class="sun-glow"></div>
+  </div>
 </template>
 
 <script>

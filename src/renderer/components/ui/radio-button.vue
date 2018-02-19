@@ -43,7 +43,7 @@
   }
 
   [type="radio"]:not(:checked) + label:before {
-    background: $muted-dark-blue;
+    background: #666666;
   }
 
   [type="radio"]:checked + label:after,

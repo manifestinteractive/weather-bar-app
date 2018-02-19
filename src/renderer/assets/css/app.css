@@ -79,17 +79,14 @@ body {
 }
 
 #app {
-  min-width: 280px;
-  min-height: 480px;
-  max-width: 480px;
-  max-height: 853px;
-  width: 100%;
-  height: 100%;
+  width: 280px;
+  height: 480px;
   margin: 0 auto;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
-  background: #132936;
+  background: linear-gradient(to bottom, #2a3641 0%, #535f6a 100%);
   position: relative;
   overflow: hidden;
+  transform: translateZ(0);
 }
 
 ::selection {

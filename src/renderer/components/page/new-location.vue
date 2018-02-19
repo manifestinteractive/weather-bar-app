@@ -10,7 +10,7 @@
 
         <div class="form">
           <div class="search">
-            <input type="search" v-model="keyword" placeholder="Search Cities">
+            <input type="search" v-model="keyword" :placeholder="$t('page.newLocation.placeholder')">
             <i class="fal fa-search" v-if="keyword === ''"></i>
           </div>
 
@@ -27,17 +27,17 @@
 
           <button v-if="keyword.length > 0 && selectedCity" @click="letsGo">
             <i class="fas fa-angle-right"></i>
-            Let's Go
+            {{ $t('page.newLocation.letsGo') }}
           </button>
 
           <button v-if="keyword.length === 0" @click="getCurrentLocation">
             <i class="fas fa-location-arrow"></i>
-            Current Location
+            {{ $t('page.newLocation.currentLocation') }}
           </button>
 
           <div class="no-results" v-if="noResults && !selectedCity">
             <i class="fas fa-exclamation-triangle"></i>
-            No Matching Cities
+            {{ $t('page.newLocation.noMatch') }}
           </div>
         </div>
       </div>
@@ -51,8 +51,9 @@
 .new-location {
   .page-content {
     z-index: 500;
-    position: relative;
-    height: 100%;
+    position: absolute;
+    height: 480px;
+    width: 280px;
   }
 
   .scene {
@@ -240,7 +241,7 @@
           weather: false,
           forecast: false
         },
-        settings: this.$store.getters.getSettings
+        settings: Object.assign({}, this.$store.getters.getSettings)
       }
     },
     watch: {
@@ -338,7 +339,7 @@
 
           api.getWeatherForecastByGeo(data, (weather) => {
             if (typeof weather.data !== 'undefined' && typeof weather.data.list !== 'undefined') {
-              let saveForecast = util.parseWeatherForecast(data.hash_key, weather.data, this.$store.state.settings)
+              let saveForecast = util.parseWeatherForecast(data.hash_key, weather.data, this.$store.state.settings, this.$i18n.t('ui.today'))
 
               this.$store.dispatch('saveForecast', saveForecast)
               this.goToNewLocation('forecast', data.hash_key)

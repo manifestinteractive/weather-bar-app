@@ -10,6 +10,8 @@ import autoUpdater from './auto-update'
 import util from './util'
 import { version as currentVersion } from '../../package.json'
 
+import { i18n as $t } from '../translations/i18n'
+
 const machineId = machineIdSync({ original: true })
 
 let appSettings = {}
@@ -49,6 +51,9 @@ app.on('web-contents-created', (event, contents) => {
   })
 })
 
+// Setup Context Menu
+let contextMenu = null
+
 // Setup Main Weather Bar App
 const mb = menubar({
   index: (process.env.NODE_ENV === 'development') ? 'http://localhost:9080' : `file://${__dirname}/index.html`,
@@ -56,15 +61,123 @@ const mb = menubar({
   width: 280,
   height: 480,
   alwaysOnTop: true,
-  title: 'Weather Bar',
+  title: $t(appSettings.app_language, 'app.title'),
   preloadWindow: true,
   resizable: false
 })
 
+const makeMenu = () => {
+  return Menu.buildFromTemplate([
+    {
+      label: $t(appSettings.app_language, 'context.menu.about'),
+      click () {
+        dialog.showMessageBox(null, {
+          type: 'none',
+          icon: path.join(__static, '/logo.png'),
+          message: `Weather Bar v${currentVersion}`,
+          detail: $t(appSettings.app_language, 'context.menu.dialog.detail'),
+          buttons: [
+            $t(appSettings.app_language, 'context.menu.dialog.close'),
+            $t(appSettings.app_language, 'context.menu.dialog.website')
+          ],
+          defaultId: 0,
+          noLink: true
+        }, (selected) => {
+          if (selected === 1) {
+            shell.openExternal('https://weatherbarapp.com')
+          }
+        })
+      }
+    },
+    {
+      label: $t(appSettings.app_language, 'context.menu.version', { version: currentVersion }),
+      enabled: false
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: $t(appSettings.app_language, 'context.menu.website'),
+      click () {
+        shell.openExternal('https://weatherbarapp.com')
+      }
+    },
+    {
+      label: $t(appSettings.app_language, 'context.menu.license'),
+      click () {
+        shell.openExternal('https://github.com/manifestinteractive/weather-bar-app/blob/master/LICENSE')
+      }
+    },
+    {
+      label: $t(appSettings.app_language, 'context.menu.support'),
+      click () {
+        shell.openExternal('https://github.com/manifestinteractive/weather-bar-app/issues')
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: $t(appSettings.app_language, 'app.menu.localWeather'),
+      click () {
+        mb.window.send('go-to-local-weather')
+        if (!mb.window.isVisible()) {
+          mb.showWindow()
+        }
+      }
+    },
+    {
+      label: $t(appSettings.app_language, 'app.menu.savedLocations'),
+      click () {
+        mb.window.send('go-to-saved-locations')
+        if (!mb.window.isVisible()) {
+          mb.showWindow()
+        }
+      }
+    },
+    {
+      label: $t(appSettings.app_language, 'app.menu.newLocation'),
+      click () {
+        mb.window.send('go-to-new-location')
+        if (!mb.window.isVisible()) {
+          mb.showWindow()
+        }
+      }
+    },
+    {
+      label: $t(appSettings.app_language, 'app.menu.preferences'),
+      click () {
+        mb.window.send('go-to-preferences')
+        if (!mb.window.isVisible()) {
+          mb.showWindow()
+        }
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: $t(appSettings.app_language, 'context.menu.devTools'),
+      click () {
+        mb.window.webContents.openDevTools()
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: $t(appSettings.app_language, 'context.menu.quit'),
+      click () {
+        mb.app.quit()
+      }
+    }
+  ])
+}
+
 mb.on('ready', function ready () {
   autoUpdater()
 
-  mb.setOption('title', 'Weather Bar')
+  mb.setOption('title', $t(appSettings.app_language, 'app.title'))
 
   globalShortcut.register('CommandOrControl+Shift+W', () => {
     if (mb.window.isVisible()) {
@@ -76,6 +189,12 @@ mb.on('ready', function ready () {
 
   ipcMain.on('save-settings', (event, settings) => {
     appSettings = settings
+    contextMenu = makeMenu()
+  })
+
+  ipcMain.on('save-setting', (event, key, value) => {
+    appSettings[key] = value
+    contextMenu = makeMenu()
   })
 
   ipcMain.on('get-uuid', (event) => {
@@ -119,124 +238,21 @@ mb.on('focus-lost', () => {
 
 // Add Context Menu to Weather Bar App
 mb.on('after-create-window', () => {
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'About Weather Bar',
-      click () {
-        dialog.showMessageBox(null, {
-          type: 'none',
-          icon: path.join(__static, '/logo.png'),
-          message: `Weather Bar v${currentVersion}`,
-          detail: 'Weather Bar is an Open Source Application created by Peter Schmalfeldt.',
-          buttons: ['Close', 'Website'],
-          defaultId: 0,
-          noLink: true
-        }, (selected) => {
-          if (selected === 1) {
-            shell.openExternal('https://weatherbarapp.com')
-          }
-        })
-      }
-    },
-    {
-      label: `Version ${currentVersion}`,
-      enabled: false
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Weather Bar Website',
-      click () {
-        shell.openExternal('https://weatherbarapp.com')
-      }
-    },
-    {
-      label: 'License Agreement',
-      click () {
-        shell.openExternal('https://github.com/manifestinteractive/weather-bar-app/blob/master/LICENSE')
-      }
-    },
-    {
-      label: 'Contact Support',
-      click () {
-        shell.openExternal('https://github.com/manifestinteractive/weather-bar-app/issues')
-      }
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Local Weather',
-      click () {
-        mb.window.send('go-to-local-weather')
-        if (!mb.window.isVisible()) {
-          mb.showWindow()
-        }
-      }
-    },
-    {
-      label: 'Saved Locations',
-      click () {
-        mb.window.send('go-to-saved-locations')
-        if (!mb.window.isVisible()) {
-          mb.showWindow()
-        }
-      }
-    },
-    {
-      label: 'New Location',
-      click () {
-        mb.window.send('go-to-new-location')
-        if (!mb.window.isVisible()) {
-          mb.showWindow()
-        }
-      }
-    },
-    {
-      label: 'Preferences...',
-      click () {
-        mb.window.send('go-to-preferences')
-        if (!mb.window.isVisible()) {
-          mb.showWindow()
-        }
-      }
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Developer Tools',
-      click () {
-        mb.window.webContents.openDevTools()
-      }
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Quit Weather Bar',
-      click () {
-        mb.app.quit()
-      }
-    }
-  ])
+  contextMenu = makeMenu()
 
   if (process.platform !== 'linux') {
     mb.tray.on('right-click', () => {
       mb.tray.popUpContextMenu(contextMenu)
     })
   } else {
-    mb.tray.setToolTip('Show Weather Bar')
+    mb.tray.setToolTip($t(appSettings.app_language, 'context.menu.toggle'))
   }
 
   mb.tray.on('click', () => {
     if (mb.window.isVisible()) {
-      mb.tray.setToolTip('Hide Weather Bar')
       mb.window.send('app-opened')
       mb.window.show()
     } else {
-      mb.tray.setToolTip('Show Weather Bar')
       mb.window.send('app-closed')
       mb.window.hide()
     }

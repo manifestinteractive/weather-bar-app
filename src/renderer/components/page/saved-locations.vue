@@ -6,7 +6,14 @@
 
         <div class="scrollable">
           <div class="tiles">
-            <location v-for="location in orderedLocations" v-if="orderedLocations && location.hash_key !== 'current'" :info="location" :key="location.id" @clicked="clicked" @deleted="deleted" />
+            <location
+              v-for="location in orderedLocations"
+              v-if="orderedLocations && location.hash_key !== 'current'"
+              :info="location"
+              :key="location.id"
+              @clicked="clicked"
+              @deleted="deleted"
+            />
             <location :add='true' @clicked="addLocation" />
           </div>
         </div>
@@ -19,10 +26,13 @@
 
 <style lang="scss">
 .saved-locations {
+  transform: translateZ(0);
+
   .page-content {
     z-index: 500;
-    position: relative;
-    height: 100%;
+    position: absolute;
+    height: 480px;
+    width: 280px;
   }
 
   .scene {
@@ -85,7 +95,7 @@
     },
     methods: {
       fetchData () {
-        this.locations = this.$store.getters.getSavedLocations || null
+        this.locations = Object.assign({}, this.$store.getters.getSavedLocations)
       },
       clicked (data) {
         this.$router.push({

@@ -75,6 +75,12 @@
         EventBus.$on('setClassNames', (classNames) => {
           this.classNames = classNames
         })
+
+        EventBus.$off('updatedSettings')
+        EventBus.$on('updatedSettings', () => {
+          this.getWeather()
+          this.getForecast()
+        })
       },
       bindElectronEvents () {
         if (typeof this.$electron !== 'undefined' && typeof this.$electron.ipcRenderer !== 'undefined') {
@@ -182,6 +188,7 @@
           if (response.data) {
             this.$store.dispatch('loadSettings', response.data)
             this.$electron.ipcRenderer.send('save-settings', response.data)
+            this.$i18n.locale = response.data.app_language
 
             this.updateStatus('settings')
           } else {
@@ -195,7 +202,7 @@
         }
       },
       getWeather () {
-        const savedLocations = this.$store.getters.getSavedLocations || {}
+        const savedLocations = Object.assign({}, this.$store.getters.getSavedLocations)
         const total = Object.keys(savedLocations).length
         let current = 0
 
@@ -231,7 +238,7 @@
         this.timers.current = setTimeout(this.getWeather, TIMER_CURRENT_WEATHER)
       },
       getForecast () {
-        const savedLocations = this.$store.getters.getSavedLocations || {}
+        const savedLocations = Object.assign({}, this.$store.getters.getSavedLocations)
         const total = Object.keys(savedLocations).length
         let current = 0
 
@@ -244,7 +251,7 @@
 
           api.getWeatherForecastByGeo(location, (forecast) => {
             if (typeof forecast.data !== 'undefined' && typeof forecast.data.list !== 'undefined') {
-              let saveForecast = util.parseWeatherForecast(location.hash_key, forecast.data, this.$store.state.settings)
+              let saveForecast = util.parseWeatherForecast(location.hash_key, forecast.data, this.$store.state.settings, this.$i18n.t('ui.today'))
 
               this.$store.dispatch('saveForecast', saveForecast)
 

@@ -38,21 +38,6 @@
   }
 }
 
-@keyframes stem {
-  0% {
-    opacity: 1;
-  }
-  65% {
-    opacity: 1;
-  }
-  75% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
 @keyframes move-fog {
   from { background-position: 0 0;}
   to { background-position: 600px 0; }

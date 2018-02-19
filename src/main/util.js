@@ -1,6 +1,6 @@
 import path from 'path'
 
-const setWeather = (mb, data) => {
+const setWeather = (mb, data, settings) => {
   if (process.platform === 'darwin') {
     if (data.setting === 'condition') {
       mb.tray.setTitle('')
@@ -26,12 +26,8 @@ const setWeather = (mb, data) => {
     }
   }
 
-  if (process.platform !== 'linux') {
-    if (data.tooltip) {
-      mb.tray.setToolTip(data.tooltip)
-    } else {
-      mb.tray.setToolTip(`${data.title}°`)
-    }
+  if (process.platform !== 'linux' && data.tooltip) {
+    mb.tray.setToolTip(data.tooltip)
   }
 }
 

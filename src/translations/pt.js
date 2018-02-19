@@ -3,7 +3,52 @@ export default {
   pt: {
     app: {
       title: 'Weather Bar',
-      language: 'Língua'
+      language: 'Língua',
+      menu: {
+        quit: 'Sair',
+        localWeather: 'Tempo localizado',
+        savedLocations: 'Locais salvos',
+        preferences: 'Preferências',
+        newLocation: 'Nova localização',
+        providedBy: 'Dados do tempo por:',
+        versionNumber: 'Versão {version}'
+      }
+    },
+    page: {
+      newLocation: {
+        placeholder: 'Pesquisar cidades',
+        letsGo: 'Vamos',
+        currentLocation: 'Localização atual',
+        noMatch: 'Sem cidades correspondentes'
+      },
+      preferences: {
+        app: 'Aplicativo',
+        language: 'Língua',
+        layout: 'Layout',
+        units: 'Unidades',
+        alwaysOnTop: 'Sempre no topo',
+        settings: 'Configurações',
+        launchAtStartup: 'Inicie no início',
+        launchIcon: 'Ícone de lançamento',
+        both: 'Condição e Temperatura',
+        temperature: 'Temperatura',
+        condition: 'Condição',
+        currentTemp: 'Temperatura atual',
+        actual: 'Real',
+        feelsLike: 'Parece',
+        fahrenheit: 'Fahrenheit',
+        celsius: 'Celsius',
+        time: 'Tempo',
+        twelveHour: '12 horas',
+        twentyFourHour: '24 horas'
+      }
+    },
+    ui: {
+      today: 'Hoje',
+      loading: 'Carregando',
+      confirmDelete: 'Tem certeza de que deseja excluir esta localização?',
+      deleteButton: 'Excluir',
+      addLocation: 'Adicionar local'
     },
     autoUpdate: {
       message: 'Está disponível uma nova versão do Weather Bar.',
@@ -13,9 +58,22 @@ export default {
         no: 'Não'
       }
     },
-    splash: {
-      versionNumber: 'Versão {version}',
-      providedBy: 'Dados do tempo por:'
+    context: {
+      menu: {
+        about: 'Sobre Weather Bar',
+        version: 'Versão {version}',
+        website: 'Site Weather Bar',
+        license: 'Contrato de Licença',
+        support: 'Obter ajuda',
+        toggle: 'Toggle Weather Bar',
+        devTools: 'Desenvolvedor',
+        quit: 'Sair Weather Bar',
+        dialog: {
+          detail: 'Weather Bar é uma aplicação de código aberto criada por Peter Schmalfeldt.',
+          close: 'Fechar',
+          website: 'Site'
+        }
+      }
     }
   }
 }

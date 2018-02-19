@@ -13,7 +13,7 @@ const celsiusToKelvin = (temp) => {
   return Math.round(temp + 273.15)
 }
 
-const fahrenheitToCelcius = (temp) => {
+const fahrenheitToCelsius = (temp) => {
   return Math.round((temp - 32) / 1.8)
 }
 
@@ -21,7 +21,7 @@ const fahrenheitToKelvin = (temp) => {
   return Math.round(((temp - 32) / 1.8) + 273.15)
 }
 
-const kelvinToCelcius = (temp) => {
+const kelvinToCelsius = (temp) => {
   return Math.round(temp - 273.15)
 }
 
@@ -49,10 +49,27 @@ const prepMenubarWeather = (data, settings) => {
   const measure = settings.units_temperature.charAt(0).toUpperCase()
   const description = titleCase(data.weather[0].description)
 
+  // Convert Temperature to Feels Like
+  const feelsLikeKelvin = new Feels({
+    temp: data.main.temp,
+    humidity: data.main.humidity,
+    speed: data.wind.speed,
+    units: {
+      temp: 'k',
+      speed: 'mps'
+    }
+  }).like()
+
   // Convert Temperature based on Preferences
-  const temperature = (settings.units_temperature === 'fahrenheit')
+  const actual = (settings.units_temperature === 'fahrenheit')
     ? kelvinToFahrenheit(data.main.temp)
-    : kelvinToCelcius(data.main.temp)
+    : kelvinToCelsius(data.main.temp)
+
+  const feelsLike = (settings.units_temperature === 'fahrenheit')
+    ? kelvinToFahrenheit(feelsLikeKelvin)
+    : kelvinToCelsius(feelsLikeKelvin)
+
+  const temperature = (settings.layout_current_temp === 'actual') ? actual : feelsLike
 
   let folder = (data.weather[0].icon.slice(-1) === 'd') ? 'day' : 'night'
   let image = data.weather[0].id || 800
@@ -430,6 +447,8 @@ const getMoonsPosition = (latitude, longitude, timeZone) => {
 }
 
 const parseWeather = (key, data, settings) => {
+  moment.locale(settings.app_language)
+
   const timeZone = tzlookup(data.coord.lat, data.coord.lon)
   const time = (data.weather[0].icon.slice(-1) === 'd') ? 'day' : 'night'
   const code = data.weather[0].id
@@ -487,10 +506,10 @@ const parseWeather = (key, data, settings) => {
     sun_position: sunPosition,
     sunrise: moment.tz(data.sys.sunrise * 1000, timeZone).format('h:mm A'),
     sunset: moment.tz(data.sys.sunset * 1000, timeZone).format('h:mm A'),
-    temp_actual: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp) : kelvinToCelcius(data.main.temp),
-    temp_feels_like: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(feelsLikeKelvin) : kelvinToCelcius(feelsLikeKelvin),
-    temp_max: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp_max) : kelvinToCelcius(data.main.temp_max),
-    temp_min: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp_min) : kelvinToCelcius(data.main.temp_min),
+    temp_actual: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp) : kelvinToCelsius(data.main.temp),
+    temp_feels_like: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(feelsLikeKelvin) : kelvinToCelsius(feelsLikeKelvin),
+    temp_max: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp_max) : kelvinToCelsius(data.main.temp_max),
+    temp_min: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.main.temp_min) : kelvinToCelsius(data.main.temp_min),
     time_zone: timeZone,
     wind_direction: degreesToDirection(data.wind.deg),
     wind_speed: (settings.units_wind_speed === 'mph') ? mpsToMph(data.wind.speed) + ' MPH' : Math.round(data.wind.speed) + ' MPS'
@@ -499,10 +518,12 @@ const parseWeather = (key, data, settings) => {
   return weather
 }
 
-const parseWeatherForecast = (key, data, settings) => {
+const parseWeatherForecast = (key, data, settings, todayLabelTranslated) => {
   if (!data || !data.list || data.list.length === 0) {
     return []
   }
+
+  moment.locale(settings.app_language)
 
   const timeZone = tzlookup(data.city.coord.lat, data.city.coord.lon)
   const forecast = []
@@ -524,11 +545,11 @@ const parseWeatherForecast = (key, data, settings) => {
     }
 
     forecast.push({
-      day_label: (i === 0 || (!firstDayIsToday && i === 1)) ? 'Today' : moment.tz(data.list[i].dt * 1000, timeZone).format('ddd'),
+      day_label: (i === 0 || (!firstDayIsToday && i === 1)) ? todayLabelTranslated : moment.tz(data.list[i].dt * 1000, timeZone).format('ddd'),
       day_number: (i === 0 || (!firstDayIsToday && i === 1)) ? null : moment.tz(data.list[i].dt * 1000, timeZone).format('D'),
       condition_icon: (time === 'night' && (code === 800 || code === 951)) ? getMoonPhaseIcon() : getWeatherIcon(code, time),
-      temp_max: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.list[i].temp.max) : kelvinToCelcius(data.list[i].temp.max),
-      temp_min: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.list[i].temp.min) : kelvinToCelcius(data.list[i].temp.min)
+      temp_max: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.list[i].temp.max) : kelvinToCelsius(data.list[i].temp.max),
+      temp_min: (settings.units_temperature === 'fahrenheit') ? kelvinToFahrenheit(data.list[i].temp.min) : kelvinToCelsius(data.list[i].temp.min)
     })
   }
 
@@ -542,10 +563,10 @@ export default {
   celsiusToFahrenheit,
   celsiusToKelvin,
   degreesToDirection,
-  fahrenheitToCelcius,
+  fahrenheitToCelsius,
   fahrenheitToKelvin,
   getMoonPhase,
-  kelvinToCelcius,
+  kelvinToCelsius,
   kelvinToFahrenheit,
   parseWeather,
   parseWeatherForecast,

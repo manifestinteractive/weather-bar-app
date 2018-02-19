@@ -20,7 +20,7 @@ const state = {
   units_accumulation: 'inches',
   units_pressure: 'inhb',
   units_temperature: 'fahrenheit',
-  units_time: '12-hour',
+  units_time: 'twelve_hour',
   units_wind_speed: 'mph',
   uuid: null
 }

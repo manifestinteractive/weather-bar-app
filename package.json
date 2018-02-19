@@ -1,6 +1,6 @@
 {
   "name": "weather-bar-app",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "author": "Peter Schmalfeldt <me@peterschmalfeldt.com>",
   "description": "Weather Bar is a Weather Application that lives in your Menu Bar giving you beautiful access to real-time weather conditions and a generous 15-day forecast.",
   "keywords": [

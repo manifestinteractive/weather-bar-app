@@ -1,11 +1,9 @@
 <template>
-  <transition name="fade" mode="out-in">
-    <div class="moon-wrapper" :style="getPosition">
-      <div class="moon" :style="getOuterStyle()">
-        <div class="inner" :style="getInnerStyle()"></div>
-      </div>
+  <div class="moon-wrapper" :style="getPosition">
+    <div class="moon" :style="getOuterStyle()">
+      <div class="inner" :style="getInnerStyle()"></div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script>

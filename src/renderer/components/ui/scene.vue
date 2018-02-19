@@ -20,13 +20,12 @@
       :position="data.moon_position"
     />
 		<sun v-if="data.scene_sun" :position="data.sun_position" />
-    <stars v-if="data.scene_stars" />
-
     <random :time="data.scene_time" :clouds="data.scene_cloud_percent" :thunderstorm="data.scene_thunderstorm" />
 
     <mountains />
 		<trees />
-		<sky />
+    <stars v-if="data.scene_stars" />
+    <sky />
   </div>
 </template>
 

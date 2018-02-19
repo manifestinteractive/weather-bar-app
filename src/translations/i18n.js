@@ -39,8 +39,12 @@ if (supportedLanguges.indexOf(locale) === -1) {
   locale = 'en'
 }
 
-export function i18n (keyword, template) {
-  let translation = keyword.split('.').reduce((o, i) => o[i], messages[locale])
+export function i18n (lang, keyword, template) {
+  if (!lang) {
+    lang = locale
+  }
+
+  let translation = keyword.split('.').reduce((o, i) => o[i], messages[lang])
   if (translation === undefined) {
     translation = keyword
   }

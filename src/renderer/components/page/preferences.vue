@@ -5,27 +5,27 @@
         <page-header v-bind:title="$t('app.menu.preferences')" />
 
         <div class="tab-set">
-          <a class="tab" :class="{ active: tab === 'app' }" @click.prevent="tab = 'app'">
-            App
+          <a class="tab" :class="{ active: tab === 'app' }" @click.prevent="changeTab('app')">
+            {{ $t('page.preferences.app') }}
           </a>
-          <a class="tab" :class="{ active: tab === 'layout' }" @click.prevent="tab = 'layout'">
-            Layout
+          <a class="tab" :class="{ active: tab === 'layout' }" @click.prevent="changeTab('layout')">
+            {{ $t('page.preferences.layout') }}
           </a>
-          <a class="tab" :class="{ active: tab === 'units' }" @click.prevent="tab = 'units'">
-            Units
+          <a class="tab" :class="{ active: tab === 'units' }" @click.prevent="changeTab('units')">
+            {{ $t('page.preferences.units') }}
           </a>
         </div>
 
         <div class="tab-panels">
 
           <!-- APP TAB -->
-          <div class="tab-panel" v-if="tab === 'app'">
+          <div class="tab-panel" v-show="tab === 'app'">
 
-            <h1 class="group-header first">Settings</h1>
+            <h1 class="group-header first">{{ $t('page.preferences.settings') }}</h1>
 
             <!-- Language -->
             <div class="select-wrapper">
-              <label for="app_language">{{ $t('app.language') }}</label>
+              <label for="app_language">{{ $t('page.preferences.language') }}</label>
               <select id="app_language" v-model="settings.app_language" @change="changeLanguage">
                 <option value="ar">العربية</option> <!-- Arabic -->
                 <option value="de">Deutsch</option> <!-- German -->
@@ -42,7 +42,7 @@
 
             <!-- Always on Top -->
             <div class="toggle-wrapper">
-              <label for="app_always_on_top">Always on Top</label>
+              <label for="app_always_on_top">{{ $t('page.preferences.alwaysOnTop') }}</label>
               <toggle-switch id="app_always_on_top"
                 v-model="settings.app_always_on_top"
                 :enabled.sync="settings.app_always_on_top"
@@ -52,7 +52,7 @@
 
             <!-- Launch at Startup -->
             <div class="toggle-wrapper">
-              <label for="app_launch_at_startup">Launch at Startup</label>
+              <label for="app_launch_at_startup">{{ $t('page.preferences.launchAtStartup') }}</label>
               <toggle-switch id="app_launch_at_startup"
                 v-model="settings.app_launch_at_startup"
                 :enabled.sync="settings.app_launch_at_startup"
@@ -60,10 +60,10 @@
               />
             </div>
 
-            <h1 class="group-header">Launch Icon</h1>
+            <h1 class="group-header margin-top">{{ $t('page.preferences.launchIcon') }}</h1>
 
             <div class="toggle-wrapper" v-if="platform === 'darwin'">
-              <label for="both">Condition &amp; Temperature</label>
+              <label for="both">{{ $t('page.preferences.both') }}</label>
               <radio-button id="both" name="app_launch_icon" option="both"
                 v-model="settings.app_launch_icon"
                 :enabled.sync="settings.app_launch_icon"
@@ -72,7 +72,7 @@
             </div>
 
             <div class="toggle-wrapper">
-              <label for="temperature">Temperature</label>
+              <label for="temperature">{{ $t('page.preferences.temperature') }}</label>
               <radio-button id="temperature" name="app_launch_icon" option="temperature"
                 v-model="settings.app_launch_icon"
                 :enabled.sync="settings.app_launch_icon"
@@ -81,7 +81,7 @@
             </div>
 
             <div class="toggle-wrapper">
-              <label for="condition">Condition</label>
+              <label for="condition">{{ $t('page.preferences.condition') }}</label>
               <radio-button id="condition" name="app_launch_icon" option="condition"
                 v-model="settings.app_launch_icon"
                 :enabled.sync="settings.app_launch_icon"
@@ -91,11 +91,11 @@
           </div>
 
           <!-- LAYOUT TAB -->
-          <div class="tab-panel" v-if="tab === 'layout'">
-            <h1 class="group-header">Current Temperature</h1>
+          <div class="tab-panel" v-show="tab === 'layout'">
+            <h1 class="group-header">{{ $t('page.preferences.currentTemp') }}</h1>
 
             <div class="toggle-wrapper">
-              <label for="actual">Actual</label>
+              <label for="actual">{{ $t('page.preferences.actual') }}</label>
               <radio-button id="actual" name="layout_current_temp" option="actual"
                 v-model="settings.layout_current_temp"
                 :enabled.sync="settings.layout_current_temp"
@@ -104,7 +104,7 @@
             </div>
 
             <div class="toggle-wrapper">
-              <label for="feels_like">Feels Like</label>
+              <label for="feels_like">{{ $t('page.preferences.feelsLike') }}</label>
               <radio-button id="feels_like" name="layout_current_temp" option="feels_like"
                 v-model="settings.layout_current_temp"
                 :enabled.sync="settings.layout_current_temp"
@@ -115,11 +115,11 @@
           </div>
 
           <!-- UNITS TAB -->
-          <div class="tab-panel" v-if="tab === 'units'">
-            <h1 class="group-header">Temperature</h1>
+          <div class="tab-panel" v-show="tab === 'units'">
+            <h1 class="group-header">{{ $t('page.preferences.temperature') }}</h1>
 
             <div class="toggle-wrapper">
-              <label for="fahrenheit">Fahrenheit</label>
+              <label for="fahrenheit">{{ $t('page.preferences.fahrenheit') }}</label>
               <radio-button id="fahrenheit" name="units_temperature" option="fahrenheit"
                 v-model="settings.units_temperature"
                 :enabled.sync="settings.units_temperature"
@@ -128,19 +128,19 @@
             </div>
 
             <div class="toggle-wrapper">
-              <label for="celcius">Celcius</label>
-              <radio-button id="celcius" name="units_temperature" option="celcius"
+              <label for="celsius">{{ $t('page.preferences.celsius') }}</label>
+              <radio-button id="celsius" name="units_temperature" option="celsius"
                 v-model="settings.units_temperature"
                 :enabled.sync="settings.units_temperature"
                 @selectPreference="selectPreference"
                 />
             </div>
 
-            <h1 class="group-header">Time</h1>
+            <h1 class="group-header margin-top">{{ $t('page.preferences.time') }}</h1>
 
             <div class="toggle-wrapper">
-              <label for="12-hour">12 Hour</label>
-              <radio-button id="12-hour" name="units_time" option="12-hour"
+              <label for="twelve_hour">{{ $t('page.preferences.twelveHour') }}</label>
+              <radio-button id="twelve_hour" name="units_time" option="twelve_hour"
                 v-model="settings.units_time"
                 :enabled.sync="settings.units_time"
                 @selectPreference="selectPreference"
@@ -148,8 +148,8 @@
             </div>
 
             <div class="toggle-wrapper">
-              <label for="24-hour">24 Hour</label>
-              <radio-button id="24-hour" name="units_time" option="24-hour"
+              <label for="twenty_four_hour">{{ $t('page.preferences.twentyFourHour') }}</label>
+              <radio-button id="twenty_four_hour" name="units_time" option="twenty_four_hour"
                 v-model="settings.units_time"
                 :enabled.sync="settings.units_time"
                 @selectPreference="selectPreference"
@@ -168,7 +168,9 @@
 .preference {
   .page-content {
     z-index: 500;
-    position: relative;
+    position: absolute;
+    height: 480px;
+    width: 280px;
   }
 
   .scene {
@@ -178,12 +180,12 @@
   .group-header {
     text-transform: uppercase;
     font-size: 14px;
-    margin: 30px 0 10px 0;
+    margin: 15px 0 10px 0;
     font-weight: 300;
     color: $logo-blue;
 
-    &.first {
-      margin-top: 15px;
+    &.margin-top {
+      margin-top: 30px;
     }
   }
 
@@ -242,53 +244,55 @@
 
   import api from '../../services/api'
 
+  import { EventBus } from '../../event-bus'
+
   export default {
     name: 'preference',
     data () {
       return {
         tab: 'app',
         platform: process.platform,
-        settings: this.$store.getters.getSettings,
+        settings: Object.assign({}, this.$store.getters.getSettings),
         random: (Math.floor(Math.random() * 10) + 1)
       }
     },
     methods: {
       changeLanguage () {
         this.$i18n.locale = this.settings.app_language
-        this.$store.dispatch('updateSetting', {
-          key: 'app_language',
-          value: this.settings.app_language
-        })
+        this.savePreference('app_language', this.settings.app_language)
+      },
+      changeTab (tab) {
+        this.tab = tab
       },
       togglePreference (preference) {
         if (typeof preference.id !== 'undefined' && typeof preference.enabled !== 'undefined') {
-          const data = {
-            uuid: this.settings.uuid,
-            key: preference.id,
-            value: preference.enabled
-          }
-
-          api.updateUserSettings(data, (response) => {
-            if (response.data) {
-              this.$store.dispatch('updateSetting', {
-                key: preference.id,
-                value: preference.enabled
-              })
-
-              if (preference.id === 'app_always_on_top') {
-                this.$electron.ipcRenderer.send('set-always-on-top', preference.enabled)
-              }
-            }
-          })
+          this.savePreference(preference.id, preference.enabled)
         }
       },
       selectPreference (preference) {
         if (typeof preference.id !== 'undefined' && typeof preference.selected !== 'undefined') {
-          this.$store.dispatch('updateSetting', {
-            key: preference.id,
-            value: preference.selected
-          })
+          this.savePreference(preference.id, preference.selected)
         }
+      },
+      savePreference (key, value) {
+        const data = {
+          uuid: this.settings.uuid,
+          key: key,
+          value: value
+        }
+
+        api.updateUserSettings(data, (response) => {
+          if (response.data) {
+            this.$store.dispatch('updateSetting', { key: key, value: value })
+            this.$electron.ipcRenderer.send('save-setting', key, value)
+
+            EventBus.$emit('updatedSettings')
+
+            if (key === 'app_always_on_top') {
+              this.$electron.ipcRenderer.send('set-always-on-top', value)
+            }
+          }
+        })
       }
     },
     components: {

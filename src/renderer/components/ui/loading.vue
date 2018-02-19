@@ -1,7 +1,7 @@
 <template>
   <transition name="fade" mode="out-in">
     <div class="loading">
-      <h1>Loading</h1>
+      <h1>{{ $t('ui.loading') }}</h1>
       <svg id="load" x="0px" y="0px" viewBox="0 0 150 150">
         <circle id="loading-inner" cx="75" cy="75" r="60"/>
       </svg>
