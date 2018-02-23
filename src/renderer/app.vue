@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="classNames">
+  <div id="app" :class="classNames" v-if="appOpened">
     <toast v-if="toastMessage" :toastMessage="toastMessage" />
     <loading v-if="!appReady || hasError" :hasError="hasError" />
     <app-menu v-if="appReady && !hasError" :class="classNames" />
@@ -36,6 +36,7 @@
         classNames: '',
         toastMessage: null,
         hasError: false,
+        appOpened: false,
         status: {
           currentLocation: false,
           savedLocations: false,
@@ -90,12 +91,14 @@
           this.$electron.ipcRenderer.removeAllListeners('app-opened')
           this.$electron.ipcRenderer.on('app-opened', () => {
             EventBus.$emit('appOpened')
+            this.appOpened = true
           })
 
           // User clicked Menu Bar Icon to Close App
           this.$electron.ipcRenderer.removeAllListeners('app-closed')
           this.$electron.ipcRenderer.on('app-closed', () => {
             EventBus.$emit('appClosed')
+            this.appOpened = false
             this.$router.push({ name: 'index' })
           })
 
