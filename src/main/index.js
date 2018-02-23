@@ -21,6 +21,15 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
+// Force close multiple instances
+const shouldExit = app.makeSingleInstance(() => {
+  process.nextTick(() => app.exit(0))
+})
+
+if (shouldExit) {
+  app.exit(1)
+}
+
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -63,7 +72,8 @@ const mb = menubar({
   alwaysOnTop: true,
   title: $t(appSettings.app_language, 'app.title'),
   preloadWindow: true,
-  resizable: false
+  resizable: false,
+  backgroundColor: '#2a3641'
 })
 
 const makeMenu = () => {
@@ -179,6 +189,12 @@ mb.on('ready', function ready () {
 
   mb.setOption('title', $t(appSettings.app_language, 'app.title'))
 
+  mb.window.on('focus', () => {
+    if (process.platform === 'darwin') {
+      mb.tray.setHighlightMode('always')
+    }
+  })
+
   globalShortcut.register('CommandOrControl+Shift+W', () => {
     if (mb.window.isVisible()) {
       mb.window.hide()
@@ -187,7 +203,24 @@ mb.on('ready', function ready () {
     }
   })
 
+  ipcMain.on('app-error', (event) => {
+    if (process.platform === 'darwin') {
+      mb.tray.setTitle('')
+      mb.tray.setImage(path.join(__static, '/mac/errorTemplate.png'))
+    } else if (process.platform === 'win32') {
+      mb.tray.setImage(path.join(__static, '/win/error.ico'))
+    } else {
+      mb.tray.setImage(path.join(__static, '/linux/error.png'))
+    }
+  })
+
   ipcMain.on('save-settings', (event, settings) => {
+    if (settings.app_launch_at_startup) {
+      util.enableAutoLaunch(app)
+    } else if (!settings.app_launch_at_startup) {
+      util.disableAutoLaunch(app)
+    }
+
     appSettings = settings
     contextMenu = makeMenu()
   })
@@ -231,7 +264,10 @@ mb.on('ready', function ready () {
 mb.on('focus-lost', () => {
   if (!appSettings.app_always_on_top) {
     if (mb.window.isVisible()) {
-      mb.window.hide()
+      // mb.window.hide()
+      if (process.platform === 'darwin') {
+        mb.tray.setHighlightMode('never')
+      }
     }
   }
 })

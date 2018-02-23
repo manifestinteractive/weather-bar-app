@@ -45,7 +45,7 @@
         </div>
 
         <div class="time" v-if="info.time_zone">
-          {{ currentTime | moment('timezone', info.time_zone, 'h:mm A') }}
+          {{ currentTime | moment('timezone', info.time_zone, timeFormat) }}
         </div>
       </div>
     </div>
@@ -319,13 +319,20 @@
         confirmDelete: false,
         confirmPrimary: false,
         weather: null,
-        className: ''
+        className: '',
+        timeFormat: 'h:mm A'
       }
     },
     beforeDestroy () {
       clearInterval(this.timer)
     },
     mounted () {
+      const unitsTime = this.$store.getters.getSetting('units_time')
+
+      if (unitsTime === 'twenty_four_hour') {
+        this.timeFormat = 'H:mm'
+      }
+
       this.timer = setInterval(this.updateTime, 1000)
       this.getWeather()
     },

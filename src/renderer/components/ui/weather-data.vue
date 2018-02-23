@@ -41,7 +41,7 @@
 			</div>
     </div>
 
-    <swiper class="weather-overview" :options="swiperOption" ref="forecastSwiper">
+    <swiper class="weather-overview" :options="swiperOption" ref="forecastSwiper" v-touch:swipe.left="swipeLeft" v-touch:swipe.right="swipeRight">
 
       <swiper-slide class="forecast" v-for="(day, index) in forecast" :key="index">
         <div class="forecast-day">
@@ -146,10 +146,16 @@
     methods: {
       keyPress (event) {
         if (event.which === 37) {
-          this.swiper.slidePrev(300, false)
+          this.swipeLeft()
         } else if (event.which === 39) {
-          this.swiper.slideNext(300, false)
+          this.swipeRight()
         }
+      },
+      swipeLeft () {
+        this.swiper.slidePrev(300, false)
+      },
+      swipeRight () {
+        this.swiper.slideNext(300, false)
       }
     },
     components: {

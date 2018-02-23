@@ -1,8 +1,8 @@
 <template>
   <div id="app" :class="classNames">
     <toast v-if="toastMessage" :toastMessage="toastMessage" />
-    <loading v-if="!appReady" />
-    <app-menu v-if="appReady" :class="classNames" />
+    <loading v-if="!appReady || hasError" :hasError="hasError" />
+    <app-menu v-if="appReady && !hasError" :class="classNames" />
     <router-view v-if="appReady" />
   </div>
 </template>
@@ -35,6 +35,7 @@
         appReady: false,
         classNames: '',
         toastMessage: null,
+        hasError: false,
         status: {
           currentLocation: false,
           savedLocations: false,
@@ -55,7 +56,6 @@
     },
     created () {
       this.getUUID()
-      this.getLocation()
       this.bindVueEvents()
       this.bindElectronEvents()
     },
@@ -68,7 +68,9 @@
 
         EventBus.$off('showToast')
         EventBus.$on('showToast', (message) => {
+          this.$electron.ipcRenderer.send('app-error')
           this.toastMessage = message
+          this.hasError = true
         })
 
         EventBus.$off('setClassNames')
@@ -138,7 +140,7 @@
         api.getIpAddress((response) => {
           api.getLocationByIp(response.ip, (location) => {
             if (typeof location.data !== 'undefined') {
-              const uuid = this.$store.state.settings.uuid
+              const uuid = this.$store.getters.getSetting('uuid')
               const loc = location.data
               const timeZone = tzlookup(loc.latitude, loc.longitude)
 
@@ -178,6 +180,8 @@
           if (response.data) {
             this.$store.dispatch('updateSavedLocations', response.data)
             EventBus.$emit('updateSavedLocations', response.data)
+
+            this.getLocation()
 
             this.updateStatus('savedLocations')
           }
@@ -280,6 +284,9 @@
         })
       },
       updateStatus (checked) {
+        this.toastMessage = null
+        this.hasError = false
+
         if (!this.appReady) {
           this.status[checked] = true
 

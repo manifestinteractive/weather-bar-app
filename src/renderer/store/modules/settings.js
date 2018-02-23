@@ -4,7 +4,7 @@ const state = {
   app_always_on_top: false,
   app_language: 'en',
   app_launch_at_startup: true,
-  app_launch_icon: 'both',
+  app_launch_icon: (process && process.platform !== 'darwin') ? 'both' : 'temperature',
   created_date: null,
   current_city: null,
   current_country: null,

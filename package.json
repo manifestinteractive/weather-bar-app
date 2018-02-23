@@ -1,6 +1,6 @@
 {
   "name": "weather-bar-app",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "author": "Peter Schmalfeldt <me@peterschmalfeldt.com>",
   "description": "Weather Bar is a Weather Application that lives in your Menu Bar giving you beautiful access to real-time weather conditions and a generous 15-day forecast.",
   "keywords": [
@@ -116,6 +116,7 @@
     "vue-moment": "^3.1.0",
     "vue-router": "^2.5.3",
     "vue-toastr": "^2.0.12",
+    "vue2-touch-events": "^1.0.0",
     "vuex": "^2.3.1"
   },
   "devDependencies": {

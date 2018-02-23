@@ -1,4 +1,5 @@
 import path from 'path'
+import { AutoLaunch } from 'auto-launch'
 
 const setWeather = (mb, data, settings) => {
   if (process.platform === 'darwin') {
@@ -41,7 +42,59 @@ const getAppIcon = () => {
   }
 }
 
+const enableAutoLaunch = (app) => {
+  if (process.platform !== 'linux') {
+    app.setLoginItemSettings({
+      openAtLogin: true
+    })
+  } else {
+    const autoLauncher = new AutoLaunch({
+      name: 'Weather Bar',
+      path: process.execPath,
+      isHidden: true
+    })
+
+    autoLauncher.isEnabled().then((enabled) => {
+      if (enabled) {
+        return
+      }
+      return autoLauncher.enable()
+    }).then((err) => {
+      console.log(err)
+    })
+
+    autoLauncher.enable()
+  }
+}
+
+const disableAutoLaunch = (app) => {
+  if (process.platform !== 'linux') {
+    app.setLoginItemSettings({
+      openAtLogin: false
+    })
+  } else {
+    const autoLauncher = new AutoLaunch({
+      name: 'Weather Bar',
+      path: process.execPath,
+      isHidden: true
+    })
+
+    autoLauncher.isEnabled().then((enabled) => {
+      if (!enabled) {
+        return
+      }
+      return autoLauncher.disable()
+    }).then((err) => {
+      console.log(err)
+    })
+
+    autoLauncher.disable()
+  }
+}
+
 export default {
   setWeather,
-  getAppIcon
+  getAppIcon,
+  enableAutoLaunch,
+  disableAutoLaunch
 }
