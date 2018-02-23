@@ -116,7 +116,6 @@
     "vue-moment": "^3.1.0",
     "vue-router": "^2.5.3",
     "vue-toastr": "^2.0.12",
-    "vue2-touch-events": "^1.0.0",
     "vuex": "^2.3.1"
   },
   "devDependencies": {

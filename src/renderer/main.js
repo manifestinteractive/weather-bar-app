@@ -3,7 +3,6 @@ import VueI18n from 'vue-i18n'
 import deepmerge from 'deepmerge'
 import VueMoment from 'vue-moment'
 import moment from 'moment-timezone'
-import Vue2TouchEvents from 'vue2-touch-events'
 
 import app from './app'
 import router from './router'
@@ -27,9 +26,6 @@ Vue.config.productionTip = false
 
 // Setup International Support for Vue
 Vue.use(VueI18n)
-
-// Support Trackpad & Touchscreen Gestures
-Vue.use(Vue2TouchEvents)
 
 // Use Moment with Timezone Support
 Vue.use(VueMoment, {

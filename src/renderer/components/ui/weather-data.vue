@@ -41,7 +41,7 @@
 			</div>
     </div>
 
-    <swiper class="weather-overview" :options="swiperOption" ref="forecastSwiper" v-touch:swipe.left="swipeLeft" v-touch:swipe.right="swipeRight">
+    <swiper class="weather-overview" :options="swiperOption" ref="forecastSwiper">
 
       <swiper-slide class="forecast" v-for="(day, index) in forecast" :key="index">
         <div class="forecast-day">
