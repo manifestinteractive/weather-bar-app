@@ -52,16 +52,6 @@ const getters = {
   getLocationByKey: (state) => (key) => {
     return (state.hasOwnProperty(key)) ? state[key] : null
   },
-  getPrimaryLocation: state => {
-    for (let loc in state) {
-      if (!state.hasOwnProperty(loc)) continue
-      if (state[loc].primary) {
-        return loc
-      }
-    }
-
-    return 'current'
-  },
   getSavedLocations: state => {
     return state
   }

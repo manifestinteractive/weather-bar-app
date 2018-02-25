@@ -23,7 +23,8 @@
         timer: null,
         weather: null,
         forecast: null,
-        primary: null
+        primary: null,
+        locations: this.$store.getters.getSavedLocations
       }
     },
     created () {
@@ -37,9 +38,20 @@
       clearTimeout(this.timer)
     },
     methods: {
+      getPrimary () {
+        for (let loc in this.locations) {
+          if (!this.locations.hasOwnProperty(loc)) continue
+          if (this.locations[loc].primary) {
+            return loc
+          }
+        }
+
+        return 'current'
+      },
       fetchWeather () {
         clearTimeout(this.timer)
-        this.primary = this.$store.getters.getPrimaryLocation
+
+        this.primary = this.getPrimary()
         this.weather = this.$store.getters.getWeather(this.primary)
         this.forecast = this.$store.getters.getForecast(this.primary)
 

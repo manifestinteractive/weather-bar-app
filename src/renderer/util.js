@@ -369,11 +369,11 @@ const getRainPercent = (code) => {
   if (code === 202 || code === 212 || code === 502 || code === 503 || code === 504 || code === 522 || code === 202 || code === 202) {
     return 100
   } else if (code >= 200 && code <= 232) {
-    return 75
-  } else if (code >= 500 && code <= 531) {
     return 50
+  } else if (code >= 500 && code <= 531) {
+    return 10
   } else if (code >= 300 && code <= 321) {
-    return 25
+    return 5
   }
 
   return 0
