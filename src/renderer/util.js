@@ -1,6 +1,7 @@
 import Feels from 'feels'
 import moment from 'moment-timezone'
 
+import { i18n as $t } from '../translations/i18n'
 import { scaleQuantize } from 'd3-scale'
 import { getTimes, getPosition, getMoonPosition, getMoonIllumination } from 'suncalc'
 import * as tzlookup from 'tz-lookup'
@@ -480,7 +481,7 @@ const parseWeather = (key, data, settings) => {
   let weather = {
     city: data.name,
     condition_icon: (time === 'night' && (code === 800 || code === 951)) ? getMoonPhaseIcon() : getWeatherIcon(code, time),
-    condition_label: titleCase(data.weather[0].description),
+    condition_label: $t(settings.app_language, `weather.code_${code}`),
     id: data.id,
     hash_key: key,
     moon_angle: moon.angle,
