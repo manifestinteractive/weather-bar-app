@@ -15,6 +15,18 @@
   ],
   "license": "MIT",
   "main": "./dist/electron/main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manifestinteractive/weather-bar-app.git"
+  },
+  "author": {
+    "name": "Peter Schmalfeldt",
+    "email": "me@peterschmalfeldt.com",
+    "url": "http://peterschmalfeldt.com"
+  },
+  "bugs": {
+    "url": "https://github.com/manifestinteractive/weather-bar-app/issues"
+  },
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
     "build:dir": "node .electron-vue/build.js && electron-builder --dir",
