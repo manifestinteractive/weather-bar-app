@@ -1,5 +1,5 @@
 import path from 'path'
-import { AutoLaunch } from 'auto-launch'
+import AutoLaunch from 'auto-launch'
 
 const setWeather = (mb, data, settings) => {
   if (process.platform === 'darwin') {
