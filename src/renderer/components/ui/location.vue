@@ -55,7 +55,7 @@
         </div>
 
         <div class="name" v-if="current">
-          {{ $t('app.menu.primaryLocation') }}
+          {{ $t('page.newLocation.currentLocation') }}
         </div>
 
         <div class="condition">
