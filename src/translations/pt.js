@@ -6,7 +6,7 @@ export default {
       language: 'Língua',
       menu: {
         quit: 'Sair',
-        localWeather: 'Tempo localizado',
+        primaryLocation: 'Localização primária',
         savedLocations: 'Locais salvos',
         preferences: 'Preferências',
         newLocation: 'Nova localização',

@@ -128,7 +128,7 @@ const makeMenu = () => {
       type: 'separator'
     },
     {
-      label: $t(appSettings.app_language, 'app.menu.localWeather'),
+      label: $t(appSettings.app_language, 'app.menu.primaryLocation'),
       click () {
         mb.window.send('go-to-local-weather')
         if (!mb.window.isVisible()) {

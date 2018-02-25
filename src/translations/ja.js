@@ -6,7 +6,7 @@ export default {
       language: '言語',
       menu: {
         quit: '終了する',
-        localWeather: 'ローカル天気',
+        primaryLocation: '主要な場所',
         savedLocations: '保存された場所',
         preferences: '設定',
         newLocation: '新しい場所',

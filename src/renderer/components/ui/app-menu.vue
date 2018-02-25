@@ -22,7 +22,7 @@
       <ul>
         <li>
           <router-link :to="{ name: 'index' }" exact @click.native="hide">
-            <i class="fas fa-fw fa-umbrella"></i> {{ $t('app.menu.localWeather') }}
+            <i class="fas fa-fw fa-star"></i> {{ $t('app.menu.primaryLocation') }}
           </router-link>
         </li>
         <li>
@@ -334,7 +334,7 @@
 
       &:hover {
         opacity: 1;
-        
+
         path {
           fill: #FF8C18;
         }

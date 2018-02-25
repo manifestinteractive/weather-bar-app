@@ -55,7 +55,7 @@
         </div>
 
         <div class="name" v-if="current">
-          {{ $t('app.menu.localWeather') }}
+          {{ $t('app.menu.primaryLocation') }}
         </div>
 
         <div class="condition">

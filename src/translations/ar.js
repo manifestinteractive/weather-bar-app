@@ -6,7 +6,7 @@ export default {
       language: 'لغة',
       menu: {
         quit: 'استقال',
-        localWeather: 'الطقس المحلي',
+        primaryLocation: 'الموقع الرئيسي',
         savedLocations: 'المواقع المحفوظة',
         preferences: 'تفضيلات',
         newLocation: 'موقع جديد',

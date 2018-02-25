@@ -20,7 +20,8 @@
 
 <style lang="scss">
 .loading-screen {
-  background: #2a3641;
+  background: url('~@/assets/images/menu-bg.jpg') center center;
+  background-size: cover;
   position: absolute;
   top: 0;
   left: 0;

@@ -6,7 +6,7 @@ export default {
       language: '语言',
       menu: {
         quit: '放弃',
-        localWeather: '当地天气',
+        primaryLocation: '主要位置',
         savedLocations: '保存的位置',
         preferences: '优先',
         newLocation: '新位置',

@@ -6,7 +6,7 @@ export default {
       language: 'La langue',
       menu: {
         quit: 'Quitter',
-        localWeather: 'La météo locale',
+        primaryLocation: 'Emplacement principal',
         savedLocations: 'Villes sauvegardées',
         preferences: 'Préférences',
         newLocation: 'Nouvel emplacement',

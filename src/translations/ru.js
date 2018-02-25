@@ -6,7 +6,7 @@ export default {
       language: 'язык',
       menu: {
         quit: 'Уволиться',
-        localWeather: 'Местная погода',
+        primaryLocation: 'Первичный город',
         savedLocations: 'Сохраненные города',
         preferences: 'предпочтения',
         newLocation: 'Новое место',

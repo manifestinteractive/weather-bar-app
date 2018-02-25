@@ -6,7 +6,7 @@ export default {
       language: 'Bahasa',
       menu: {
         quit: 'Berhenti',
-        localWeather: 'Cuaca Tempatan',
+        primaryLocation: 'Lokasi Utama',
         savedLocations: 'Lokasi Tersimpan',
         preferences: 'Keutamaan',
         newLocation: 'Lokasi Baru',
