@@ -48,7 +48,12 @@ export default {
       loading: 'جار التحميل',
       confirmDelete: 'هل أنت متأكد أنك تريد حذف هذا الموقع؟',
       deleteButton: 'حذف',
-      addLocation: 'إضافة موقع'
+      addLocation: 'إضافة موقع',
+      confirmPrimary: 'هل تريد استخدام هذا الموقع كموقع أساسي؟',
+      confirmedPrimary: 'ابتدائي',
+      errorText: 'يبدو أننا كان لدينا مشكلة مع التطبيق لدينا',
+      errorButtonQuit: 'استقال',
+      errorButtonReload: 'إعادة تحميل'
     },
     autoUpdate: {
       message: 'وهناك نسخة جديدة من الطقس بار هو متاح.',

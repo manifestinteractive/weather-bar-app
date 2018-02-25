@@ -48,7 +48,12 @@ export default {
       loading: 'Chargement',
       confirmDelete: 'Êtes-vous sûr de vouloir supprimer cet emplacement?',
       deleteButton: 'Effacer',
-      addLocation: 'Ajouter une ville'
+      addLocation: 'Ajouter une ville',
+      confirmPrimary: 'Utilisez-le comme votre emplacement principal?',
+      confirmedPrimary: 'Primaire',
+      errorText: 'On dirait que nous avons eu un problème avec notre application',
+      errorButtonQuit: 'Quitter',
+      errorButtonReload: 'Recharger'
     },
     autoUpdate: {
       message: 'Une nouvelle version de la barre météo est disponible.',

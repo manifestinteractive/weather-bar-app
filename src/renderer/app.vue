@@ -36,7 +36,7 @@
         classNames: '',
         toastMessage: null,
         hasError: false,
-        appOpened: false,
+        appOpened: true,
         status: {
           currentLocation: false,
           savedLocations: false,
@@ -222,7 +222,7 @@
 
           api.getCurrentWeatherByGeo(location, (weather) => {
             if (typeof weather.data !== 'undefined' && typeof weather.data.weather !== 'undefined') {
-              if (location.hash_key === 'current') {
+              if (location.primary) {
                 this.$electron.ipcRenderer.send('set-weather', util.prepMenubarWeather(weather.data, this.$store.state.settings))
               }
 

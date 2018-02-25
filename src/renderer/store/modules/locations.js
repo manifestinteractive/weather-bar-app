@@ -3,6 +3,19 @@ const state = {}
 const mutations = {
   SAVE_LOCATION (state, data) {
     state[data.hash_key] = data
+
+    let primaryExists = false
+
+    for (let loc in state) {
+      if (!state.hasOwnProperty(loc)) continue
+      if (state[loc].primary) {
+        primaryExists = true
+      }
+    }
+
+    if (!primaryExists) {
+      state['current'].primary = true
+    }
   },
   UPDATE_SAVED_LOCATIONS (state, data) {
     for (let i = 0; i < data.length; i++) {
@@ -11,12 +24,43 @@ const mutations = {
   },
   DELETE_LOCATION (state, data) {
     delete state[data.hash_key]
+
+    let primaryExists = false
+
+    for (let loc in state) {
+      if (!state.hasOwnProperty(loc)) continue
+      if (state[loc].primary) {
+        primaryExists = true
+      }
+    }
+
+    if (!primaryExists) {
+      state['current'].primary = true
+    }
+  },
+  MAKE_PRIMARY (state, data) {
+    for (let loc in state) {
+      if (!state.hasOwnProperty(loc)) continue
+      state[loc].primary = false
+    }
+
+    state[data.hash_key].primary = true
   }
 }
 
 const getters = {
   getLocationByKey: (state) => (key) => {
     return (state.hasOwnProperty(key)) ? state[key] : null
+  },
+  getPrimaryLocation: state => {
+    for (let loc in state) {
+      if (!state.hasOwnProperty(loc)) continue
+      if (state[loc].primary) {
+        return loc
+      }
+    }
+
+    return 'current'
   },
   getSavedLocations: state => {
     return state
@@ -32,6 +76,9 @@ const actions = {
   },
   deleteLocation ({ commit }, data) {
     commit('DELETE_LOCATION', data)
+  },
+  makePrimary ({ commit }, data) {
+    commit('MAKE_PRIMARY', data)
   }
 }
 

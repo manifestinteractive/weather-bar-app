@@ -48,7 +48,12 @@ export default {
       loading: 'Memuatkan',
       confirmDelete: 'Adakah anda pasti mahu memadamkan lokasi ini?',
       deleteButton: 'Padam',
-      addLocation: 'Tambah lokasi'
+      addLocation: 'Tambah lokasi',
+      confirmPrimary: 'Gunakan ini sebagai Lokasi Utama anda?',
+      confirmedPrimary: 'Utama',
+      errorText: 'Sepertinya kami menghadapi masalah dengan aplikasi kami',
+      errorButtonQuit: 'Berhenti',
+      errorButtonReload: 'Ulang'
     },
     autoUpdate: {
       message: 'Satu Weather Bar Versi Baru boleh didapati.',

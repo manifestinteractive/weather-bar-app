@@ -10,9 +10,9 @@
 
       <div class="reload" v-if="hasError">
         <i class="fal fa-exclamation-triangle"></i>
-        <p>Looks like we had a problem with our app</p>
-        <a @click.prevent="quit()">Quit</a>
-        <a @click.prevent="reload()" class="white">Reload</a>
+        <p>{{ $t('ui.errorText') }}</p>
+        <a @click.prevent="quit()">{{ $t('ui.errorButtonQuit') }}</a>
+        <a @click.prevent="reload()" class="white">{{ $t('ui.errorButtonReload') }}</a>
       </div>
     </div>
   </transition>

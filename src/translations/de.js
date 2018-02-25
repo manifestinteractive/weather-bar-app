@@ -48,7 +48,12 @@ export default {
       loading: 'Wird geladen',
       confirmDelete: 'Möchtest du diesen Ort wirklich löschen?',
       deleteButton: 'Löschen',
-      addLocation: 'Ort hinzufügen'
+      addLocation: 'Ort hinzufügen',
+      confirmPrimary: 'Verwenden Sie dies als Ihren primären Standort?',
+      confirmedPrimary: 'Primär',
+      errorText: 'Sieht so aus, als hätten wir ein Problem mit unserer App',
+      errorButtonQuit: 'Verlassen',
+      errorButtonReload: 'Neu laden'
     },
     autoUpdate: {
       message: 'Eine neue Version der Wetterleiste ist verfügbar.',

@@ -48,7 +48,12 @@ export default {
       loading: '読み込み中',
       confirmDelete: 'この場所を削除してもよろしいですか？',
       deleteButton: '削除',
-      addLocation: '場所を追加'
+      addLocation: '場所を追加',
+      confirmPrimary: 'プライマリロケーションとして使用しますか？',
+      confirmedPrimary: '一次',
+      errorText: 'アプリに問題があるようです',
+      errorButtonQuit: '終了する',
+      errorButtonReload: 'リロード'
     },
     autoUpdate: {
       message: '新しいバージョンの Weather Bar が利用可能です。',

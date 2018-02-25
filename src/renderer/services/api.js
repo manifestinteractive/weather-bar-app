@@ -107,5 +107,11 @@ export default {
       (response) => success && success(response.data),
       (response) => handleError(response, error)
     )
+  },
+  makeLocationPrimary (data, success, error) {
+    api.post(`/v1/saved_locations/primary/${data.uuid}/${data.hash_key}`).then(
+      (response) => success && success(response.data),
+      (response) => handleError(response, error)
+    )
   }
 }

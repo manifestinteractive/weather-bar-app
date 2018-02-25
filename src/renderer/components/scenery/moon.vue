@@ -7,8 +7,8 @@
 </template>
 
 <script>
-  const MOON_COLOR_LIGHT = 'rgba(255, 255, 255, 0.75)'
-  const MOON_COLOR_DARK = 'rgba(0, 0, 0, 0.85)'
+  const MOON_COLOR_LIGHT = 'rgba(255, 255, 255, 0.85)'
+  const MOON_COLOR_DARK = 'rgba(0, 0, 0, 0.75)'
 
   export default {
     name: 'moon',
@@ -103,6 +103,8 @@
           outerColour = MOON_COLOR_DARK
         }
 
+        const glow = (0.25 + this.phase)
+
         return {
           position: 'absolute',
           height: '100px',
@@ -110,7 +112,7 @@
           backgroundColor: outerColour,
           borderRadius: '50%',
           overflow: 'hidden',
-          boxShadow: '0 0 50px rgba(255,255,255,0.25)'
+          boxShadow: `0 0 50px rgba(255,255,255,${glow})`
         }
       }
     }

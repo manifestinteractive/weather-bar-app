@@ -10,6 +10,11 @@
           <p>{{ $t('ui.confirmDelete') }}</p>
           <button @click.prevent="confirmedDelete">{{ $t('ui.deleteButton') }}</button>
         </div>
+
+        <div class="confirm-primary" v-if="confirmPrimary">
+          <p>{{ $t('ui.confirmPrimary') }}</p>
+          <button @click.prevent="confirmedPrimary">{{ $t('ui.confirmedPrimary') }}</button>
+        </div>
       </div>
 
       <div v-if="add" class="add-icon">
@@ -23,9 +28,18 @@
       </div>
 
       <div v-if="info && weather">
-        <a href="#" v-if="!add" class="action delete-button" @click="deleteLocation">
+        <a v-if="!add && !current" class="action delete-button" @click.prevent="deleteLocation">
           <i class="far fa-fw fa-trash default"></i>
           <i class="fas fa-fw fa-trash hover"></i>
+        </a>
+
+        <a v-if="!add && !info.primary" class="action primary-button" @click.prevent="makePrimary">
+          <i class="far fa-fw fa-star default"></i>
+          <i class="fas fa-fw fa-star hover"></i>
+        </a>
+
+        <a v-if="!add && info.primary" class="action primary-button primary" @click.prevent="preventClick">
+          <i class="fas fa-fw fa-star"></i>
         </a>
 
         <div class="weather-temp">
@@ -36,8 +50,12 @@
           <i class="wi" :class="weather.condition_icon"></i>
         </div>
 
-        <div class="name">
+        <div class="name" v-if="!current">
           {{ this.weather.city }}
+        </div>
+
+        <div class="name" v-if="current">
+          {{ $t('app.menu.localWeather') }}
         </div>
 
         <div class="condition">
@@ -174,6 +192,7 @@
 
   &:hover {
     background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
 
     .background-overlay {
       opacity: 1;
@@ -219,7 +238,7 @@
     padding: 10px;
   }
 
-  .delete-button {
+  .primary-button {
     position: absolute;
     top: 0;
     right: 0;
@@ -227,7 +246,15 @@
     color: #FFF;
   }
 
-  .confirm-delete {
+  .delete-button {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    padding: 10px;
+    color: #FFF;
+  }
+
+  .confirm-delete, .confirm-primary {
     color: #FFF;
   }
 
@@ -260,6 +287,10 @@
 
     .action {
       opacity: 0.75;
+
+      &.primary {
+        opacity: 1;
+      }
 
       &:hover i.default {
         display: none;
@@ -308,6 +339,7 @@
     name: 'location',
     props: {
       info: Object,
+      current: Boolean,
       add: Boolean
     },
     data () {
@@ -351,6 +383,10 @@
         this.isDeleted = true
         this.$emit('deleted', this.info)
       },
+      confirmedPrimary () {
+        this.$emit('makePrimary', this.info)
+        this.closeModal()
+      },
       deleteLocation (event) {
         if (event) {
           event.preventDefault()
@@ -359,6 +395,15 @@
 
         this.showModal = true
         this.confirmDelete = true
+      },
+      makePrimary (event) {
+        if (event) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        this.showModal = true
+        this.confirmPrimary = true
       },
       getWeather () {
         if (!this.add) {

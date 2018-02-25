@@ -243,14 +243,6 @@ mb.on('ready', function ready () {
     appSettings.app_always_on_top = preference
   })
 
-  ipcMain.on('set-launch-at-startup', (event, preference) => {
-    console.log('set-launch-at-startup', preference)
-  })
-
-  ipcMain.on('set-icon-preference', (event, preference) => {
-    console.log('set-icon-preference', preference)
-  })
-
   ipcMain.on('close', (event, args) => {
     app.quit()
   })
@@ -264,7 +256,7 @@ mb.on('ready', function ready () {
 mb.on('focus-lost', () => {
   if (!appSettings.app_always_on_top) {
     if (mb.window.isVisible()) {
-      // mb.window.hide()
+      mb.window.hide()
       if (process.platform === 'darwin') {
         mb.tray.setHighlightMode('never')
       }

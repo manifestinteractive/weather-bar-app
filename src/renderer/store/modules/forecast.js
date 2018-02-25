@@ -1,7 +1,7 @@
 const state = {}
 
 const mutations = {
-  DELETE_WEATHER (state, data) {
+  DELETE_FORECAST (state, data) {
     if (data.hasOwnProperty('hash_key')) {
       delete state[data.hash_key]
     }

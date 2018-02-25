@@ -48,7 +48,12 @@ export default {
       loading: 'Carregando',
       confirmDelete: 'Tem certeza de que deseja excluir esta localização?',
       deleteButton: 'Excluir',
-      addLocation: 'Adicionar local'
+      addLocation: 'Adicionar local',
+      confirmPrimary: 'Use isso como sua localização principal?',
+      confirmedPrimary: 'Primária',
+      errorText: 'Parece que tivemos um problema com o nosso aplicativo',
+      errorButtonQuit: 'Sair',
+      errorButtonReload: 'Repetir'
     },
     autoUpdate: {
       message: 'Está disponível uma nova versão do Weather Bar.',

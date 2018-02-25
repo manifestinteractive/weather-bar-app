@@ -48,7 +48,12 @@ export default {
       loading: 'загрузка',
       confirmDelete: 'Вы действительно хотите удалить это?',
       deleteButton: 'Удалить',
-      addLocation: 'Добавить город'
+      addLocation: 'Добавить город',
+      confirmPrimary: 'Использовать в качестве основного?',
+      confirmedPrimary: 'первичный',
+      errorText: 'Похоже, у нас была проблема с нашим приложением',
+      errorButtonQuit: 'Уволиться',
+      errorButtonReload: 'Еще раз'
     },
     autoUpdate: {
       message: 'Доступна новая версия Weather Bar.',

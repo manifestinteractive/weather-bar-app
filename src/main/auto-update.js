@@ -8,9 +8,7 @@ import { i18n as $t } from '../translations/i18n'
 
 export default function autoUpdater () {
   superagent.get('https://raw.githubusercontent.com/manifestinteractive/weather-bar-app/master/package.json').end((err, res) => {
-    if (err || !res.ok) {
-      console.log(err)
-    } else {
+    if (!err && res && res.ok) {
       try {
         const newVersion = JSON.parse(res.text).version
         if (semver.gt(newVersion, currentVersion)) {
@@ -28,9 +26,7 @@ export default function autoUpdater () {
             shell.openExternal('https://weatherbarapp.com/#download')
           }
         }
-      } catch (err) {
-        console.log(err)
-      }
+      } catch (error) {}
     }
   })
 }

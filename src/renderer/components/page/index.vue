@@ -22,7 +22,8 @@
       return {
         timer: null,
         weather: null,
-        forecast: null
+        forecast: null,
+        primary: null
       }
     },
     created () {
@@ -38,9 +39,9 @@
     methods: {
       fetchWeather () {
         clearTimeout(this.timer)
-
-        this.weather = this.$store.getters.getWeather('current')
-        this.forecast = this.$store.getters.getForecast('current')
+        this.primary = this.$store.getters.getPrimaryLocation
+        this.weather = this.$store.getters.getWeather(this.primary)
+        this.forecast = this.$store.getters.getForecast(this.primary)
 
         this.timer = setTimeout(this.fetchWeather, TIMER_CURRENT_WEATHER)
       }

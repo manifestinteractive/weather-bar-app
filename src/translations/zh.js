@@ -48,7 +48,12 @@ export default {
       loading: '载入中',
       confirmDelete: '你确定要删除这个位置？',
       deleteButton: '删除',
-      addLocation: '添加位置'
+      addLocation: '添加位置',
+      confirmPrimary: '将此用作主要位置？',
+      confirmedPrimary: '主',
+      errorText: '看起来我们的应用有问题',
+      errorButtonQuit: '放弃',
+      errorButtonReload: '刷新'
     },
     autoUpdate: {
       message: '天氣欄的新版本可用。',

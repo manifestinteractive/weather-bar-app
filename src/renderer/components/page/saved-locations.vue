@@ -7,12 +7,25 @@
         <div class="scrollable">
           <div class="tiles">
             <location
+              v-if="orderedLocations && location.hash_key === 'current'"
               v-for="location in orderedLocations"
+              :current='true'
+              :primary="location.primary"
+              :info="location"
+              :key="location.id"
+              @clicked="clicked"
+              @makePrimary="makePrimary"
+            />
+            <location
               v-if="orderedLocations && location.hash_key !== 'current'"
+              v-for="location in orderedLocations"
+              :current='false'
+              :primary="location.primary"
               :info="location"
               :key="location.id"
               @clicked="clicked"
               @deleted="deleted"
+              @makePrimary="makePrimary"
             />
             <location :add='true' @clicked="addLocation" />
           </div>
@@ -115,6 +128,17 @@
           this.$store.dispatch('deleteLocation', data)
           this.$store.dispatch('deleteWeather', data)
           this.$store.dispatch('deleteForecast', data)
+        })
+      },
+      makePrimary (data) {
+        const params = {
+          uuid: data.uuid,
+          hash_key: data.hash_key
+        }
+
+        api.makeLocationPrimary(params, (response) => {
+          this.$store.dispatch('makePrimary', data)
+          EventBus.$emit('updatedSettings')
         })
       },
       addLocation () {
