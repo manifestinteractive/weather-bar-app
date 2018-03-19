@@ -57,7 +57,7 @@
 				</div>
       </swiper-slide>
 
-      <div class="swiper-pagination" slot="pagination"></div>
+      <div class="swiper-pagination" slot="pagination" role="navigation" aria-label="Forecast Navigation"></div>
     </swiper>
 
   </div>

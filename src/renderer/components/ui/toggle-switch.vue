@@ -1,6 +1,11 @@
 <template>
   <div class="toggle-switch">
-    <input v-model="toggle" type="checkbox" v-bind:id="id" @change="togglePreference" />
+    <input type="checkbox" role="checkbox"
+      v-model="toggle"
+      v-bind:id="id"
+      @change="togglePreference"
+      :aria-checked="toggle ? 'true' : 'false'"
+    />
     <label v-bind:for="id"></label>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div class="radio-button">
-    <input type="radio"
+    <input type="radio" role="checkbox" :aria-checked="current ? 'true' : 'false'"
       v-model="selection"
       v-bind:id="id"
       v-bind:name="name"
@@ -81,7 +81,8 @@
       id: String,
       name: String,
       option: String,
-      enabled: String
+      enabled: String,
+      current: Boolean
     },
     data () {
       return {

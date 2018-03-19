@@ -1,5 +1,5 @@
 <template>
-  <div class="page-title">
+  <div class="page-title" role="heading">
     {{ title }}
   </div>
 </template>

@@ -167,15 +167,6 @@ const makeMenu = () => {
       type: 'separator'
     },
     {
-      label: $t(appSettings.app_language, 'context.menu.devTools'),
-      click () {
-        mb.window.webContents.openDevTools()
-      }
-    },
-    {
-      type: 'separator'
-    },
-    {
       label: $t(appSettings.app_language, 'context.menu.quit'),
       click () {
         mb.app.quit()

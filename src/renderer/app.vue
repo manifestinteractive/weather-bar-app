@@ -1,9 +1,9 @@
 <template>
-  <div id="app" :class="classNames" v-if="appOpened">
+  <div id="app" :class="classNames">
     <toast v-if="toastMessage" :toastMessage="toastMessage" />
-    <loading v-if="!appReady || hasError" :hasError="hasError" />
+    <loading v-if="!appReady || hasError || !appOpened" :hasError="hasError" />
     <app-menu v-if="appReady && !hasError" :class="classNames" />
-    <router-view v-if="appReady" />
+    <router-view v-if="appReady && appOpened" />
   </div>
 </template>
 

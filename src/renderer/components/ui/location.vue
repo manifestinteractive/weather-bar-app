@@ -1,5 +1,5 @@
 <template>
-  <div class="location" @click="handleClick" v-if="!isDeleted">
+  <button class="location" @click="handleClick" v-if="!isDeleted">
     <div class="data" :class="className">
       <div class="overlay" v-if="showModal" @click.prevent="preventClick">
         <a class="close-button" @click.prevent="closeModal">
@@ -69,7 +69,7 @@
     </div>
 
     <div class="background-overlay" :class="className"></div>
-  </div>
+  </button>
 </template>
 
 <style lang="scss">
@@ -79,7 +79,7 @@
   margin-bottom: 4px;
   margin-left: 2px;
   margin-right: 2px;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.5);
   border: none;
   border-radius: 8px;
   font-size: 12px;
@@ -89,6 +89,11 @@
   cursor: pointer;
   transition: all 0.25s;
   float: left;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25) inset;
+  }
 
   .data {
     z-index: 6;

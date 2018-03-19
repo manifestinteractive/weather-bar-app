@@ -1,8 +1,8 @@
 <template>
-  <div class="app-menu" :class="{ open: open }">
-    <div class="menu-button" @click="toggle">
+  <div class="app-menu" :class="{ open: open }" role="navigation">
+    <button class="menu-button" @click="toggle" :aria-expanded="open ? 'true' : 'false'" aria-controls="main-menu" tabindex="1">
       <div class="bar" :class="{ open: open }"></div>
-    </div>
+    </button>
 
     <div class="quit-app" @click.prevent="quitApp" v-if="platform === 'linux'">
       <i class="fas fa-fw fa-window-close"></i>&nbsp; {{ $t('app.menu.quit') }}
@@ -19,24 +19,24 @@
         </div>
       </div>
 
-      <ul>
-        <li>
-          <router-link :to="{ name: 'index' }" exact @click.native="hide">
+      <ul id="main-menu" role="menubar" aria-label="Main Menu">
+        <li role="menuitem">
+          <router-link :to="{ name: 'index' }" exact @click.native="hide" :aria-label="$t('app.menu.primaryLocation')" :tabindex="open ? '2' : '22'">
             <i class="fas fa-fw fa-star"></i> {{ $t('app.menu.primaryLocation') }}
           </router-link>
         </li>
-        <li>
-          <router-link :to="{ name: 'saved-locations' }" @click.native="hide">
+        <li role="menuitem">
+          <router-link :to="{ name: 'saved-locations' }" @click.native="hide" :aria-label="$t('app.menu.savedLocations')" :tabindex="open ? '3' : '23'">
             <i class="fas fa-fw fa-bookmark"></i> {{ $t('app.menu.savedLocations') }}
           </router-link>
         </li>
-        <li>
-          <router-link :to="{ name: 'new-location' }" @click.native="hide">
+        <li role="menuitem">
+          <router-link :to="{ name: 'new-location' }" @click.native="hide" :aria-label="$t('app.menu.newLocation')" :tabindex="open ? '4' : '24'">
             <i class="fas fa-fw fa-plus-square"></i> {{ $t('app.menu.newLocation') }}
           </router-link>
         </li>
-        <li>
-          <router-link :to="{ name: 'preferences' }" @click.native="hide">
+        <li role="menuitem">
+          <router-link :to="{ name: 'preferences' }" @click.native="hide" :aria-label="$t('app.menu.preferences')" :tabindex="open ? '5' : '25'">
             <i class="fas fa-fw fa-cog"></i> {{ $t('app.menu.preferences') }}
           </router-link>
         </li>
@@ -144,6 +144,12 @@
     width: 30px;
     height: 30px;
     cursor: pointer;
+    background: transparent;
+    border: none;
+
+    &:focus {
+      outline: 1px solid rgba(255, 255, 255, 0.25);
+    }
 
     .bar,
     .bar:after,
@@ -154,10 +160,11 @@
     }
 
     .bar {
-      position: relative;
+      position: absolute;
       transform: translateY(13px);
       background: rgba(255, 255, 255, 1);
-      transition: transform 0 300ms;
+      transition: transform 300ms;
+      top: 0;
 
       &:before {
         content: "";
@@ -194,10 +201,6 @@
         transition: bottom 300ms cubic-bezier(0.23, 1, 0.32, 1), transform 300ms 300ms cubic-bezier(0.23, 1, 0.32, 1);
         background: #FFF !important;
       }
-    }
-
-    &:focus {
-      outline: none;
     }
   }
 
@@ -268,7 +271,12 @@
           font-weight: 300;
           height: 40px;
           line-height: 40px;
-          transition: all 0.25s ease-in-out;
+          transition: border 0.25s ease-in-out, color 0.25s ease-in-out;
+
+          &:focus {
+            outline: 1px solid rgba(255, 255, 255, 0.25);
+            outline-offset: -1px;
+          }
 
           i {
             display: inline-block;
@@ -363,11 +371,13 @@
       show () {
         this.open = true
       },
-      hide () {
+      hide (evt) {
         this.open = false
+        evt.target.blur()
       },
-      toggle () {
+      toggle (evt) {
         this.open = !this.open
+        evt.target.blur()
       },
       isOpen () {
         return (this.open)

@@ -10,7 +10,7 @@
 
         <div class="form">
           <div class="search">
-            <input type="search" v-model="keyword" :placeholder="$t('page.newLocation.placeholder')">
+            <input type="search" v-model="keyword" :placeholder="$t('page.newLocation.placeholder')" tabindex="6">
             <i class="fal fa-search" v-if="keyword === ''"></i>
           </div>
 
@@ -25,12 +25,12 @@
             </ul>
           </div>
 
-          <button v-if="keyword.length > 0 && selectedCity" @click="letsGo">
+          <button v-if="keyword.length > 0 && selectedCity" @click="letsGo" tabindex="7">
             <i class="fas fa-angle-right"></i>
             {{ $t('page.newLocation.letsGo') }}
           </button>
 
-          <button v-if="keyword.length === 0" @click="getCurrentLocation">
+          <button v-if="keyword.length === 0" @click="getCurrentLocation" tabindex="7">
             <i class="fas fa-location-arrow"></i>
             {{ $t('page.newLocation.currentLocation') }}
           </button>

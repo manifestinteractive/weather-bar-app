@@ -8,21 +8,23 @@
           <div class="tiles">
             <location
               v-if="orderedLocations && location.hash_key === 'current'"
-              v-for="location in orderedLocations"
+              v-for="(location, index) in orderedLocations"
               :current='true'
               :primary="location.primary"
               :info="location"
               :key="location.id"
+              tabindex="7"
               @clicked="clicked"
               @makePrimary="makePrimary"
             />
             <location
               v-if="orderedLocations && location.hash_key !== 'current'"
-              v-for="location in orderedLocations"
+              v-for="(location, index) in orderedLocations"
               :current='false'
               :primary="location.primary"
               :info="location"
               :key="location.id"
+              :tabindex="8 + index"
               @clicked="clicked"
               @deleted="deleted"
               @makePrimary="makePrimary"
