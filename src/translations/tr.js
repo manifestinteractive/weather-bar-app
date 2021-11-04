@@ -70,7 +70,7 @@ export default {
         website: 'Weather Bar Website',
         license: 'Lisans',
         support: 'İletişim',
-        toggle: 'Weather Bar\ı aç/kapat',
+        toggle: 'Weather Bar\'ı aç/kapat',
         devTools: 'Geliştirici Araçları',
         quit: 'Weather Bar\'dan çık',
         dialog: {
