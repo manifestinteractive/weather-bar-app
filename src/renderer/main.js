@@ -16,6 +16,7 @@ import esLocale from '../translations/es'
 import frLocale from '../translations/fr'
 import jaLocale from '../translations/ja'
 import msLocale from '../translations/ms'
+import plLocale from '../translations/pl'
 import ptLocale from '../translations/pt'
 import ruLocale from '../translations/ru'
 import zhLocale from '../translations/zh'
@@ -41,6 +42,7 @@ const messages = deepmerge.all([
   frLocale,
   jaLocale,
   msLocale,
+  plLocale,
   ptLocale,
   ruLocale,
   zhLocale
