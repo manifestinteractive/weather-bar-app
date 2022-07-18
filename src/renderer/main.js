@@ -18,6 +18,7 @@ import jaLocale from '../translations/ja'
 import msLocale from '../translations/ms'
 import ptLocale from '../translations/pt'
 import ruLocale from '../translations/ru'
+import trLocale from '../translations/tr'
 import zhLocale from '../translations/zh'
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
@@ -43,6 +44,7 @@ const messages = deepmerge.all([
   msLocale,
   ptLocale,
   ruLocale,
+  trLocale,
   zhLocale
 ])
 
