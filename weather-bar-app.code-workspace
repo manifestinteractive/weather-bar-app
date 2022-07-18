@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"cSpell.words": [
+			"APPDATA",
+			"autocrlf",
+			"babili",
+			"bugsnag",
+			"cfonts",
+			"choco",
+			"devtron",
+			"graphicsmagick",
+			"icns",
+			"icnsutils",
+			"lcov",
+			"libgnome",
+			"mkdir",
+			"multispinner",
+			"simulatedgreg",
+			"spectron",
+			"suncalc",
+			"swiper",
+			"toastr",
+			"USERPROFILE",
+			"VUEJS",
+			"vuex",
+			"WEATHERBAR",
+			"xvfb"
+		]
+	}
+}
