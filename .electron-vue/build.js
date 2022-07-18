@@ -7,8 +7,8 @@ const chalk = require('chalk')
 const del = require('del')
 const { spawn } = require('child_process')
 const webpack = require('webpack')
+const Listr = require('listr')
 const Multispinner = require('multispinner')
-
 
 const mainConfig = require('./webpack.main.config')
 const rendererConfig = require('./webpack.renderer.config')
@@ -29,49 +29,67 @@ function clean () {
   process.exit()
 }
 
-function build () {
+async function build () {
   greeting()
 
   del.sync(['dist/electron/*', '!.gitkeep'])
 
-  const tasks = ['main', 'renderer']
-  const m = new Multispinner(tasks, {
+  let buildTasks = ['main', 'renderer']
+  const m = new Multispinner(buildTasks, {
     preText: 'building',
     postText: 'process'
   })
 
   let results = ''
 
-  m.on('success', () => {
-    process.stdout.write('\x1B[2J\x1B[0f')
-    console.log(`\n\n${results}`)
-    console.log(`${okayLog}take it away ${chalk.yellow('`electron-builder`')}\n`)
-    process.exit()
-  })
+  const tasks = new Listr(
+    [
+      {
+        title: 'building master process',
+        task: async () => {
+          await pack(mainConfig)
+            .then(result => {
+              results += result + '\n\n'
+            })
+            .catch(err => {
+              console.log(`\n  ${errorLog}failed to build main process`)
+              console.error(`\n${err}\n`)
+            })
+        }
+      },
+      {
+        title: 'building renderer process',
+        task: async () => {
+          await pack(rendererConfig)
+            .then(result => {
+              results += result + '\n\n'
+            })
+            .catch(err => {
+              console.log(`\n  ${errorLog}failed to build renderer process`)
+              console.error(`\n${err}\n`)
+            })
+        }
+      }
+    ],
+    { concurrent: 2 }
+  )
 
-  pack(mainConfig).then(result => {
-    results += result + '\n\n'
-    m.success('main')
-  }).catch(err => {
-    m.error('main')
-    console.log(`\n  ${errorLog}failed to build main process`)
-    console.error(`\n${err}\n`)
-    process.exit(1)
-  })
-
-  pack(rendererConfig).then(result => {
-    results += result + '\n\n'
-    m.success('renderer')
-  }).catch(err => {
-    m.error('renderer')
-    console.log(`\n  ${errorLog}failed to build renderer process`)
-    console.error(`\n${err}\n`)
-    process.exit(1)
-  })
+  await tasks
+    .run()
+    .then(() => {
+      process.stdout.write('\x1B[2J\x1B[0f')
+      console.log(`\n\n${results}`)
+      console.log(`${okayLog}take it away ${chalk.yellow('`electron-builder`')}\n`)
+      process.exit()
+    })
+    .catch(err => {
+      process.exit(1)
+    })
 }
 
 function pack (config) {
   return new Promise((resolve, reject) => {
+    config.mode = 'production'
     webpack(config, (err, stats) => {
       if (err) reject(err.stack || err)
       else if (stats.hasErrors()) {
@@ -99,6 +117,7 @@ function pack (config) {
 
 function web () {
   del.sync(['dist/web/*', '!.gitkeep'])
+  webConfig.mode = 'production'
   webpack(webConfig, (err, stats) => {
     if (err || stats.hasErrors()) console.log(err)
 
@@ -121,8 +140,8 @@ function greeting () {
 
   if (text && !isCI) {
     say(text, {
-      colors: ['cyan'],
-      font: 'block',
+      colors: ['yellow'],
+      font: 'simple3d',
       space: false
     })
   } else console.log(chalk.yellow.bold('\n  weather-bar'))
