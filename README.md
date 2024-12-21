@@ -1,7 +1,9 @@
-Project Archived
+:bell: SHUTDOWN NOTICE
 ===
 
-It's been a great run, but this softare is no longer going to be maintained.  It still works on many devices, but anyone interested in using this should probably start looking for alternatives.
+Weather Bar has been shut down by the developer and is no longer being maintained.
+
+The services that were running Weather Bar were not free and after years of expenses it just made the project no longer worth supporting due to lack of contributions.
 
 ------
 
